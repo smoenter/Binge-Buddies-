@@ -1,0 +1,32 @@
+name: Test workflow
+on:
+  pull_request:
+    branches:
+      - develop
+      - staging
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    steps:
+      # Get code from repo
+      - name: Checkout code
+        uses: actions/checkout@v1
+      - name: Use Node.js 21.x
+        uses: actions/setup-node@v1
+        with:
+          node-version: 21.x
+      # Install dependencies
+      - name: 🧰 Install Deps
+        run: npm install
+      # Run build
+      - name: Run Build
+        run: npm run build
+      # Start the server
+      - name: Start Server
+        run: npm start &
+      # Wait for the server to be ready
+      - name: Wait for Server
+        run: sleep 20
+      # Run tests
+      - name: Run Tests
+        run: npm run test-component
