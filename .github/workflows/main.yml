@@ -2,8 +2,7 @@ name: Test workflow
 on:
   pull_request:
     branches:
-      - develop
-      - staging
+      - main
 jobs:
   test:
     runs-on: ubuntu-latest
