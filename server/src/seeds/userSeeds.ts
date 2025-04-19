@@ -1,4 +1,4 @@
-[
+const userData = [
     {
         "username": "JollyGuru",
         "email": "jolly@guru.com",
@@ -14,4 +14,6 @@
         "email": "radiant@comet.com",
         "password": "password"
     }
-]
+];
+
+export default userData;
