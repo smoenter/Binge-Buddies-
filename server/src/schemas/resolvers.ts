@@ -1,174 +1,135 @@
-import { Media, User } from '../models/index.js';
-import { signToken, AuthenticationError } from '../utils/auth.js'; 
-
-// Define types for the arguments
-interface AddUserArgs {
-  input:{
-    username: string;
-    email: string;
-    password: string;
-  }
-}
-
-interface LoginUserArgs {
-  email: string;
-  password: string;
-}
-
-interface UserArgs {
-  username: string;
-}
-
-interface ThoughtArgs {
-  thoughtId: string;
-}
-
-interface AddThoughtArgs {
-  input:{
-    thoughtText: string;
-    thoughtAuthor: string;
-  }
-}
-
-interface AddCommentArgs {
-  thoughtId: string;
-  commentText: string;
-}
-
-interface RemoveCommentArgs {
-  thoughtId: string;
-  commentId: string;
-}
+import { User, Media, Reaction } from '../models/index.js';
+import { signToken, AuthenticationError } from '../utils/auth.js';
 
 const resolvers = {
   Query: {
-    users: async () => {
-      return User.find().populate('thoughts');
-    },
-    user: async (_parent: any, { username }: UserArgs) => {
-      return User.findOne({ username }).populate('thoughts');
-    },
-    thoughts: async () => {
-      return await Media.find().sort({ createdAt: -1 });
-    },
-    thought: async (_parent: any, { thoughtId }: ThoughtArgs) => {
-      return await Media.findOne({ _id: thoughtId });
-    },
-    // Query to get the authenticated user's information
-    // The 'me' query relies on the context to check if the user is authenticated
     me: async (_parent: any, _args: any, context: any) => {
-      // If the user is authenticated, find and return the user's information along with their thoughts
-      if (context.user) {
-        return User.findOne({ _id: context.user._id }).populate('thoughts');
-      }
-      // If the user is not authenticated, throw an AuthenticationError
-      throw new AuthenticationError('Could not authenticate user.');
+      if (!context.user) throw new AuthenticationError('Not logged in');
+
+      return await User.findById(context.user._id)
+        .populate('savedMedia')
+        .populate('friends');
+    },
+
+    media: async (_parent: any, { title }: { title: string }) => {
+      return await Media.findOne({ title });
+    },
+
+    savedMedia: async (_parent: any, _args: any, context: any) => {
+      if (!context.user) throw new AuthenticationError('Not logged in');
+      return await Media.find({ savedBy: context.user._id });
+    },
+
+    reactions: async (_parent: any, { mediaId }: { mediaId: string }) => {
+      return await Reaction.find({ media: mediaId })
+        .populate('user', 'username')
+        .sort({ createdAt: -1 });
     },
   },
+
   Mutation: {
-    addUser: async (_parent: any, { input }: AddUserArgs) => {
-      // Create a new user with the provided username, email, and password
-      const user = await User.create({ ...input });
-    
-      // Sign a token with the user's information
+    addUser: async (_parent: any, { input }: any) => {
+      const user = await User.create(input);
       const token = signToken(user.username, user.email, user._id);
-    
-      // Return the token and the user
       return { token, user };
     },
-    
-    login: async (_parent: any, { email, password }: LoginUserArgs) => {
-      // Find a user with the provided email
+
+    login: async (_parent: any, { email, password }: any) => {
       const user = await User.findOne({ email });
-    
-      // If no user is found, throw an AuthenticationError
-      if (!user) {
-        throw new AuthenticationError('Could not authenticate user.');
+      if (!user || !(await user.isCorrectPassword(password))) {
+        throw new AuthenticationError('Invalid credentials');
       }
-    
-      // Check if the provided password is correct
-      const correctPw = await user.isCorrectPassword(password);
-    
-      // If the password is incorrect, throw an AuthenticationError
-      if (!correctPw) {
-        throw new AuthenticationError('Could not authenticate user.');
-      }
-    
-      // Sign a token with the user's information
+
       const token = signToken(user.username, user.email, user._id);
-    
-      // Return the token and the user
       return { token, user };
     },
-    addThought: async (_parent: any, { input }: AddThoughtArgs, context: any) => {
-      if (context.user) {
-        const thought = await Media.create({ ...input });
 
-        await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $addToSet: { thoughts: thought._id } }
-        );
+    saveMedia: async (_parent: any, { input }: any, context: any) => {
+      if (!context.user) throw new AuthenticationError('Not logged in');
 
-        return thought;
+      // Check if media already exists
+      let media = await Media.findOne({ title: input.title });
+
+      if (!media) {
+        media = await Media.create(input);
       }
-      throw AuthenticationError;
-      ('You need to be logged in!');
+
+      // Update media to include current user
+      await Media.findByIdAndUpdate(media._id, {
+        $addToSet: { savedBy: context.user._id },
+      });
+
+      // Update user to include saved media
+      await User.findByIdAndUpdate(context.user._id, {
+        $addToSet: { savedMedia: media._id },
+      });
+
+      return media;
     },
-    addComment: async (_parent: any, { thoughtId, commentText }: AddCommentArgs, context: any) => {
-      if (context.user) {
-        return Media.findOneAndUpdate(
-          { _id: thoughtId },
-          {
-            $addToSet: {
-              comments: { commentText, commentAuthor: context.user.username },
-            },
-          },
-          {
-            new: true,
-            runValidators: true,
-          }
-        );
-      }
-      throw AuthenticationError;
+
+    removeMedia: async (_parent: any, { mediaId }: any, context: any) => {
+      if (!context.user) throw new AuthenticationError('Not logged in');
+
+      // Remove from user's saved list
+      await User.findByIdAndUpdate(context.user._id, {
+        $pull: { savedMedia: mediaId },
+      });
+
+      // Remove user from media's savedBy list
+      await Media.findByIdAndUpdate(mediaId, {
+        $pull: { savedBy: context.user._id },
+      });
+
+      return await Media.findById(mediaId);
     },
-    removeThought: async (_parent: any, { thoughtId }: ThoughtArgs, context: any) => {
-      if (context.user) {
-        const thought = await Media.findOneAndDelete({
-          _id: thoughtId,
-          thoughtAuthor: context.user.username,
-        });
 
-        if(!thought){
-          throw AuthenticationError;
-        }
+    addReaction: async (_parent: any, { mediaId, comment, season, episode, rating }: any, context: any) => {
+      if (!context.user) throw new AuthenticationError('Not logged in');
 
-        await User.findOneAndUpdate(
-          { _id: context.user._id },
-          { $pull: { thoughts: thought._id } }
-        );
-
-        return thought;
-      }
-      throw AuthenticationError;
+      return await Reaction.create({
+        user: context.user._id,
+        media: mediaId,
+        comment,
+        season,
+        episode,
+        rating,
+      });
     },
-    removeComment: async (_parent: any, { thoughtId, commentId }: RemoveCommentArgs, context: any) => {
-      if (context.user) {
-        return Media.findOneAndUpdate(
-          { _id: thoughtId },
-          {
-            $pull: {
-              comments: {
-                _id: commentId,
-                commentAuthor: context.user.username,
-              },
-            },
-          },
-          { new: true }
-        );
+
+    removeReaction: async (_parent: any, { reactionId }: any, context: any) => {
+      if (!context.user) throw new AuthenticationError('Not logged in');
+
+      const reaction = await Reaction.findById(reactionId);
+
+      if (!reaction || reaction.user.toString() !== context.user._id) {
+        throw new AuthenticationError('Not authorized to delete this reaction');
       }
-      throw AuthenticationError;
+
+      await Reaction.findByIdAndDelete(reactionId);
+      return reaction;
+    },
+
+    addFriend: async (_parent: any, { friendId }: any, context: any) => {
+      if (!context.user) throw new AuthenticationError('Not logged in');
+
+      return await User.findByIdAndUpdate(
+        context.user._id,
+        { $addToSet: { friends: friendId } },
+        { new: true }
+      ).populate('friends');
+    },
+
+    removeFriend: async (_parent: any, { friendId }: any, context: any) => {
+      if (!context.user) throw new AuthenticationError('Not logged in');
+
+      return await User.findByIdAndUpdate(
+        context.user._id,
+        { $pull: { friends: friendId } },
+        { new: true }
+      ).populate('friends');
     },
   },
 };
 
 export default resolvers;
+
