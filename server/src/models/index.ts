@@ -1,4 +1,10 @@
-import Thought from './Reaction.js';
 import User from './User.js';
+import Media from './Media.js';
+import Reaction from './Reaction.js';
 
-export { Thought, User };
+export {
+    User,
+    Media,
+    Reaction
+  };
+

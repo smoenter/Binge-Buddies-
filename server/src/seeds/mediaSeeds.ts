@@ -1,42 +1,38 @@
-[
-  {
-    "thoughtText": "Everyone knows that debugging is twice as hard as writing a program in the first place. So if you're as clever as you can be when you write it, how will you ever debug it?",
-    "thoughtAuthor": "Brian Kernighan"
-  },
-  {
-    "thoughtText": "Some of the best programming is done on paper, really. Putting it into the computer is just a minor detail.",
-    "thoughtAuthor": "Max Kanat-Alexander"
-  },
-  {
-    "thoughtText": "When you don't create things, you become defined by your tastes rather than ability. Your tastes only narrow & exclude people. So create.",
-    "thoughtAuthor": "Why The Lucky Stiff"
-  },
-  {
-    "thoughtText": "I'm not a great programmer; I'm just a good programmer with great habits.",
-    "thoughtAuthor": "Kent Beck"
-  },
-  {
-    "thoughtText": "Walking on water and developing software from a specification are easy if both are frozen.",
-    "thoughtAuthor": "Edward V. Berard"
-  },
-  {
-    "thoughtText": "The most disastrous thing that you can ever learn is your first programming language.",
-    "thoughtAuthor": "Alan Kay"
-  },
-  {
-    "thoughtText": "The most important property of a program is whether it accomplishes the intention of its user.",
-    "thoughtAuthor": "C.A.R. Hoare"
-  },
-  {
-    "thoughtText": "Delivering good software today is often better than perfect software tomorrow, so finish things and ship.",
-    "thoughtAuthor": "David Thomas"
-  },
-  {
-    "thoughtText": "If you optimize everything, you will always be unhappy.",
-    "thoughtAuthor": "Donald Knuth"
-  },
-  {
-    "thoughtText": "It's not a bug; it's an undocumented feature.",
-    "thoughtAuthor": "Anonymous"
+import { Media } from '../models/index.js';
+
+export const seedMedia = async (): Promise<void> => {
+  try {
+    const mediaData = [
+      {
+        title: 'Inception',
+        type: 'movie',
+        genre: ['Sci-Fi', 'Thriller'],
+        description: 'A skilled thief is offered a chance to erase his criminal history by infiltrating dreams.',
+        trailerUrl: 'https://www.youtube.com/watch?v=YoHD9XEInc0',
+        posterUrl: 'https://image.tmdb.org/t/p/w500/qmDpIHrmpJINaRKAfWQfftjCdyi.jpg',
+      },
+      {
+        title: 'Stranger Things',
+        type: 'tv',
+        genre: ['Sci-Fi', 'Horror', 'Drama'],
+        description: 'A group of young friends witness supernatural forces and secret government exploits in their town.',
+        trailerUrl: 'https://www.youtube.com/watch?v=b9EkMc79ZSU',
+        posterUrl: 'https://image.tmdb.org/t/p/w500/x2LSRK2Cm7MZhjluni1msVJ3wDF.jpg',
+      },
+      {
+        title: 'The Office',
+        type: 'tv',
+        genre: ['Comedy'],
+        description: 'A mockumentary sitcom that depicts the everyday work lives of office employees at Dunder Mifflin.',
+        trailerUrl: 'https://www.youtube.com/watch?v=Vmb1tqYqyII',
+        posterUrl: 'https://image.tmdb.org/t/p/w500/qWnJzyZhyy74gjpSjIXWmuk0ifX.jpg',
+      },
+    ];
+
+    await Media.insertMany(mediaData);
+    console.log('Media seeded successfully.');
+  } catch (err) {
+    console.error('Error seeding media:', err);
   }
-]
+};
+
