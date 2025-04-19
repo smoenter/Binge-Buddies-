@@ -1,4 +1,4 @@
-import { Thought, User } from '../models/index.js';
+import { Media, User } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js'; 
 
 // Define types for the arguments
@@ -49,10 +49,10 @@ const resolvers = {
       return User.findOne({ username }).populate('thoughts');
     },
     thoughts: async () => {
-      return await Thought.find().sort({ createdAt: -1 });
+      return await Media.find().sort({ createdAt: -1 });
     },
     thought: async (_parent: any, { thoughtId }: ThoughtArgs) => {
-      return await Thought.findOne({ _id: thoughtId });
+      return await Media.findOne({ _id: thoughtId });
     },
     // Query to get the authenticated user's information
     // The 'me' query relies on the context to check if the user is authenticated
@@ -102,7 +102,7 @@ const resolvers = {
     },
     addThought: async (_parent: any, { input }: AddThoughtArgs, context: any) => {
       if (context.user) {
-        const thought = await Thought.create({ ...input });
+        const thought = await Media.create({ ...input });
 
         await User.findOneAndUpdate(
           { _id: context.user._id },
@@ -116,7 +116,7 @@ const resolvers = {
     },
     addComment: async (_parent: any, { thoughtId, commentText }: AddCommentArgs, context: any) => {
       if (context.user) {
-        return Thought.findOneAndUpdate(
+        return Media.findOneAndUpdate(
           { _id: thoughtId },
           {
             $addToSet: {
@@ -133,7 +133,7 @@ const resolvers = {
     },
     removeThought: async (_parent: any, { thoughtId }: ThoughtArgs, context: any) => {
       if (context.user) {
-        const thought = await Thought.findOneAndDelete({
+        const thought = await Media.findOneAndDelete({
           _id: thoughtId,
           thoughtAuthor: context.user.username,
         });
@@ -153,7 +153,7 @@ const resolvers = {
     },
     removeComment: async (_parent: any, { thoughtId, commentId }: RemoveCommentArgs, context: any) => {
       if (context.user) {
-        return Thought.findOneAndUpdate(
+        return Media.findOneAndUpdate(
           { _id: thoughtId },
           {
             $pull: {

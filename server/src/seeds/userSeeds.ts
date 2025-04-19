@@ -1,19 +1,35 @@
-const userData = [
-    {
-        "username": "JollyGuru",
-        "email": "jolly@guru.com",
-        "password": "password"
-    },
-    {
-        "username": "SunnyScribe",
-        "email": "sunny@scribe.com",
-        "password": "password"
-    },
-    {
-        "username": "RadiantComet",
-        "email": "radiant@comet.com",
-        "password": "password"
-    }
-];
+import bcrypt from 'bcrypt';
+import { User } from '../models/index.js';
 
-export default userData;
+export const seedUsers = async (): Promise<void> => {
+  try {
+    const rawUsers = [
+      {
+        username: 'movieBuff01',
+        email: 'buff01@example.com',
+        password: 'password',
+      },
+      {
+        username: 'tvJunkie88',
+        email: 'junkie88@example.com',
+        password: 'password',
+      },
+    ];
+
+    const saltRounds = 10;
+
+    // Hash passwords before insertion
+    const hashedUsers = await Promise.all(
+      rawUsers.map(async (user) => ({
+        ...user,
+        password: await bcrypt.hash(user.password, saltRounds),
+      }))
+    );
+
+    await User.insertMany(hashedUsers);
+    console.log('Users seeded successfully.');
+  } catch (err) {
+    console.error('Error seeding users:', err);
+  }
+};
+
