@@ -1,13 +1,17 @@
-import { Thought, User } from '../models/index.js';
+import { User, Media, Reaction } from '../models/index.js';
 import process from 'process';
 
 const cleanDB = async (): Promise<void> => {
   try {
-    // Delete documents from THought collection
-    await Thought.deleteMany({});
-    console.log('Thought collection cleaned.');
+    // Delete all media
+    await Media.deleteMany({});
+    console.log('Media collection cleaned.');
 
-    // Delete documents from User collection
+    // Delete all reactions
+    await Reaction.deleteMany({});
+    console.log('Reaction collection cleaned.');
+
+    // Delete all users
     await User.deleteMany({});
     console.log('User collection cleaned.');
 
@@ -18,3 +22,4 @@ const cleanDB = async (): Promise<void> => {
 };
 
 export default cleanDB;
+
