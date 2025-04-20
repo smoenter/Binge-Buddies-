@@ -14,8 +14,8 @@ export const Nav = () => {
     >
       <Link className="navbar-brand" to="/">🎥 WatchWithMe</Link>
       <div className="navbar-nav d-flex flex-row gap-4">
-        {["/", "/watchlist", "/reactions"].map((path, index) => {
-          const labels = ["Home", "Watchlist", "Reaction Dashboard"];
+        {["/", "/browse", "/watchlist", "/reactions"].map((path, index) => {
+          const labels = ["Home", "Browse", "Watchlist", "Reaction Dashboard"];
           const isActive = location.pathname === path;
           return (
             <motion.div
