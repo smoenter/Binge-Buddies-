@@ -1,45 +1,30 @@
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { Routes, Route } from "react-router-dom";
 
+import Footer  from "./components/Footer";
 
-import App from './App.jsx';
-import Home from './pages/Home';
+import ErrorPage from './pages/Error';
 import Signup from './pages/Signup';
 import Login from './pages/Login';
-import SingleThought from './pages/SingleThought';
-import Profile from './pages/Profile';
-import ErrorPage from './pages/Error';
+import Home from "./pages/Home";
+import Browse from "./pages/Browse";
+import Watchlist from "./pages/YourWatchList";
+import Reactions from "./pages/Reactions";
 
-const router = createBrowserRouter([
-  {
-    path: "/",
-    element: <App />,
-    errorElement: <ErrorPage />,
-    children: [
-      {
-        index: true,
-        element: <Home />
-      }, {
-        path: '/login',
-        element: <Login />
-      }, {
-        path: '/signup',
-        element: <Signup />
-      }, {
-        path: '/profiles/:username',
-        element: <Profile />
-      }, {
-        path: '/me',
-        element: <Profile />
-      }, {
-        path: '/thoughts/:thoughtId',
-        element: <SingleThought />
-      }
-    ]
-  },
-]);
+const App = () => {
+  return (
+    <div className="d-flex flex-column min-vh-100 bg-dark text-white">
+      {/* <main className="container-fluid"> */}
+        <Routes>
+          <Route path="/" element={<Home />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login/>}/>
+          <Route path="/watchlist" element={<Watchlist />} />
+          <Route path="/reactions" element={<Reactions />} />
+        </Routes>
+      {/* </main> */}
+      <Footer />
+    </div>
+  );
+};
 
-const rootElement = document.getElementById('root');
-if (rootElement) {
-  ReactDOM.createRoot(rootElement).render(<RouterProvider router={router} />);
-}
+export default App;
