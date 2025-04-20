@@ -1,29 +1,37 @@
 const typeDefs = `
   type User {
-    _id: ID
-    username: String
-    email: String
-    password: String
-    thoughts: [Thought]!
+    _id: ID!
+    username: String!
+    email: String!
+    savedMedia: [Media]
+    friends: [User]
   }
 
-  type Thought {
-    _id: ID
-    thoughtText: String
-    thoughtAuthor: String
+  type Media {
+    _id: ID!
+    title: String!
+    type: String!
+    genre: [String]
+    description: String
+    posterUrl: String
+    trailerUrl: String
+    savedBy: [User]
+  }
+
+  type Reaction {
+    _id: ID!
+    media: Media!
+    user: User!
+    comment: String!
+    season: Int
+    episode: Int
+    rating: Int
     createdAt: String
-    comments: [Comment]!
   }
 
-  type Comment {
-    _id: ID
-    commentText: String
-    createdAt: String
-  }
-
-  input ThoughtInput {
-    thoughtText: String!
-    thoughtAuthor: String!
+  type Auth {
+    token: ID!
+    user: User
   }
 
   input UserInput {
@@ -31,28 +39,34 @@ const typeDefs = `
     email: String!
     password: String!
   }
-  
-  type Auth {
-    token: ID!
-    user: User
+
+  input MediaInput {
+    title: String!
+    type: String!
+    genre: [String]
+    description: String
+    posterUrl: String
+    trailerUrl: String
   }
 
   type Query {
-    users: [User]
-    user(username: String!): User
-    thoughts: [Thought]!
-    thought(thoughtId: ID!): Thought
     me: User
+    media(title: String!): Media
+    savedMedia: [Media]
+    reactions(mediaId: ID!): [Reaction]
   }
 
   type Mutation {
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
-    addThought(input: ThoughtInput!): Thought
-    addComment(thoughtId: ID!, commentText: String!): Thought
-    removeThought(thoughtId: ID!): Thought
-    removeComment(thoughtId: ID!, commentId: ID!): Thought
+    saveMedia(input: MediaInput!): Media
+    removeMedia(mediaId: ID!): Media
+    addReaction(mediaId: ID!, comment: String!, season: Int, episode: Int, rating: Int): Reaction
+    removeReaction(reactionId: ID!): Reaction
+    addFriend(friendId: ID!): User
+    removeFriend(friendId: ID!): User
   }
 `;
 
 export default typeDefs;
+
