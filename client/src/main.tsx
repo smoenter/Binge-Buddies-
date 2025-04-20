@@ -1,30 +1,31 @@
-import { Routes, Route } from "react-router-dom";
-
-import Footer  from "./components/Footer";
-
-import ErrorPage from './pages/Error';
-import Signup from './pages/Signup';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import App from "./App";
 import Login from './pages/Login';
-import Home from "./pages/Home";
-import Browse from "./pages/Browse";
-import Watchlist from "./pages/YourWatchList";
-import Reactions from "./pages/Reactions";
+import Signup from './pages/Signup';
+import Home from './pages/Home';
+// import Browse from './pages/Browse';
+// import Watchlist from './pages/Watchlist';
+// import Reactions from './pages/Reaction';
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const App = () => {
-  return (
-    <div className="d-flex flex-column min-vh-100 bg-dark text-white">
-      {/* <main className="container-fluid"> */}
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login/>}/>
-          <Route path="/watchlist" element={<Watchlist />} />
-          <Route path="/reactions" element={<Reactions />} />
-        </Routes>
-      {/* </main> */}
-      <Footer />
-    </div>
-  );
-};
+// Define your routes
+const router = createBrowserRouter([
+  {
+    path: '/',
+    element: <App />,
+    children: [
+      { index: true, element: <Home /> },
+      { path: 'login', element: <Login /> },
+      { path: 'signup', element: <Signup /> },
+      
+    ],
+  },
+]);
 
-export default App;
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);
