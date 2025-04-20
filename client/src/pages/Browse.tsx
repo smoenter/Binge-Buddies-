@@ -6,7 +6,7 @@ import Toggle from "../components/Toggle/index";
 const Browse = () => {
   return (
     <div>
-      <h1 className="mb-4">Welcome to WatchWithMe 🎬</h1>
+      <h1 className="mb-4">Browse</h1>
       <Toggle />
       {/* <SearchComponent /> */}
       {/* Map over results to render MediaCards inside a carousel or grid */}

@@ -6,7 +6,7 @@ import Login from './pages/Login';
 import Signup from './pages/Signup';
 import Home from './pages/Home';
 import Browse from './pages/Browse';
-// import Watchlist from './pages/Watchlist';
+import YourWatchlist from './pages/YourWatchList';
 // import Reactions from './pages/Reaction';
 import "bootstrap/dist/css/bootstrap.min.css";
 
@@ -20,7 +20,7 @@ const router = createBrowserRouter([
       { path: 'login', element: <Login /> },
       { path: 'signup', element: <Signup /> },
       { path: 'browse', element: <Browse /> },
-      
+      { path: 'yourwatchlist', element: <YourWatchlist /> },
     ],
   },
 ]);
