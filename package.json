@@ -25,6 +25,7 @@
   },
   "dependencies": {
     "bootstrap": "^5.3.5",
-    "framer-motion": "^12.7.4"
+    "framer-motion": "^12.7.4",
+    "react-icons": "^5.5.0"
   }
 }

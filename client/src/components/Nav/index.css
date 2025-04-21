@@ -1,0 +1,24 @@
+.custom-nav {
+    max-width: fit-content;
+    border-radius: 9999px; /* pill shape */
+    background-color: rgba(38, 42, 45, 0.333); /* translucent dark */
+    backdrop-filter: blur(8px); /* glass effect */
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.21); /* soft shadow */
+  }
+  
+  .custom-nav-link {
+    padding: 0.5rem 1rem;
+    border-radius: 9999px;
+    color: #f8f9fa;
+    text-decoration: none;
+    transition: color 0.3s ease;
+  }
+  
+  .custom-nav-link:hover {
+    color: #ffc107; /* Bootstrap warning color */
+  }
+  
+  .active-nav-link {
+    color: #ffc107;
+    font-weight: bold;
+  }
