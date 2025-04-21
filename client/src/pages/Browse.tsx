@@ -16,6 +16,8 @@ const Browse = () => {
         <MediaCard title="Inception" type="movie" />
         <MediaCard title="The Office" type="tv" />
         <MediaCard title="Interstellar" type="movie" />
+        <MediaCard title="The Office" type="tv" />
+        <MediaCard title="Interstellar" type="movie" />
       </div>
     </div>
   );

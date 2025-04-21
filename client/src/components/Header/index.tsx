@@ -1,7 +1,8 @@
 import { Link } from 'react-router-dom';
 import { type MouseEvent} from 'react';
 import Auth from '../../utils/auth';
-import logoutIcon from '../../../public/logout.svg';
+import './index.css';
+import logoutIcon from '../../assets/logout.svg';
 
 const Header = () => {
   const logout = (event: MouseEvent<HTMLButtonElement>) => {
@@ -10,31 +11,21 @@ const Header = () => {
     Auth.logout();
   };
   return (
-    <header className="bg-primary text-light mb-4 py-3 flex-row align-center">
+    <header className="custom-header text-light mb-4 py-3 flex-row align-center">
       <div className="container flex-row justify-space-between-lg justify-center align-center">
-        {/* <div>
-          <Link className="text-light" to="/">
-            <h1 className="m-0">Binge Buddies</h1>
-          </Link>
-          <p className="m-0">Make connecting simple.</p>
-        </div> */}
-        <div>
-          {/* Checking if the user is logged in to conditionally render profile link and logout button */}
+        <div className="auth-buttons">
           {Auth.loggedIn() ? (
   <>
-    {/* <Link className="btn btn-lg btn-info m-2" to="/me">
-      {Auth.getProfile()?.data?.username || 'User'}'s profile
-    </Link> */}
     <button className="btn btn-lg btn-light m-2" onClick={logout}>
       <img src={logoutIcon} alt="Logout" style={{ width: '24px', height: '24px' }} />
     </button>
   </>
 ) : (
   <>
-    <Link className="btn btn-lg btn-info m-2" to="/login">
+    <Link className="auth-link" to="/login">
       Login
     </Link>
-    <Link className="btn btn-lg btn-light m-2" to="/signup">
+    <Link className="auth-link" to="/signup">
       Signup
     </Link>
   </>
