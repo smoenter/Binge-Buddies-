@@ -50,7 +50,8 @@ const ThoughtForm = () => {
 
   return (
     <div>
-      <h3>What's on your techy mind?</h3>
+      {/* hook to get user to login/signup*/}
+      <h3>Ready to make connecting with friends and family simplistic again?</h3>
 
       {Auth.loggedIn() ? (
         <>
@@ -90,7 +91,7 @@ const ThoughtForm = () => {
         </>
       ) : (
         <p>
-          You need to be logged in to share your thoughts. Please{' '}
+          Login or create an account today to begin! Please{' '}
           <Link to="/login">login</Link> or <Link to="/signup">signup.</Link>
         </p>
       )}

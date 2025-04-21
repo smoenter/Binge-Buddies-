@@ -1,45 +1,33 @@
-import ReactDOM from 'react-dom/client'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
-
-
-import App from './App.jsx';
-import Home from './pages/Home';
-import Signup from './pages/Signup';
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import App from "./App";
 import Login from './pages/Login';
-import SingleThought from './pages/SingleThought';
-import Profile from './pages/Profile';
-import ErrorPage from './pages/Error';
+import Signup from './pages/Signup';
+import Home from './pages/Home';
+import Browse from './pages/Browse';
+import YourWatchlist from './pages/YourWatchList';
+import Reactions from './pages/Reactions';
+import "bootstrap/dist/css/bootstrap.min.css";
 
+// Define your routes
 const router = createBrowserRouter([
   {
-    path: "/",
+    path: '/',
     element: <App />,
-    errorElement: <ErrorPage />,
     children: [
-      {
-        index: true,
-        element: <Home />
-      }, {
-        path: '/login',
-        element: <Login />
-      }, {
-        path: '/signup',
-        element: <Signup />
-      }, {
-        path: '/profiles/:username',
-        element: <Profile />
-      }, {
-        path: '/me',
-        element: <Profile />
-      }, {
-        path: '/thoughts/:thoughtId',
-        element: <SingleThought />
-      }
-    ]
+      { index: true, element: <Home /> },
+      { path: 'login', element: <Login /> },
+      { path: 'signup', element: <Signup /> },
+      { path: 'browse', element: <Browse /> },
+      { path: 'yourwatchlist', element: <YourWatchlist /> },
+      { path: 'reactions', element: <Reactions /> },
+    ],
   },
 ]);
 
-const rootElement = document.getElementById('root');
-if (rootElement) {
-  ReactDOM.createRoot(rootElement).render(<RouterProvider router={router} />);
-}
+ReactDOM.createRoot(document.getElementById("root")!).render(
+  <React.StrictMode>
+    <RouterProvider router={router} />
+  </React.StrictMode>
+);

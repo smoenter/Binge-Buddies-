@@ -35,4 +35,3 @@ export const seedMedia = async (): Promise<void> => {
     console.error('Error seeding media:', err);
   }
 };
-

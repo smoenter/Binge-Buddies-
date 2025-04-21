@@ -1,0 +1,39 @@
+/* rounds toggle */
+
+/* Round the left side of the first button */
+.custom-toggle:first-child {
+    border-top-left-radius: 25px;
+    border-bottom-left-radius: 25px;
+  }
+  
+  /* Round the right side of the last button */
+  .custom-toggle:last-child {
+    border-top-right-radius: 25px;
+    border-bottom-right-radius: 25px;
+  }
+
+/* Reset Bootstrap interference */
+.custom-toggle {
+    background-color: #bdbdbdca ;
+    border: 1px solid transparent ;
+    transition: background-color 0.3s, border-color 0.3s;
+    box-shadow: none;
+  }
+  
+  /* Hover ONLY when NOT selected */
+  .custom-toggle:hover:not(.selected) {
+    background-color: #9AB5D9;
+    border-color: #9AB5D9;
+  }
+  
+  /* Selected (active) state */
+  .custom-toggle.selected {
+    background-color: #45869F;
+    border-color: #45869F;
+  }
+  
+  /* Optional: Make hover on selected not affect anything */
+  .custom-toggle.selected:hover {
+    background-color: #45869F ;
+    border-color: #45869F ;
+  }
