@@ -8,7 +8,7 @@ import {
 import { setContext } from '@apollo/client/link/context';
 import { Outlet } from 'react-router-dom';
 
-import { Nav } from './components/Nav'
+// import { Nav } from './components/Nav'
 import Header from './components/Header';
 import Footer from './components/Footer';
 
@@ -38,17 +38,11 @@ const client = new ApolloClient({
 
 function App() {
   
-  const isLoggedIn = !!localStorage.getItem('id_token');
-  const hideNavPaths = ['/login', '/signup'];
-
-const shouldShowNav = isLoggedIn && !hideNavPaths.includes(location.pathname);
-
-
+  
   return (
     <ApolloProvider client={client}>
       <div className="flex-column justify-flex-start min-100-vh">
         <Header />
-        {shouldShowNav && <Nav />}
         <div className="container">
           <Outlet />
         </div>
