@@ -1,8 +1,9 @@
-// src/pages/Home.tsx
+
+import { useState } from "react";
 import Toggle from "../components/Toggle/index";
 // import SearchComponent from "../components/SearchComponent";
 import MediaCard from "../components/MediaCard";
-import { useState } from "react";
+// import { useState } from "react";
 
 
 const Browse = () => {

@@ -12,6 +12,10 @@ const YourWatchlist = () => {
       <div className="d-flex flex-wrap gap-3 mt-4">
         <MediaCard title="The Office" type="tv" saved />
         <MediaCard title="Interstellar" type="movie" saved />
+        <MediaCard title="The Office" type="tv" saved />
+        <MediaCard title="Interstellar" type="movie" saved />
+        <MediaCard title="The Office" type="tv" saved />
+        <MediaCard title="Interstellar" type="movie" saved />
       </div>
     </div>
   );
