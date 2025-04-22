@@ -9,6 +9,7 @@ const typeDefs = `
 
   type Media {
     _id: ID!
+    imdbID: String!
     title: String!
     type: String!
     genre: [String]
@@ -16,6 +17,14 @@ const typeDefs = `
     posterUrl: String
     trailerUrl: String
     savedBy: [User]
+  } 
+
+  type MediaCard {
+  Title: String!
+  Year: String!
+  imdbID: String!
+  Type: String!
+  Poster: String! 
   }
 
   type Reaction {
@@ -51,7 +60,7 @@ const typeDefs = `
 
   type Query {
     me: User
-    media(title: String!): Media
+    media(title: String!, type: String!): [MediaCard]
     savedMedia: [Media]
     reactions(mediaId: ID!): [Reaction]
   }
