@@ -2,7 +2,8 @@ import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface IMedia extends Document {
   title: string;
-  type: 'movie' | 'tv';
+  imdbID: string
+  type: 'movie' | 'series';
   genre: string[];
   description?: string;
   posterUrl?: string;
@@ -19,7 +20,7 @@ const mediaSchema = new Schema<IMedia>(
     },
     type: {
       type: String,
-      enum: ['movie', 'tv'],
+      enum: ['movie', 'series'],
       required: true,
     },
     genre: [

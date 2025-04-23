@@ -1,5 +1,6 @@
 import { User, Media, Reaction } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
+import { fetchMedia, mediaTypeType } from '../utils/apiFetchers.js';
 
 const resolvers = {
   Query: {
@@ -11,8 +12,11 @@ const resolvers = {
         .populate('friends');
     },
 
-    media: async (_parent: any, { title }: { title: string }) => {
-      return await Media.findOne({ title });
+    media: async (_parent: any, { title, type}: { title: string, type: mediaTypeType }) => {
+      // return await Media.findOne({ title });
+      const data = await fetchMedia(title, type)
+      console.log(data)
+      return data.Search
     },
 
     savedMedia: async (_parent: any, _args: any, context: any) => {

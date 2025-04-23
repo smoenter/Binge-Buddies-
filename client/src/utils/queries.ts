@@ -58,3 +58,15 @@ export const QUERY_ME = gql`
     }
   }
 `;
+
+export const QUERY_MEDIA = gql`
+  query Media($title: String!, $type: String!) {
+  media(title: $title, type: $type) {
+    Title
+    Year
+    imdbID
+    Type
+    Poster
+  }
+}
+`;

@@ -3,7 +3,7 @@ import Star from "../Star/index";
 
 type Props = {
   title: string;
-  type: "movie" | "tv";
+  type: "movie" | "series";
   saved?: boolean;
 };
 

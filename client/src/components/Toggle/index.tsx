@@ -1,13 +1,18 @@
 import "./index.css";
-import { useState } from "react";
+// import { useState } from "react";
 
-const Toggle = ({ onToggle }: { onToggle: (type: "movie" | "tv") => void }) => {
-  const [type, setType] = useState<"movie" | "tv">("movie");
+interface toggleProps{
+  handleToggle: (newType: "movie" | "series") => void,
+  type: "movie" | "series"
+}
 
-  const handleToggle = (newType: "movie" | "tv") => {
-    setType(newType);
-    onToggle(newType);
-  };
+const Toggle = ({handleToggle, type}:toggleProps) => {
+  // const [type, setType] = useState<"movie" | "series">("movie");
+
+  // const handleToggle = (newType: "movie" | "series") => {
+  //   setType(newType);
+  //   onToggle(newType);
+  // };
 
   return (
     <div className="btn-group" role="group">
@@ -23,8 +28,8 @@ const Toggle = ({ onToggle }: { onToggle: (type: "movie" | "tv") => void }) => {
         />
       </button>
       <button
-        className={`custom-toggle ${type === "tv" ? "selected" : ""}`}
-        onClick={() => handleToggle("tv")}
+        className={`custom-toggle ${type === "series" ? "selected" : ""}`}
+        onClick={() => handleToggle("series")}
       >
         <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/retro-tv.png" alt="retro-tv"/>
       </button>
