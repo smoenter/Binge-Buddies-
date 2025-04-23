@@ -1,7 +1,7 @@
 
 import { useState } from "react";
 import Toggle from "../components/Toggle/index";
-// import SearchComponent from "../components/SearchComponent";
+import SearchComponent from "../components/Search/index";
 import MediaCard from "../components/MediaCard";
 // import { useState } from "react";
 
@@ -17,7 +17,8 @@ const Browse = () => {
     <div>
       <h1 className="mb-4">Browse</h1>
       <Toggle handleToggle={handleToggle} type={type}/>
-      {/* <SearchComponent /> */}
+      <SearchComponent onSearch={(query) => console.log(query)} />
+      {/* Add a search bar to filter results */}
       {/* Map over results to render MediaCards inside a carousel or grid */}
       <div className="d-flex flex-wrap gap-3 mt-4">
         {/* Example static card */}
