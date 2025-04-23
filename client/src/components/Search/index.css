@@ -1,0 +1,15 @@
+.search-input {
+    width: 300px; 
+    border-radius: 999px; /* rounded edges */
+    padding: 0.5rem; 
+    border: 1px solid #ccc;
+  }
+  
+  .search-button {
+    background-color: #4a90e2 !important; /* replace with your desired color */
+    border-radius: 10px; /* rounded button to match input */
+    padding: 0.4rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }

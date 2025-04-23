@@ -1,22 +1,44 @@
 import MediaCard from "../components/MediaCard";
 import Toggle from "../components/Toggle";
+import { useState } from "react";
 
 const YourWatchlist = () => {
+  const [type, setType] = useState<"movie" | "series">("movie");
+
+  const handleToggle = (newType: "movie" | "series") => {
+    setType(newType);
+  };
+
   return (
     <div>
       <h1>⭐ Your Watchlist</h1>
-      {/* Toggle between TV & Movies if needed */}
+      {/* Toggle between series & Movies if needed */}
 
-      <Toggle onToggle={(type: "movie" | "tv") => { /* handle toggle logic here */ }} />
+      <Toggle handleToggle={handleToggle} type={type} />
 
       <div className="d-flex flex-wrap gap-3 mt-4">
-        <MediaCard title="The Office" type="tv" saved />
-        <MediaCard title="Interstellar" type="movie" saved />
-        <MediaCard title="The Office" type="tv" saved />
-        <MediaCard title="Interstellar" type="movie" saved />
-        <MediaCard title="The Office" type="tv" saved />
-        <MediaCard title="Interstellar" type="movie" saved />
-      </div>
+  {type === "movie" && (
+    <>
+      <MediaCard title="Interstellar" type="movie" saved />
+      <MediaCard title="Interstellar" type="movie" saved />
+      <MediaCard title="Interstellar" type="movie" saved />
+      <MediaCard title="Interstellar" type="movie" saved />
+      <MediaCard title="Interstellar" type="movie" saved />
+      <MediaCard title="Interstellar" type="movie" saved />
+    </>
+  )}
+
+  {type === "series" && (
+    <>
+      <MediaCard title="The Office" type="series" saved />
+      <MediaCard title="The Office" type="series" saved />
+      <MediaCard title="The Office" type="series" saved />
+      <MediaCard title="The Office" type="series" saved />
+      <MediaCard title="The Office" type="series" saved />
+      <MediaCard title="The Office" type="series" saved />
+    </>
+  )}
+</div>
     </div>
   );
 };
