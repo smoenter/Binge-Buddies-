@@ -21,11 +21,32 @@ const Browse = () => {
       {/* Add a search bar to filter results */}
       {/* Map over results to render MediaCards inside a carousel or grid */}
       <div className="d-flex flex-wrap gap-3 mt-4">
-        {/* Example static card */}
-        <MediaCard title="Breaking Bad" type="series" />
-        <MediaCard title="Inception" type="movie" />
-        <MediaCard title="The Office" type="series" />
-        <MediaCard title="Interstellar" type="movie" />
+        {type === "movie" && (
+        <>
+          <MediaCard title="Inception" type="movie" />
+          <MediaCard title="Interstellar" type="movie" />
+          <MediaCard title="Inception" type="movie" />
+          <MediaCard title="Interstellar" type="movie" />
+          <MediaCard title="Inception" type="movie" />
+          <MediaCard title="Interstellar" type="movie" />
+          <MediaCard title="Inception" type="movie" />
+          <MediaCard title="Interstellar" type="movie" />
+          <MediaCard title="Inception" type="movie" />
+        </>
+        )}    
+        {type === "series" && (
+         <>
+          <MediaCard title="Breaking Bad" type="series" />
+          <MediaCard title="The Office" type="series" />
+          <MediaCard title="Breaking Bad" type="series" />
+          <MediaCard title="The Office" type="series" />
+          <MediaCard title="Breaking Bad" type="series" />
+          <MediaCard title="The Office" type="series" />
+          <MediaCard title="Breaking Bad" type="series" />
+          <MediaCard title="The Office" type="series" />
+          <MediaCard title="Breaking Bad" type="series" />
+        </>
+        )}
       </div>
     </div>
   );
