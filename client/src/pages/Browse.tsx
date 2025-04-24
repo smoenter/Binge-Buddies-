@@ -14,7 +14,7 @@ const Browse = () => {
    };
 
   return (
-    <div>
+    <div className= "container-browse">
       <h1 className="mb-4">Browse</h1>
       <Toggle handleToggle={handleToggle} type={type}/>
       <SearchComponent onSearch={(query) => console.log(query)} />
