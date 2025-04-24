@@ -1,15 +1,24 @@
+.btn-group{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    padding: 0px;
+    width: 100%;
+}
+
 /* rounds toggle */
 
 /* Round the left side of the first button */
 .custom-toggle:first-child {
-    border-top-left-radius: 25px;
-    border-bottom-left-radius: 25px;
+    border-top-left-radius: 28px;
+    border-bottom-left-radius: 28px;
   }
   
   /* Round the right side of the last button */
   .custom-toggle:last-child {
-    border-top-right-radius: 25px;
-    border-bottom-right-radius: 25px;
+    border-top-right-radius: 28px;
+    border-bottom-right-radius: 28px;
   }
 
 /* Reset Bootstrap interference */

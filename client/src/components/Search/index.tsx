@@ -11,6 +11,7 @@ const SearchComponent = ({ onSearch }: { onSearch: (query: string) => void }) =>
 
   return (
     <form onSubmit={handleSubmit} className="d-flex my-3">
+      <div className= "search-wrapper">
       <input
         type="text"
         className="search-input"
@@ -21,6 +22,7 @@ const SearchComponent = ({ onSearch }: { onSearch: (query: string) => void }) =>
       <button className="btn btn-search" type="submit">
       <img width="20" height="20" src="https://img.icons8.com/ios-glyphs/30/search--v1.png" alt="search--v1"/>
       </button>
+      </div>
     </form>
   );
 };
