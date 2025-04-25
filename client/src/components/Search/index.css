@@ -1,0 +1,55 @@
+.search-input {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;
+    width: 300px; 
+    border-radius: 999px; /* rounded edges */
+    padding: 0.5rem; 
+    border: 1px solid #ccc;
+  }
+
+  
+  
+  .search-button {
+    
+    background-color: #4a90e2 !important; /* replace with your desired color */
+    border-radius: 10px; /* rounded button to match input */
+    padding: 0.4rem 0.75rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .search-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+    /* background-color: #fff; */
+    /* border-radius: 999px; */
+    padding: 0.25rem;
+    /* box-shadow: 0 2px 6px rgba(0,0,0,0.1); */
+  }
+
+  /* subtle pop on hover */
+.btn-search:hover {
+    transform: scale(1.1);
+    transition: transform 0.2s ease-in-out;
+    background-color: #3b78c3;
+  }
+  
+  /* optional active bounce when clicked */
+  .btn-search:active {
+    transform: scale(0.95);
+    transition: transform 0.1s ease-in-out;
+  }
+  
+  /* spin the icon on hover */
+  .btn-search img {
+    transition: transform 0.4s ease-in-out;
+  }
+  
+  .btn-search:hover img {
+    transform: rotate(20deg);
+  }

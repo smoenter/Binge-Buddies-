@@ -1,5 +1,5 @@
 // src/pages/Reactions.tsx
-import PostCard from "../components/Post";
+import PostCard from "../components/Post/index";
 
 
 const Reactions = () => {

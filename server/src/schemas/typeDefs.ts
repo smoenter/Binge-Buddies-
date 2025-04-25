@@ -65,6 +65,10 @@ const typeDefs = `
     reactions(mediaId: ID!): [Reaction]
   }
 
+  type InviteResponse {
+  message: String
+}
+
   type Mutation {
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
@@ -74,6 +78,7 @@ const typeDefs = `
     removeReaction(reactionId: ID!): Reaction
     addFriend(friendId: ID!): User
     removeFriend(friendId: ID!): User
+    inviteFriend(email: String!): InviteResponse
   }
 `;
 

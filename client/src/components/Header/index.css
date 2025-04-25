@@ -1,0 +1,32 @@
+.auth-buttons {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 1.5rem;
+  }
+  /* Applies only to Login and Signup links */
+.auth-link {
+    text-decoration: none;
+    color: rgb(111, 111, 111);
+    font-size: 1rem;
+    font-weight: 500;
+    background: none;
+    border: none;
+    padding: 0;
+    cursor: pointer;
+  }
+  
+  .auth-link:hover {
+    color: #ffc107; /* Optional highlight on hover */
+  }
+
+  .custom-header {
+    background-color: #00000006;
+    
+  }
+
+  .header-content {
+    display: flex;
+    align-items: center;
+    gap: 1.5rem;
+  }

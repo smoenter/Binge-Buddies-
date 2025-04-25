@@ -23,15 +23,19 @@ const Toggle = ({handleToggle, type}:toggleProps) => {
         <img
           src="https://img.icons8.com/ios/50/film-reel--v1.png"
           alt="Movies"
-          width={24}
-          height={24}
+          width={25}
+          height={25}
         />
       </button>
       <button
         className={`custom-toggle ${type === "series" ? "selected" : ""}`}
         onClick={() => handleToggle("series")}
       >
-        <img width="24" height="24" src="https://img.icons8.com/ios-filled/50/retro-tv.png" alt="retro-tv"/>
+        <img 
+          width={25}
+          height={25}
+          src="https://img.icons8.com/ios-filled/50/retro-tv.png"
+          alt="retro-tv"/>
       </button>
     </div>
   );
