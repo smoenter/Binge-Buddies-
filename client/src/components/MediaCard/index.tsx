@@ -5,6 +5,7 @@ type Props = {
   title: string;
   type: "movie" | "series";
   saved?: boolean;
+  poster: string;
 };
 
 const MediaCard = ({ title, type, saved = false }: Props) => {
