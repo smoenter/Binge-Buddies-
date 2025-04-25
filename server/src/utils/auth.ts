@@ -3,49 +3,52 @@ import { GraphQLError } from 'graphql';
 import dotenv from 'dotenv';
 dotenv.config();
 
+const JWT_SECRET_KEY = process.env.JWT_SECRET_KEY;
+if (!JWT_SECRET_KEY) {
+  throw new Error('⚠️ JWT_SECRET_KEY is not defined in your .env file');
+}
 
-export const authenticateToken = ({ req }: any) => {
-  // Allows token to be sent via req.body, req.query, or headers
+const TOKEN_EXPIRATION = '2h';
+
+// 🔐 Sign a token with user info
+export const signToken = (username: string, email: string, _id: unknown): string => {
+  const payload = { username, email, _id };
+  return jwt.sign({ data: payload }, JWT_SECRET_KEY, { expiresIn: TOKEN_EXPIRATION });
+};
+
+// 🛡️ Verify token and attach user to request
+export const authenticateToken = ({ req }: { req: any }) => {
   let token = req.body.token || req.query.token || req.headers.authorization;
 
-  // If the token is sent in the authorization header, extract the token from the header
+  console.log('🪪 Raw token header:', token);
+
   if (req.headers.authorization) {
-    token = token.split(' ').pop().trim();
+    token = token.split(' ').pop().trim(); // 'Bearer <token>'
+    console.log('✅ Token after split:', token);
   }
 
-  // If no token is provided, return the request object as is
   if (!token) {
+    console.log('❌ No token found');
     return req;
   }
 
-  // Try to verify the token
   try {
-    const { data }: any = jwt.verify(token, process.env.JWT_SECRET_KEY || '', { maxAge: '2hr' });
-    // If the token is valid, attach the user data to the request object
-    req.user = data;
+    const decoded: any = jwt.verify(token, JWT_SECRET_KEY);
+    req.user = decoded.data; // ✅ must use .data because of how it's signed
+    console.log('🧠 Decoded user:', req.user);
   } catch (err) {
-    // If the token is invalid, log an error message
-    console.log('Invalid token');
+    console.log('❌ Invalid token:', err);
   }
 
-  // Return the request object
   return req;
 };
 
-export const signToken = (username: string, email: string, _id: unknown) => {
-  // Create a payload with the user information
-  const payload = { username, email, _id };
-  const secretKey: any = process.env.JWT_SECRET_KEY; // Get the secret key from environment variables
-
-  // Sign the token with the payload and secret key, and set it to expire in 2 hours
-  return jwt.sign({ data: payload }, secretKey, { expiresIn: '2h' });
-};
-
+// ⚠️ GraphQL-formatted auth error
 export class AuthenticationError extends GraphQLError {
-  constructor(message: string) {
-    super(message, undefined, undefined, undefined, ['UNAUTHENTICATED']);
+  constructor(message = 'Not logged in') {
+    super(message, {
+      extensions: { code: 'UNAUTHENTICATED' },
+    });
     Object.defineProperty(this, 'name', { value: 'AuthenticationError' });
   }
-};
-
-//changed to the old one
+}

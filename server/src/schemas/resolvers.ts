@@ -1,6 +1,7 @@
 import { User, Media, Reaction } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 import { fetchMedia, mediaTypeType } from '../utils/apiFetchers.js';
+import { sendInviteEmail } from '../utils/inviteSender.js';
 
 const resolvers = {
   Query: {
@@ -132,7 +133,16 @@ const resolvers = {
         { new: true }
       ).populate('friends');
     },
-  },
+
+inviteFriend: async (_parent: any, { email }: { email: string }, context: any) => {
+  if (!context.user) throw new AuthenticationError('Not logged in');
+
+  const fromUsername = context.user.username;
+  await sendInviteEmail(email, fromUsername);
+
+  return { message: `Invite sent to ${email}` };
+},
+},
 };
 
 export default resolvers;
