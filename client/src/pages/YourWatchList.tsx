@@ -1,6 +1,7 @@
 import MediaCard from "../components/MediaCard";
 import Toggle from "../components/Toggle";
 import SearchComponent from "../components/Search";
+import InviteOptions from "../components/InviteOptions";
 import { useState } from "react";
 
 const YourWatchlist = () => {
@@ -12,37 +13,103 @@ const YourWatchlist = () => {
 
   return (
     <div>
-      <h1>⭐ Your Watchlist</h1>
-      {/* Toggle between series & Movies if needed */}
+      {/* Header and Controls */}
+      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+        <div>
+          <h1>⭐ Your Watchlist</h1>
+          <Toggle handleToggle={handleToggle} type={type} />
+        </div>
 
-      <Toggle handleToggle={handleToggle} type={type} />
+        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+          <SearchComponent onSearch={(query) => console.log(query)} />
+          <InviteOptions />
+        </div>
+      </div>
 
-      <SearchComponent onSearch={(query) => console.log(query)} />
-      
-
+      {/* Media Cards */}
       <div className="d-flex flex-wrap gap-3 mt-4">
-  {type === "movie" && (
-    <>
-      <MediaCard title="Interstellar" type="movie" saved />
-      <MediaCard title="Interstellar" type="movie" saved />
-      <MediaCard title="Interstellar" type="movie" saved />
-      <MediaCard title="Interstellar" type="movie" saved />
-      <MediaCard title="Interstellar" type="movie" saved />
-      <MediaCard title="Interstellar" type="movie" saved />
-    </>
-  )}
+        {type === "movie" && (
+          <>
+            <MediaCard 
+              title="Interstellar" 
+              type="movie" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=No+Image"
+            />
+            <MediaCard 
+              title="Interstellar" 
+              type="movie" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=No+Image"
+            />
+            <MediaCard 
+              title="Interstellar" 
+              type="movie" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=No+Image"
+            />
+            <MediaCard 
+              title="Interstellar" 
+              type="movie" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=No+Image"
+            />
+            <MediaCard 
+              title="Interstellar" 
+              type="movie" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=No+Image"
+            />
+            <MediaCard 
+              title="Interstellar" 
+              type="movie" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=No+Image"
+            />
+          </>
+        )}
 
-  {type === "series" && (
-    <>
-      <MediaCard title="The Office" type="series" saved />
-      <MediaCard title="The Office" type="series" saved />
-      <MediaCard title="The Office" type="series" saved />
-      <MediaCard title="The Office" type="series" saved />
-      <MediaCard title="The Office" type="series" saved />
-      <MediaCard title="The Office" type="series" saved />
-    </>
-  )}
-</div>
+        {type === "series" && (
+          <>
+            <MediaCard 
+              title="The Office" 
+              type="series" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=TV+Show"
+            />
+            <MediaCard 
+              title="The Office" 
+              type="series" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=TV+Show"
+            />
+            <MediaCard 
+              title="The Office" 
+              type="series" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=TV+Show"
+            />
+            <MediaCard 
+              title="The Office" 
+              type="series" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=TV+Show"
+            />
+            <MediaCard 
+              title="The Office" 
+              type="series" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=TV+Show"
+            />
+            <MediaCard 
+              title="The Office" 
+              type="series" 
+              saved 
+              poster="https://via.placeholder.com/300x450.png?text=TV+Show"
+            />
+          </>
+        )}
+      </div>
     </div>
   );
 };
