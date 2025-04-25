@@ -1,6 +1,6 @@
 // src/pages/Reactions.tsx
 import PostCard from "../components/Post/index";
-
+import FriendsButton from "../components/Friends/index"
 
 const Reactions = () => {
   return (
@@ -12,10 +12,8 @@ const Reactions = () => {
         <PostCard username="friend1" content="LOVED The Matrix!" />
         <PostCard username="you" content="Omg Succession finale 💀" />
       </div>
-      <button className="gif-hover-button">
-        <img width="48" height="48" src="https://img.icons8.com/fluency-systems-regular/48/groups--v2.png" alt="groups--v2"/>
-        {/* <img src="/friend-btn.png" alt="friend gif" /> */}
-      </button>
+      <FriendsButton/>
+   
     </div>
   );
 };
