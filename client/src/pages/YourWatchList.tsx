@@ -1,5 +1,6 @@
 import MediaCard from "../components/MediaCard";
 import Toggle from "../components/Toggle";
+import SearchComponent from "../components/Search";
 import { useState } from "react";
 
 const YourWatchlist = () => {
@@ -15,6 +16,9 @@ const YourWatchlist = () => {
       {/* Toggle between series & Movies if needed */}
 
       <Toggle handleToggle={handleToggle} type={type} />
+
+      <SearchComponent onSearch={(query) => console.log(query)} />
+      
 
       <div className="d-flex flex-wrap gap-3 mt-4">
   {type === "movie" && (
