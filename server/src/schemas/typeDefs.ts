@@ -62,6 +62,7 @@ const typeDefs = `
     me: User
     media(title: String!, type: String!): [MediaCard]
     savedMedia: [Media]
+    friends: [User]
     reactions(mediaId: ID!): [Reaction]
   }
 
