@@ -62,6 +62,7 @@ const typeDefs = `
     me: User
     media(title: String!, type: String!): [MediaCard]
     savedMedia: [Media]
+    friends: [User]
     reactions(mediaId: ID!): [Reaction]
   }
 
@@ -79,6 +80,7 @@ const typeDefs = `
     addFriend(friendId: ID!): User
     removeFriend(friendId: ID!): User
     inviteFriend(email: String!): InviteResponse
+    inviteFriendByText(phoneNumber: String!): InviteResponse
   }
 `;
 
