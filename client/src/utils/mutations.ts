@@ -55,6 +55,15 @@ export const ADD_COMMENT = gql`
   }
 `;
 
+
+export const INVITE_FRIEND_BY_TEXT = gql`
+  mutation inviteFriendByText($phone: String!) {
+    inviteFriendByText(phone: $phone) {
+      message
+    }
+  }
+`;
+
 export const ADD_FRIEND = gql`
   mutation AddFriend($userId: ID!, $friendId: ID!) {
     addFriend(userId: $userId, friendId: $friendId) {
@@ -67,3 +76,4 @@ export const ADD_FRIEND = gql`
     }
   }
 `;
+
