@@ -2,6 +2,7 @@ import { User, Media, Reaction } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 import { fetchMedia, mediaTypeType } from '../utils/apiFetchers.js';
 import { sendInviteEmail } from '../utils/inviteSender.js';
+import { sendInviteText } from '../utils/inviteSenderText.js';
 
 const resolvers = {
   Query: {
@@ -13,11 +14,10 @@ const resolvers = {
         .populate('friends');
     },
 
-    media: async (_parent: any, { title, type}: { title: string, type: mediaTypeType }) => {
-      // return await Media.findOne({ title });
-      const data = await fetchMedia(title, type)
-      console.log(data)
-      return data.Search
+    media: async (_parent: any, { title, type }: { title: string; type: mediaTypeType }) => {
+      const data = await fetchMedia(title, type);
+      console.log(data);
+      return data.Search;
     },
 
     savedMedia: async (_parent: any, _args: any, context: any) => {
@@ -61,19 +61,16 @@ const resolvers = {
     saveMedia: async (_parent: any, { input }: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
 
-      // Check if media already exists
       let media = await Media.findOne({ title: input.title });
 
       if (!media) {
         media = await Media.create(input);
       }
 
-      // Update media to include current user
       await Media.findByIdAndUpdate(media._id, {
         $addToSet: { savedBy: context.user._id },
       });
 
-      // Update user to include saved media
       await User.findByIdAndUpdate(context.user._id, {
         $addToSet: { savedMedia: media._id },
       });
@@ -84,12 +81,10 @@ const resolvers = {
     removeMedia: async (_parent: any, { mediaId }: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
 
-      // Remove from user's saved list
       await User.findByIdAndUpdate(context.user._id, {
         $pull: { savedMedia: mediaId },
       });
 
-      // Remove user from media's savedBy list
       await Media.findByIdAndUpdate(mediaId, {
         $pull: { savedBy: context.user._id },
       });
@@ -143,15 +138,24 @@ const resolvers = {
       ).populate('friends');
     },
 
-inviteFriend: async (_parent: any, { email }: { email: string }, context: any) => {
-  if (!context.user) throw new AuthenticationError('Not logged in');
+    inviteFriend: async (_parent: any, { email }: { email: string }, context: any) => {
+      if (!context.user) throw new AuthenticationError('Not logged in');
 
-  const fromUsername = context.user.username;
-  await sendInviteEmail(email, fromUsername);
+      const fromUsername = context.user.username;
+      await sendInviteEmail(email, fromUsername);
 
-  return { message: `Invite sent to ${email}` };
-},
-},
+      return { message: `Invite sent to ${email}` };
+    },
+
+    inviteFriendByText: async (_parent: any, { phoneNumber }: { phoneNumber: string }, context: any) => {
+      if (!context.user) throw new AuthenticationError('Not logged in');
+
+      const fromUsername = context.user.username;
+      await sendInviteText(phoneNumber, fromUsername);
+
+      return { message: `Text invite sent to ${phoneNumber}` };
+    },
+  },
 };
 
 export default resolvers;
