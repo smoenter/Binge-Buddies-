@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import InviteForm from './InviteForm';
+import TextInviteForm from './InviteTextForm';
 
 const InviteOptions = () => {
   const [showOptions, setShowOptions] = useState(false);
@@ -9,28 +10,24 @@ const InviteOptions = () => {
     <div className="max-w-md mx-auto mt-10 text-center">
       <button
         onClick={() => setShowOptions(!showOptions)}
-        className="bg-yellow-400 text-black px-6 py-3 rounded-full text-lg font-bold hover:bg-yellow-300 transition"
-        style={{ backgroundColor: '#facc15', color: '#000', borderRadius: '9999px' }}
+        className="bg-yellow-400 text-black px-6 py-3 rounded-full text-lg font-bold hover:bg-yellow-500 transition"
       >
         Invite a Friend!
       </button>
 
       {showOptions && !selectedMethod && (
-        <div className="mt-4 flex justify-center gap-4">
+        <div className="mt-4 space-x-4">
           <button
             onClick={() => setSelectedMethod('email')}
-            className="px-5 py-2 font-semibold transition"
-            style={{ backgroundColor: '#facc15', color: '#000', borderRadius: '9999px' }}
+            className="bg-yellow-400 text-black px-4 py-2 rounded-full hover:bg-yellow-500"
           >
             Email
           </button>
           <button
             onClick={() => setSelectedMethod('sms')}
-            className="px-5 py-2 font-semibold opacity-60 cursor-not-allowed transition"
-            disabled
-            style={{ backgroundColor: '#facc15', color: '#000', borderRadius: '9999px' }}
+            className="bg-yellow-400 text-black px-4 py-2 rounded-full hover:bg-yellow-500"
           >
-            Text (coming soon)
+            Text
           </button>
         </div>
       )}
@@ -38,6 +35,21 @@ const InviteOptions = () => {
       {selectedMethod === 'email' && (
         <div className="mt-6">
           <InviteForm />
+          <button
+            onClick={() => {
+              setSelectedMethod(null);
+              setShowOptions(false);
+            }}
+            className="mt-4 text-sm text-gray-500 underline"
+          >
+            Cancel
+          </button>
+        </div>
+      )}
+
+      {selectedMethod === 'sms' && (
+        <div className="mt-6">
+          <TextInviteForm />
           <button
             onClick={() => {
               setSelectedMethod(null);

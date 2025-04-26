@@ -54,3 +54,11 @@ export const ADD_COMMENT = gql`
     }
   }
 `;
+
+export const INVITE_FRIEND_BY_TEXT = gql`
+  mutation inviteFriendByText($phone: String!) {
+    inviteFriendByText(phone: $phone) {
+      message
+    }
+  }
+`;
