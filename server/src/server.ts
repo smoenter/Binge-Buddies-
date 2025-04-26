@@ -1,4 +1,5 @@
 import express from 'express';
+import cors from 'cors';
 import path from 'node:path';
 import type { Request, Response } from 'express';
 import db from './config/connection.js'
@@ -22,6 +23,12 @@ const startApolloServer = async () => {
 
   const PORT = process.env.PORT || 3001;
   const app = express();
+
+  // Enables CORS before any routes
+  app.use(cors({
+    origin: 'http://localhost:3000', // Adjust if deployed
+    credentials: true
+  }));
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());

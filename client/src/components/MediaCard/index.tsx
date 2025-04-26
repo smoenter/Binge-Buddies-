@@ -8,9 +8,10 @@ type Props = {
   poster: string;
 };
 
-const MediaCard = ({ title, type, saved = false }: Props) => {
+const MediaCard = ({ title, type, poster, saved = false }: Props) => {
   return (
     <div className="card text-dark" style={{ width: "18rem" }}>
+      <img src={poster !== "N/A" ? poster : "/placeholder.jpg"} className="card-img-top" alt={title} />
       <div className="card-body">
         <h5 className="card-title">{title}</h5>
         <p className="card-text">Type: {type}</p>

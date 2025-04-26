@@ -24,7 +24,7 @@ const typeDefs = `
   Year: String!
   imdbID: String!
   Type: String!
-  Poster: String! 
+  Poster: String 
   }
 
   type Reaction {
