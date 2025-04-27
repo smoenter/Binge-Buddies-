@@ -65,7 +65,8 @@ query Friends {
     _id
   }
 }
-`
+`;
+
 
 export const QUERY_MEDIA = gql`
   query Media($title: String!, $type: String!) {
