@@ -1,5 +1,6 @@
-import { useQuery } from "@apollo/client";
+import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_FRIENDS } from "../../utils/queries";
+import { ADD_FRIEND } from "../../utils/mutations";
 import { useState, useEffect } from "react";
 
 interface Friends {
@@ -9,14 +10,17 @@ interface Friends {
 
 interface FriendsModalProp {
     onClose: () => void;
+    userId: string;
 }
 
-export default function FriendsModal({ onClose }: FriendsModalProp) {
+export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
     const { loading: friendsLoading, data: friendsData, error: friendsError } = useQuery(QUERY_FRIENDS);
-    const friends: Friends[] = friendsData?.friends || [];
+    const [addFriend] = useMutation(ADD_FRIEND); 
 
+    const friends: Friends[] = friendsData?.friends || [];
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredFriends, setFilteredFriends] = useState<Friends[]>([]);
+    const [selectedFriend, setSelectedFriend] = useState<Friends | null>(null);
 
     useEffect(() => {
         if (friendsData?.friends) {
@@ -35,9 +39,27 @@ export default function FriendsModal({ onClose }: FriendsModalProp) {
         if (result.length > 0) {
             console.log("User found:", result[0]);
             alert(`User found: ${result[0].username}`);
+            setSelectedFriend(result[0]); 
         } else {
             console.log("User not found");
             alert("User not found");
+            setSelectedFriend(null);
+        }
+    };
+
+    const handleAddFriend = async () => {
+        if (selectedFriend) {
+            console.log("Adding friend with userId:", userId, "and friendId:", selectedFriend._id);
+            try {
+                const { data } = await addFriend({
+                    variables: { userId, friendId: selectedFriend._id },
+                });
+                alert(`Friend added: ${selectedFriend.username}`);
+                console.log("Friend added:", data);
+            } catch (err) {
+                console.error("Error adding friend:", err);
+                alert("Failed to add friend.");
+            }
         }
     };
 
@@ -69,17 +91,30 @@ export default function FriendsModal({ onClose }: FriendsModalProp) {
               style={{
                 marginBottom: "10px",
                 padding: "5px",
-                width: "300px", // Set a fixed width for the search bar
-                maxWidth: "90%", // Ensure it doesn't exceed the container width
+                width: "300px",
+                maxWidth: "90%",
               }}
             />
+            {selectedFriend && (
+              <button
+                onClick={handleAddFriend}
+                style={{
+                  marginTop: "10px",
+                  padding: "5px 10px",
+                  width: "150px",
+                  maxWidth: "90%",
+                }}
+              >
+                Add Friend
+              </button>
+            )}
             <button
               onClick={onClose}
               style={{
                 marginTop: "10px",
                 padding: "5px 10px",
-                width: "150px", // Set a fixed width for the button
-                maxWidth: "90%", // Ensure it doesn't exceed the container width
+                width: "150px",
+                maxWidth: "90%",
               }}
             >
               CLOSE
@@ -87,4 +122,4 @@ export default function FriendsModal({ onClose }: FriendsModalProp) {
           </div>
         </div>
       );
-}
+    }

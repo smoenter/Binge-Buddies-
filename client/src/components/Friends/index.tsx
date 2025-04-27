@@ -15,15 +15,19 @@ const FriendsIcon: React.FC = () => {
     console.log("handleClose")
     setShowModal(false)};
 
-  return (
-    <div>
-   <button onClick={handleIconClick} className="gif-hover-button">
-        <img width="48" height="48" src="https://img.icons8.com/fluency-systems-regular/48/groups--v2.png" alt="groups--v2"/>
-       
-      </button>
-      {showModal && <FriendsModal onClose={handleClose} />}
-    </div>
-  );
-};
+    return (
+      <div>
+        <button onClick={handleIconClick} className="gif-hover-button">
+          <img
+            width="48"
+            height="48"
+            src="https://img.icons8.com/fluency-systems-regular/48/groups--v2.png"
+            alt="groups--v2"
+          />
+        </button>
+        {showModal && <FriendsModal onClose={handleClose} userId="currentUserId" />}
+      </div>
+    );
+  };
 
 export default FriendsIcon;
