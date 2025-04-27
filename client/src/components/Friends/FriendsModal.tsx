@@ -17,9 +17,12 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
     const { loading: friendsLoading, data: friendsData, error: friendsError } = useQuery(QUERY_FRIENDS);
     const [addFriend] = useMutation(ADD_FRIEND); 
 
-    const friends: Friends[] = friendsData?.friends || [];
+    // const friends: Friends[] = friendsData?.friends || [];
+
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredFriends, setFilteredFriends] = useState<Friends[]>([]);
+    const [message, setMessage] = useState("");
+    const [messageStyle, setMessageStyle] = useState({});
     const [selectedFriend, setSelectedFriend] = useState<Friends | null>(null);
 
     useEffect(() => {
@@ -38,12 +41,12 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
         );
         if (result.length > 0) {
             console.log("User found:", result[0]);
-            alert(`User found: ${result[0].username}`);
-            setSelectedFriend(result[0]); 
+            setMessage(`User found: ${result[0].username}`);
+            setMessageStyle({ color: "green", fontWeight: "bold", marginTop: "10px" });
         } else {
             console.log("User not found");
-            alert("User not found");
-            setSelectedFriend(null);
+            setMessage("User not found");
+            setMessageStyle({ color: "red", fontWeight: "bold", marginTop: "10px" });
         }
     };
 
@@ -91,10 +94,11 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
               style={{
                 marginBottom: "10px",
                 padding: "5px",
-                width: "300px",
-                maxWidth: "90%",
+                width: "300px", 
+                maxWidth: "90%", 
               }}
             />
+             <div style={messageStyle}>{message}</div>
             {selectedFriend && (
               <button
                 onClick={handleAddFriend}
@@ -113,8 +117,8 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
               style={{
                 marginTop: "10px",
                 padding: "5px 10px",
-                width: "150px",
-                maxWidth: "90%",
+                width: "150px", 
+                maxWidth: "90%", 
               }}
             >
               CLOSE
