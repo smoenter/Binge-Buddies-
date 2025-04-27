@@ -66,6 +66,10 @@ const typeDefs = `
     reactions(mediaId: ID!): [Reaction]
   }
 
+  type Query {
+  searchFriends(username:String!): [User]
+  }
+
   type InviteResponse {
   message: String
 }
