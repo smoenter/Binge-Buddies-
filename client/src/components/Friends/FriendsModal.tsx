@@ -1,7 +1,8 @@
+import React, { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_FRIENDS } from "../../utils/queries";
 import { ADD_FRIEND } from "../../utils/mutations";
-import { useState, useEffect } from "react";
+
 
 interface Friends {
     _id: string;
@@ -17,13 +18,15 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
     const { loading: friendsLoading, data: friendsData, error: friendsError } = useQuery(QUERY_FRIENDS);
     const [addFriend] = useMutation(ADD_FRIEND); 
 
-    // const friends: Friends[] = friendsData?.friends || [];
-
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredFriends, setFilteredFriends] = useState<Friends[]>([]);
+    const [selectedFriend, setSelectedFriend] = useState<Friends | null>(null);
     const [message, setMessage] = useState("");
     const [messageStyle, setMessageStyle] = useState({});
-    const [selectedFriend, setSelectedFriend] = useState<Friends | null>(null);
+    const [errorMessage, setErrorMessage] = useState(""); 
+    const [errorStyle, setErrorStyle] = useState({}); // State for error style
+
+    
 
     useEffect(() => {
         if (friendsData?.friends) {
@@ -37,34 +40,39 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
 
     const handleSearch = () => {
         const result = filteredFriends.filter((friend) =>
-            friend.username.toLowerCase() === searchTerm.toLowerCase()
+          friend.username.toLowerCase() === searchTerm.toLowerCase()
         );
         if (result.length > 0) {
-            console.log("User found:", result[0]);
-            setMessage(`User found: ${result[0].username}`);
-            setMessageStyle({ color: "green", fontWeight: "bold", marginTop: "10px" });
+          console.log("User found:", result[0]);
+          setMessage(`User found: ${result[0].username}`);
+          setMessageStyle({ color: "teal", fontWeight: "bold", marginTop: "10px" });
+          setSelectedFriend(result[0]);
+          setErrorMessage("");
         } else {
-            console.log("User not found");
-            setMessage("User not found");
-            setMessageStyle({ color: "red", fontWeight: "bold", marginTop: "10px" });
+          console.log("User not found");
+          setMessage("User not found");
+          setMessageStyle({ color: "red", fontWeight: "bold", marginTop: "10px" });
+          setSelectedFriend(null);
         }
-    };
+      };
 
-    const handleAddFriend = async () => {
+      const handleAddFriend = async () => {
         if (selectedFriend) {
-            console.log("Adding friend with userId:", userId, "and friendId:", selectedFriend._id);
-            try {
-                const { data } = await addFriend({
-                    variables: { userId, friendId: selectedFriend._id },
-                });
-                alert(`Friend added: ${selectedFriend.username}`);
-                console.log("Friend added:", data);
-            } catch (err) {
-                console.error("Error adding friend:", err);
-                alert("Failed to add friend.");
-            }
+          console.log("Adding friend with userId:", userId, "and friendId:", selectedFriend._id);
+          try {
+            const { data } = await addFriend({
+              variables: { userId, friendId: selectedFriend._id },
+            });
+            alert(`Friend added: ${selectedFriend.username}`);
+            console.log("Friend added:", data);
+            setErrorMessage(""); // Clear any previous error
+          } catch (err) {
+            console.error("Error adding friend:", err);
+            setErrorMessage("Unable to add friend. Please try again."); // Set error message
+            setErrorStyle({ color: "red", fontWeight: "bold", marginTop: "10px" }); // Set error style
+          }
         }
-    };
+      };
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
@@ -112,6 +120,7 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
                 Add Friend
               </button>
             )}
+            <div style={errorStyle}>{errorMessage}</div> 
             <button
               onClick={onClose}
               style={{
