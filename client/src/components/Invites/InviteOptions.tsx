@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import InviteForm from './InviteForm';
-import TextInviteForm from './InviteTextForm';
+
 
 const InviteOptions = () => {
   const [showOptions, setShowOptions] = useState(false);
@@ -23,33 +23,13 @@ const InviteOptions = () => {
           >
             Email
           </button>
-          <button
-            onClick={() => setSelectedMethod('sms')}
-            className="bg-yellow-400 text-black px-4 py-2 rounded-full hover:bg-yellow-500"
-          >
-            Text
-          </button>
+          
         </div>
       )}
 
       {selectedMethod === 'email' && (
         <div className="mt-6">
           <InviteForm />
-          <button
-            onClick={() => {
-              setSelectedMethod(null);
-              setShowOptions(false);
-            }}
-            className="mt-4 text-sm text-gray-500 underline"
-          >
-            Cancel
-          </button>
-        </div>
-      )}
-
-      {selectedMethod === 'sms' && (
-        <div className="mt-6">
-          <TextInviteForm />
           <button
             onClick={() => {
               setSelectedMethod(null);
