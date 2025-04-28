@@ -1,0 +1,32 @@
+/* HomePageLinks.css (or add into your global CSS if you prefer) */
+
+.auth-link {
+    color: #ffc107; /* Always yellow */
+    text-decoration: none;
+    font-weight: bold;
+    position: relative;
+    transition: transform 0.3s ease, text-shadow 0.3s ease;
+    border: 2px solid transparent; /* Transparent border for hover effect */
+  }
+  
+  .auth-link:hover {
+    color: #ffc107; /* Stay yellow */
+    transform: translateY(-2px) scale(1.05); /* Small bounce upward and slight grow */
+    text-shadow: 0 0 8px #ffc107, 0 0 12px #ffc107; /* Fun glowing effect */
+  }
+  
+  /* Optional: Fancy underline that grows in */
+  .auth-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 2px;
+    background: #ffc107;
+    transition: width 0.4s ease;
+  }
+  
+  .auth-link:hover::after {
+    width: 100%;
+  }
