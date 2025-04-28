@@ -2,11 +2,20 @@
 import { useState } from "react";
 import Toggle from "../components/Toggle/index";
 import SearchComponent from "../components/Search/index";
-import MediaCard from "../components/MediaCard";
-
+// import MediaCard from "../components/MediaCard";
+import MediaSearch from "../components/MediaSearch"; 
+import { QUERY_MEDIA } from "../utils/queries"; 
+import { useMutation } from "@apollo/client"; 
 
 
 const Browse = () => {
+
+  const [fetchMedia, { error: mediaError } ] = useMutation(QUERY_MEDIA);
+
+  if (mediaError) {
+    console.log(JSON.stringify(mediaError));
+  }
+
   const [type, setType] = useState<"movie" | "series">("movie");
   const [searchResults, setSearchResults] = useState<any[]>([]); 
 
@@ -16,10 +25,13 @@ const Browse = () => {
 
    const handleSearch = async (query: string) => {
     try {
-      const response = await fetch(`/api/search?q=${query}&type=${type}`);
-      const data = await response.json();
-      if (data.Search) {
-        setSearchResults(data.Search); // OMDb returns an array in `Search`
+      const { data } = await fetchMedia({
+        variables: { type, title: query },
+      });
+      console.log(data);
+
+      if (data.media) {
+        setSearchResults(data.media); // OMDb returns an array in `Search`
       } else {
         setSearchResults([]);
       }
@@ -32,18 +44,12 @@ const Browse = () => {
     <div className= "container-browse">
       <h1 className="mb-4">Browse</h1>
       <Toggle handleToggle={handleToggle} type={type}/>
+      {/* <h2>HELLO WORLD</h2> */}
       <SearchComponent onSearch={handleSearch} />
       {/* Add a search bar to filter results */}
       {/* Map over results to render MediaCards inside a carousel or grid */}
       <div className="d-flex flex-wrap gap-3 mt-4">
-      {searchResults.map((item) => (
-          <MediaCard
-            key={item.imdbID}
-            title={item.Title}
-            type={item.Type}
-            poster={item.Poster}
-          />
-        ))}
+      <MediaSearch results={searchResults} />
       </div>
     </div>
   );

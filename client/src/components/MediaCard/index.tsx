@@ -8,9 +8,25 @@ type Props = {
   poster: string;
 };
 
-const MediaCard = ({ title, type, saved = false }: Props) => {
+const fallbackPoster = "/placeholder.jpg";
+
+const MediaCard = ({ title, type, poster, saved = false }: Props) => {
+
+  const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
+    e.currentTarget.src = fallbackPoster;
+  };
+
+  const posterSrc = poster && poster !== "N/A" ? poster : fallbackPoster;
+
   return (
     <div className="card text-dark" style={{ width: "18rem" }}>
+      <img 
+        src={posterSrc} 
+        className="card-img-top" 
+        alt={title} 
+        loading="lazy"
+        onError={handleImageError}
+      />
       <div className="card-body">
         <h5 className="card-title">{title}</h5>
         <p className="card-text">Type: {type}</p>
@@ -22,5 +38,4 @@ const MediaCard = ({ title, type, saved = false }: Props) => {
     </div>
   );
 };
-
 export default MediaCard;
