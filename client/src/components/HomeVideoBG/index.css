@@ -2,10 +2,10 @@
     position: fixed;
     top: 0;
     left: 0;
-    width: 100%;
-    height: 100%;
+    width: 100%;  /* use 100% NOT 100vw */
+    height: 100vh; /* 60% of the viewport height */
     overflow: hidden;
-    z-index: -1; /* Makes sure it stays BEHIND everything else */
+    z-index: -1;
   }
   
   .video-iframe-wrapper {
@@ -14,10 +14,16 @@
     left: 0;
     width: 100%;
     height: 100%;
+    overflow: hidden; /* extra */
   }
   
   .video-iframe-wrapper iframe {
-    width: 100%;
-    height: 100%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 250%; /* scale wider */
+    height: 100%; /* scale taller */
+    transform: translate(-50%, -50%); /* center */
     object-fit: cover;
+    pointer-events: none; /* optional: disables clicking */
   }
