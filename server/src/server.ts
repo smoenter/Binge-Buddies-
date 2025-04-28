@@ -1,7 +1,6 @@
 import 'dotenv/config';
 
-console.log('OMDB_API_KEY:', process.env.OMDB_API_KEY);
-console.log('OMDB_BASE_URL:', process.env.OMDB_BASE_URL);
+
 
 import express from 'express';
 import cors from 'cors';
@@ -65,7 +64,7 @@ const startApolloServer = async (): Promise<void> => {
       app.get('*', (_req: Request, res: Response) => {
         res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
       });
-      console.log('Production environment detected, serving static files');
+      
     }
 
     app.listen(PORT, () => {
