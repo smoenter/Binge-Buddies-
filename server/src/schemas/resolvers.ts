@@ -2,7 +2,6 @@ import { User, Media, Reaction } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 import { fetchMedia, mediaTypeType } from '../utils/apiFetchers.js';
 import { sendInviteEmail } from '../utils/inviteSender.js';
-import { sendInviteText } from '../utils/inviteSenderText.js';
 
 const resolvers = {
   Query: {
@@ -146,15 +145,6 @@ const resolvers = {
       await sendInviteEmail(email, fromUsername);
 
       return { message: `Invite sent to ${email}` };
-    },
-
-    inviteFriendByText: async (_parent: any, { phoneNumber }: { phoneNumber: string }, context: any) => {
-      if (!context.user) throw new AuthenticationError('Not logged in');
-
-      const fromUsername = context.user.username;
-      await sendInviteText(phoneNumber, fromUsername);
-
-      return { message: `Text invite sent to ${phoneNumber}` };
     },
   },
 };

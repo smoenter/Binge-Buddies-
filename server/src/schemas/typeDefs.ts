@@ -84,7 +84,6 @@ const typeDefs = `
     addFriend(friendId: ID!): User
     removeFriend(friendId: ID!): User
     inviteFriend(email: String!): InviteResponse
-    inviteFriendByText(phoneNumber: String!): InviteResponse
   }
 `;
 

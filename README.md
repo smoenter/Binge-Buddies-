@@ -2,7 +2,7 @@
 <p align="center">
   <img src="" alt="Binge Buddies Logo" width="600"/><br>
 </p>
-<center> 🍿 Plan. Watch. React. Binge. </center> <br>
+<p align="center"> 🍿 Plan. Watch. React. Binge. </center> <br> </p>
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)
 
@@ -30,7 +30,7 @@ Browse and search for movies and TV shows
 
 Save favorites to a personalized watchlist
 
-Invite friends via email or text message
+Invite friends via email
 
 Add reactions and comments to saved media
 
@@ -73,10 +73,7 @@ JWT_SECRET_KEY=your_secret_key<br>
 API_BASE_URL=https://www.omdbapi.com<br>
 API_KEY=your_api_key_here <br>
 SENDGRID_API_KEY=your_sendgrid_api_key<br>
-FROM_EMAIL=your_email_address<br>
-TWILIO_ACCOUNT_SID=your_account_sid_here<br>
-TWILIO_AUTH_TOKEN=your_auth_token_here<br>
-TWILIO_PHONE_NUMBER=your_twilio_trial_number_here</pre>
+FROM_EMAIL=your_email_address<br></pre>
 
 
 
@@ -99,7 +96,7 @@ Search for movies/TV shows
 
 Save to your watchlist
 
-Send invites via email or text
+Send invites via email
 
 React and comment on shows/movies
 
@@ -112,9 +109,7 @@ Full-stack MERN + GraphQL architecture
 
 Save movies and TV shows to a personal watchlist
 
-Send invites via SendGrid email and Twilio SMS
-
-Masked phone input formatting for easy texting
+Send invites via SendGrid email
 
 Add and remove friends
 
@@ -146,7 +141,6 @@ You can test the following functionality to ensure everything is working correct
 - Searching for movies and TV shows
 - Saving media to your personal Watchlist
 - Inviting a friend by email (check if the invite is received)
-- Inviting a friend by text (using Twilio trial numbers)
 - Adding reactions and comments to a saved movie or show
 - Viewing saved media and friends on your profile
 
@@ -158,12 +152,12 @@ You can test the following functionality to ensure everything is working correct
 
 Repository: https://github.com/smoenter/Binge-Buddies-
 
-Render URL:
+Render URL: https://binge-buddies.onrender.com/
 
 
 ## ❓ Questions
 
-Please reach me here with additional questions:
+Please reach us here with additional questions:
 
 GitHub: https://github.com/taijamartinez <br>
 Email: taijasmartinez@gmail.com </p>
