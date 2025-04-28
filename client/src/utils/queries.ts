@@ -58,6 +58,15 @@ export const QUERY_ME = gql`
     }
   }
 `;
+export const QUERY_FRIENDS = gql`
+query Friends {
+  friends {
+    username
+    _id
+  }
+}
+`;
+
 
 export const QUERY_MEDIA = gql`
   query Media($title: String!, $type: String!) {

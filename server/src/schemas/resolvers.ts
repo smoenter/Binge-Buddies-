@@ -30,7 +30,16 @@ const resolvers = {
         .populate('user', 'username')
         .sort({ createdAt: -1 });
     },
+
+    friends: async (_parent: any, _args: any, _context: any ) => {
+      // if (!context.user) throw new AuthenticationError('Not logged in');
+      return await User.find({  })
+        // .populate('user', 'username')
+        // .sort({ createdAt: -1 });
+    }
   },
+
+  
 
   Mutation: {
     addUser: async (_parent: any, { input }: any) => {
