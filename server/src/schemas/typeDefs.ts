@@ -60,7 +60,6 @@ const typeDefs = `
 
   type Query {
     me: User
-    media(title: String!, type: String!): [MediaCard]
     savedMedia: [Media]
     friends: [User]
     reactions(mediaId: ID!): [Reaction]
@@ -75,6 +74,7 @@ const typeDefs = `
 }
 
   type Mutation {
+    media(title: String!, type: String!): [MediaCard]
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
     saveMedia(input: MediaInput!): Media

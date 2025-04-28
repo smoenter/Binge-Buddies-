@@ -14,11 +14,6 @@ const resolvers = {
         .populate('friends');
     },
 
-    media: async (_parent: any, { title, type }: { title: string; type: mediaTypeType }) => {
-      const data = await fetchMedia(title, type);
-      console.log(data);
-      return data.Search;
-    },
 
     savedMedia: async (_parent: any, _args: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
@@ -56,6 +51,12 @@ const resolvers = {
 
       const token = signToken(user.username, user.email, user._id);
       return { token, user };
+    },
+
+    media: async (_parent: any, { title, type }: { title: string; type: mediaTypeType }) => {
+      const data = await fetchMedia(title, type);
+      console.log(data);
+      return data.Search;
     },
 
     saveMedia: async (_parent: any, { input }: any, context: any) => {

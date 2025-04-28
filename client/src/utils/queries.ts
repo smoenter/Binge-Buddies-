@@ -69,7 +69,7 @@ query Friends {
 
 
 export const QUERY_MEDIA = gql`
-  query Media($title: String!, $type: String!) {
+  mutation Media($title: String!, $type: String!) {
   media(title: $title, type: $type) {
     Title
     Year

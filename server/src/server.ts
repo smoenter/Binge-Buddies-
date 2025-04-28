@@ -1,3 +1,8 @@
+import 'dotenv/config';
+
+console.log('OMDB_API_KEY:', process.env.OMDB_API_KEY);
+console.log('OMDB_BASE_URL:', process.env.OMDB_BASE_URL);
+
 import express from 'express';
 import cors from 'cors';
 import path from 'node:path';
@@ -8,6 +13,9 @@ import { expressMiddleware } from '@apollo/server/express4';
 import { typeDefs, resolvers } from './schemas/index.js';
 import { authenticateToken } from './utils/auth.js';
 import { fileURLToPath } from 'url';
+// import axios from 'axios';
+import searchRoutes from './controllers/searchRoute.js';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -17,42 +25,62 @@ const server = new ApolloServer({
   resolvers
 });
 
-const startApolloServer = async () => {
-  await server.start();
-  await db();
+const startApolloServer = async (): Promise<void> => {
+  try {
+    console.log('Starting Apollo Server...');
+    await server.start();
+    console.log('Apollo Server started');
+    await db();
+    console.log('Database connection successful');
 
-  const PORT = process.env.PORT || 3001;
-  const app = express();
+    const PORT = process.env.PORT || 3001;
+    const app = express();
 
-  // Enables CORS before any routes
-  app.use(cors({
-    origin: 'http://localhost:3000', // Adjust if deployed
-    credentials: true
-  }));
+    app.use(cors({
+      origin: 'http://localhost:3000',
+      credentials: true
+    }));
+    console.log('CORS configuration set');
 
-  app.use(express.urlencoded({ extended: false }));
-  app.use(express.json());
+    app.use(express.urlencoded({ extended: false }));
+    app.use(express.json());
+    console.log('Body parsers configured');
 
-  app.use('/graphql', expressMiddleware(server,
-    {
-        context: async ({ req }) => authenticateToken({ req }),
-      })
-    );
+    app.use('/api', searchRoutes);
+    console.log('Search routes attached to /api');
 
-  if (process.env.NODE_ENV === 'production') {
-    app.use(express.static(path.join(__dirname, '../../client/dist')));
+    app.use('/graphql', expressMiddleware(server, {
+      context: async ({ req }) => {
+        console.log('Incoming request headers:', req.headers);
+        const authResult = await authenticateToken({ req });
+        console.log('Authentication result:', authResult);
+        return authResult;
+      },
+    }));
 
-    app.get('*', (_req: Request, res: Response) => {
-      res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+    
+
+    if (process.env.NODE_ENV === 'production') {
+      app.use(express.static(path.join(__dirname, '../../client/dist')));
+      app.get('*', (_req: Request, res: Response) => {
+        res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
+      });
+      console.log('Production environment detected, serving static files');
+    }
+
+    app.listen(PORT, () => {
+      console.log(`API server running on port ${PORT}!`);
+      console.log(`Environment: ${process.env.NODE_ENV}`);
+      console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
     });
-  }
 
-  app.listen(PORT, () => {
-    console.log(`API server running on port ${PORT}!`);
-    console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
-  });
+    return;
+
+  } catch (error) {
+    console.error('Database connection failed:', error);
+    // Stop the server if DB connection fails
+    process.exit(1);
+  }
 };
 
 startApolloServer();
-
-// test
