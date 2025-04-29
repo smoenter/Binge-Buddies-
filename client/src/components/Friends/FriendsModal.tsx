@@ -92,12 +92,6 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
     };
 
 
-    // const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
-    //     if (e.key === "Enter") {
-    //         handleSearch();
-    //     }
-    // };
-
     if (friendsLoading) {
         return <p>Loading friends...</p>;
     }
