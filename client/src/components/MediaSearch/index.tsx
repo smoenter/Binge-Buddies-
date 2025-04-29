@@ -1,16 +1,13 @@
 // import React from "react";
 import MediaCard from "../MediaCard/index"; // Import the MediaCard component\
+import "./index.css"; 
+
 
 type Props = {
     results: any[];
   };
 
 const MediaSearch = ({ results }: Props) => {
-//   const [movies, setMovies] = useState<any[]>([]); // Store the fetched movie data
-
-//   const handleSearchResults = (data: any) => {
-//     setMovies(data); // Store search results (including movie posters) in state
-//   };
 
   return (
     <div>
