@@ -1,5 +1,5 @@
 import Star from "../Star/index";
-
+import "./index.css"; 
 
 type Props = {
   title: string;
@@ -10,7 +10,7 @@ type Props = {
 
 const fallbackPoster = "/placeholder.jpg";
 
-const MediaCard = ({ title, type, poster, saved = false }: Props) => {
+const MediaCard = ({ title, poster, saved = false }: Props) => {
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackPoster;
@@ -19,7 +19,7 @@ const MediaCard = ({ title, type, poster, saved = false }: Props) => {
   const posterSrc = poster && poster !== "N/A" ? poster : fallbackPoster;
 
   return (
-    <div className="card text-dark" style={{ width: "18rem" }}>
+    <div className="card text-dark" style={{ width: "12rem" }}>
       <img 
         src={posterSrc} 
         className="card-img-top" 
@@ -29,7 +29,7 @@ const MediaCard = ({ title, type, poster, saved = false }: Props) => {
       />
       <div className="card-body">
         <h5 className="card-title">{title}</h5>
-        <p className="card-text">Type: {type}</p>
+        {/* <p className="card-text">Type: {type}</p> */}
         <div className="d-flex gap-3">
           <Star saved={saved} />
           {/* <Heart /> */}

@@ -44,7 +44,6 @@ const Browse = () => {
     <div className= "container-browse">
       <h1 className="mb-4">Browse</h1>
       <Toggle handleToggle={handleToggle} type={type}/>
-      {/* <h2>HELLO WORLD</h2> */}
       <SearchComponent onSearch={handleSearch} />
       {/* Add a search bar to filter results */}
       {/* Map over results to render MediaCards inside a carousel or grid */}
