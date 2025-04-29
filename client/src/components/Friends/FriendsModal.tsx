@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_FRIENDS } from "../../utils/queries";
-import { ADD_FRIEND } from "../../utils/mutations";
+import { ADD_FRIEND, REMOVE_FRIEND } from "../../utils/mutations";
 
 
 interface Friends {
@@ -17,6 +17,7 @@ interface FriendsModalProp {
 export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
     const { loading: friendsLoading, data: friendsData, error: friendsError } = useQuery(QUERY_FRIENDS);
     const [addFriend] = useMutation(ADD_FRIEND); 
+    const [removeFriend] = useMutation(REMOVE_FRIEND);
 
     const [searchTerm, setSearchTerm] = useState("");
     const [filteredFriends, setFilteredFriends] = useState<Friends[]>([]);
@@ -56,23 +57,40 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
         }
       };
 
-      const handleAddFriend = async () => {
-        if (selectedFriend) {
-          console.log("Adding friend with userId:", userId, "and friendId:", selectedFriend._id);
-          try {
-            const { data } = await addFriend({
-              variables: { userId, friendId: selectedFriend._id },
-            });
-            alert(`Friend added: ${selectedFriend.username}`);
-            console.log("Friend added:", data);
-            setErrorMessage(""); // Clear any previous error
-          } catch (err) {
-            console.error("Error adding friend:", err);
-            setErrorMessage("Unable to add friend. Please try again."); // Set error message
-            setErrorStyle({ color: "red", fontWeight: "bold", marginTop: "10px" }); // Set error style
-          }
-        }
-      };
+      //Add a friend 
+      const handleAddFriend = async (friendId: string) => {
+              console.log("Adding friend with userId:", userId, "and friendId:", friendId);
+              try {
+                  const { data } = await addFriend({
+                    variables: { userId, friendId },
+                  });
+                  alert(`Friend added`);
+                  console.log("Friend added:", data);
+                  setErrorMessage(""); // Clear any previous error
+              } catch (err) {
+                  console.error("Error adding friend:", err);
+                  setErrorMessage("Unable to add friend. Please try again."); // Set error message
+                  setErrorStyle({ color: "red", fontWeight: "bold", marginTop: "10px" }); // Set error style
+              }
+            };
+      // Remove a friend 
+      const handleRemoveFriend = async (friendId: string) => {
+              console.log("Deleting friend with userId:", userId, "and friendId:", friendId);
+              try {
+                  const { data } = await removeFriend({
+                    variables: { userId, friendId },
+                  });
+                  alert(`Friend removed`);
+                  console.log("Friend removed:", data);
+                  setSelectedFriend(null); // Clear the selected friend
+                  setMessage(""); // Clear the message
+              } catch (err) {
+                  console.error("Error removing friend:", err);
+                  setErrorMessage("Unable to remove friend. Please try again.");
+                  setErrorStyle({ color: "red", fontWeight: "bold", marginTop: "10px" });
+              }
+            };
+
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === "Enter") {
@@ -91,46 +109,63 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
 
     return (
         <div>
-          <h2>Find a Friend</h2>
+          <h2>All Users</h2>
           <div style={{ display: "flex", flexDirection: "column", alignItems: "left" }}>
-            <input
-              type="text"
-              placeholder="Search friends..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              onKeyDown={handleKeyDown}
-              style={{
-                marginBottom: "10px",
-                padding: "5px",
-                width: "300px", 
-                maxWidth: "90%", 
-              }}
-            />
-             <div style={messageStyle}>{message}</div>
-            {selectedFriend && (
-              <button
-                onClick={handleAddFriend}
+            {friendsData?.friends.map((user: Friends) => (
+              <div
+                key={user._id}
                 style={{
-                  marginTop: "10px",
-                  padding: "5px 10px",
-                  width: "150px",
-                  maxWidth: "90%",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
+                  marginBottom: "10px",
+                  padding: "10px",
+                  border: "1px solid #ccc",
+                  borderRadius: "5px",
                 }}
               >
-                Add Friend
-              </button>
-            )}
-            <div style={errorStyle}>{errorMessage}</div> 
+                <span>{user.username}</span>
+                <div>
+                  <button
+                    onClick={() => handleAddFriend(user._id)}
+                    style={{
+                      marginRight: "10px",
+                      padding: "5px 10px",
+                      backgroundColor: "green",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    Friend
+                  </button>
+                  <button
+                    onClick={() => handleRemoveFriend(user._id)}
+                    style={{
+                      padding: "5px 10px",
+                      backgroundColor: "red",
+                      color: "white",
+                      border: "none",
+                      borderRadius: "5px",
+                    }}
+                  >
+                    Unfriend
+                  </button>
+                </div>
+              </div>
+            ))}
+            <div style={messageStyle}>{message}</div>
             <button
               onClick={onClose}
               style={{
-                marginTop: "10px",
-                padding: "5px 10px",
-                width: "150px", 
-                maxWidth: "90%", 
+                marginTop: "20px",
+                padding: "10px 20px",
+                backgroundColor: "#ccc",
+                border: "none",
+                borderRadius: "5px",
               }}
             >
-              CLOSE
+              Close
             </button>
           </div>
         </div>
