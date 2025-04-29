@@ -1,0 +1,16 @@
+.movie-results {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1rem;
+  }
+  
+  /* Optional: Style each MediaCard if needed */
+  .movie-results .media-card {
+    flex: 1 1 calc(25% - 1.5rem); /* Adjust this for 4 per row */
+    max-width: calc(25% - 1.5rem);
+    min-width: 200px;
+  }
+
+  
