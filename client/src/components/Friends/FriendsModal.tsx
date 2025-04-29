@@ -20,6 +20,7 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFriends, setFilteredFriends] = useState<Friends[]>([]);
+  const [showAllFriends, setShowAllFriends] = useState(false);
   const [message, setMessage] = useState("");
   const [messageStyle, setMessageStyle] = useState({});
 
@@ -56,6 +57,7 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
       });
       alert(`Friend added`);
       console.log("Friend added:", data);
+      setFilteredFriends((prev) => [...prev, { _id: friendId, username: "New Friend" }]);
     } catch (err) {
       console.error("Error adding friend:", err);
     }
@@ -69,9 +71,15 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
       });
       alert(`Friend removed`);
       console.log("Friend removed:", data);
+      setFilteredFriends((prev) => prev.filter((friend) => friend._id !== friendId));
     } catch (err) {
       console.error("Error removing friend:", err);
     }
+  };
+
+  const isFriend = (userId: string) => {
+    // Check if the user is already a friend
+    return friendsData?.user?.friends.some((friend: any) => friend._id === userId);
   };
 
   if (friendsLoading) {
@@ -85,7 +93,7 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
 
   return (
     <div>
-      <h2>All Users</h2>
+      <h2>Find Users</h2>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "left" }}>
         <input
           type="text"
@@ -116,7 +124,22 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
         >
           Submit
         </button>
-        {filteredFriends.map((user: Friends) => (
+        <button
+          onClick={() => setShowAllFriends(!showAllFriends)} // Toggle showing all friends
+          style={{
+            marginBottom: "10px",
+            padding: "5px 10px",
+            width: "150px",
+            maxWidth: "90%",
+            backgroundColor: "#20B2AA",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+          }}
+        >
+          {showAllFriends ? "Hide Friends" : "See All Friends"}
+        </button>
+        {(showAllFriends ? friendsData.friends : filteredFriends).map((user: Friends) => (
           <div
             key={user._id}
             style={{
@@ -132,35 +155,36 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
           >
             <span>{user.username}</span>
             <div>
-              <button
-                onClick={() => handleAddFriend(user._id)}
-                style={{
-                  marginRight: "10px",
-                  padding: "5px 10px",
-                  backgroundColor: "#20B2AA",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "5px",
-                }}
-              >
-                Friend
-              </button>
-              <button
-                onClick={() => handleRemoveFriend(user._id)}
-                style={{
-                  padding: "5px 10px",
-                  backgroundColor: "#20B2AA",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "5px",
-                }}
-              >
-                Unfriend
-              </button>
+              {isFriend(user._id) ? (
+                <button
+                  onClick={() => handleRemoveFriend(user._id)}
+                  style={{
+                    padding: "5px 10px",
+                    backgroundColor: "red",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "5px",
+                  }}
+                >
+                  Unfriend
+                </button>
+              ) : (
+                <button
+                  onClick={() => handleAddFriend(user._id)}
+                  style={{
+                    padding: "5px 10px",
+                    backgroundColor: "teal",
+                    color: "white",
+                    border: "none",
+                    borderRadius: "5px",
+                  }}
+                >
+                  Friend
+                </button>
+              )}
             </div>
           </div>
         ))}
-        <div style={messageStyle}>{message}</div>
         <button
           onClick={onClose}
           style={{

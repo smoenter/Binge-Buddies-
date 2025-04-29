@@ -79,3 +79,14 @@ export const QUERY_MEDIA = gql`
   }
 }
 `;
+
+export const QUERY_USER_FRIENDS = gql`
+  query GetUserFriends($userId: ID!) {
+    user(userId: $userId) {
+      friends {
+        _id
+        username
+      }
+    }
+  }
+`;
