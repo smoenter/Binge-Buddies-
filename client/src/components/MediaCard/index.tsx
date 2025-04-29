@@ -1,5 +1,6 @@
 import Star from "../Star/index";
 import "./index.css"; 
+import fallbackPoster from "../../assets/default-movie-poster.jpg";
 
 type Props = {
   title: string;
@@ -8,7 +9,7 @@ type Props = {
   poster: string;
 };
 
-const fallbackPoster = "/placeholder.jpg";
+
 
 const MediaCard = ({ title, poster, saved = false }: Props) => {
 
