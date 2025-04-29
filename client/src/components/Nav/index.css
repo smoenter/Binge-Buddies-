@@ -4,6 +4,7 @@
     background-color: rgba(38, 42, 45, 0.333); /* translucent dark */
     backdrop-filter: blur(8px); /* glass effect */
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.21); /* soft shadow */
+    max-height: 80px;
   }
   
   .custom-nav-link {
@@ -21,4 +22,18 @@
   .active-nav-link {
     color: #ffc107;
     font-weight: bold;
+  }
+
+  .navbar-brand {
+    padding: 0;
+    margin-right: 1rem;
+    display: flex;
+    align-items: center;
+  }
+  
+  .nav-logo {
+    height: 250px; /* or 70px or however tall you want, but less than your navbar max-height */
+    max-height: 100%;
+    width: auto;
+    object-fit: contain;
   }
