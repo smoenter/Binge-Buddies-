@@ -26,7 +26,13 @@ const SearchComponent = ({ onSearch }: { onSearch: (data: any) => void }) => {
     //reset error state
     setError(null); 
 
-    onSearch(query);
+    try {
+      await onSearch(query); // ✅ must return a promise
+    } catch (err: any) {
+      setError("Search failed. Try again.");
+    } finally {
+      setLoading(false);
+    }
     
 
   // try {
