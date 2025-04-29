@@ -9,7 +9,32 @@ const Home = () => {
     <div className="video-section">
       <VideoBackground />
 
-      <main className="floating-card-container">
+      {/* --- BELOW THE VIDEO SECTION --- */}
+    <section className="get-started-section">
+
+      {/* LETS GET STARTED */}
+      <div className="info-card text-center">
+        
+        {!Auth.loggedIn() ? (
+          <div className="glass-card text-center">
+            <h2>Let's get started!</h2>
+            <p className="card-text">
+              Please <Link to="/login" className="auth-link">log in</Link> or{' '}
+              <Link to="/signup" className="auth-link">sign up</Link> to start sharing your reactions!
+            </p>
+          </div>
+          
+        ) : (
+          <div className="glass-card text-center">
+            <h2>Welcome back, {Auth.getProfile().data.username}!</h2>
+            <p>You're logged in and ready to react!
+            </p>
+          </div>
+        )}
+      </div>
+    </section>
+
+      {/* <main className="floating-card-container">
         {!Auth.loggedIn() ? (
           <div className="glass-card text-center">
             <h1 className="card-title">Get Started</h1>
@@ -18,24 +43,51 @@ const Home = () => {
               <Link to="/signup" className="auth-link">sign up</Link> to start sharing your reactions!
             </p>
           </div>
+          
         ) : (
           <div className="glass-card text-center">
             <h2>Welcome back, {Auth.getProfile().data.username}!</h2>
-            <p>You're logged in and ready to react!</p>
+            <p>You're logged in and ready to react!
+            </p>
           </div>
         )}
-      </main>
+      </main> */}
     </div>
 
-    {/* --- BELOW THE VIDEO --- */}
-    <section className="info-section">
-      {/* <div className="info-card text-center">
-        <p>Join us in making connecting with friends and family simplistic again!</p>
-      </div> */}
 
+    {/* --- BELOW THE VIDEO SECTION --- */}
+    <section className="info-section">
+
+      {/* HOW IT WORKS CONTAINER */}
       <div className="info-card text-center">
-        <h2>How It Works</h2>
-        <p></p>
+        <h2>How It Works:</h2>
+
+        {/* Step 1- Search */}
+        <div className="info-card-content">
+        <img width="48" height="48" src="https://img.icons8.com/fluency/48/search.png" alt="search"/>
+        <h3>Search</h3>
+        <p>
+          Find a movie or show and save it to your watchlist!
+        </p>
+        </div>
+
+        {/* Step 2- Share */}
+        <div className="info-card-content">
+        <img width="48" height="48" src="https://img.icons8.com/color/48/send.png" alt="send"/>
+        <h3>Share</h3>
+        <p>
+          Share any show or movie with your friends and family so you each can react together on your own time!
+        </p>
+        </div>
+        
+        {/* Step 3- React */}
+        <div className="info-card-content">
+        <img width="48" height="48" src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/60/external-angry-social-media-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png" alt="external-angry-social-media-vitaliy-gorbachev-lineal-color-vitaly-gorbachev"/>
+        <h3>React</h3>
+        <p>
+          React to any of your saved movies or tv shows, and see your friends' reactions too!
+        </p>
+        </div>
       </div>
     </section>
   </>
