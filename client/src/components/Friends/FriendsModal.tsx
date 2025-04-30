@@ -21,6 +21,7 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFriends, setFilteredFriends] = useState<Friends[]>([]);
   const [showAllFriends, setShowAllFriends] = useState(false);
+  const [currentFriendIds, setCurrentFriendIds] = useState<Set<string>>(new Set());
   const [message, setMessage] = useState("");
   const [messageStyle, setMessageStyle] = useState({});
 
@@ -33,6 +34,12 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
       );
     }
   }, [searchTerm, friendsData]);
+
+  // Populate it on initial data load
+useEffect(() => {
+    const initialFriends = friendsData?.user?.friends || [];
+    setCurrentFriendIds(new Set(initialFriends.map((f: Friends) => f._id)));
+  }, [friendsData]);
 
   const handleSearch = () => {
     const result = filteredFriends.filter((friend) =>
@@ -49,38 +56,31 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
     }
   };
 
+
   const handleAddFriend = async (friendId: string) => {
-    console.log("Adding friend with userId:", userId, "and friendId:", friendId);
     try {
-      const { data } = await addFriend({
-        variables: { userId, friendId },
-      });
-      alert(`Friend added`);
-      console.log("Friend added:", data);
-      setFilteredFriends((prev) => [...prev, { _id: friendId, username: "New Friend" }]);
+      await addFriend({ variables: { friendId } });
+      setCurrentFriendIds((prev) => new Set(prev).add(friendId));
     } catch (err) {
       console.error("Error adding friend:", err);
     }
   };
 
   const handleRemoveFriend = async (friendId: string) => {
-    console.log("Deleting friend with userId:", userId, "and friendId:", friendId);
     try {
-      const { data } = await removeFriend({
-        variables: { userId, friendId },
+      await removeFriend({ variables: { friendId } });
+      setCurrentFriendIds((prev) => {
+        const newSet = new Set(prev);
+        newSet.delete(friendId);
+        return newSet;
       });
-      alert(`Friend removed`);
-      console.log("Friend removed:", data);
-      setFilteredFriends((prev) => prev.filter((friend) => friend._id !== friendId));
     } catch (err) {
       console.error("Error removing friend:", err);
     }
   };
 
-  const isFriend = (userId: string) => {
-    // Check if the user is already a friend
-    return friendsData?.user?.friends.some((friend: any) => friend._id === userId);
-  };
+
+  const isFriend = (id: string) => currentFriendIds.has(id);
 
   if (friendsLoading) {
     return <p>Loading friends...</p>;
@@ -125,7 +125,7 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
           Submit
         </button>
         <button
-          onClick={() => setShowAllFriends(!showAllFriends)} // Toggle showing all friends
+          onClick={() => setShowAllFriends(!showAllFriends)} 
           style={{
             marginBottom: "10px",
             padding: "5px 10px",

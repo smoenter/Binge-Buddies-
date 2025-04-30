@@ -119,7 +119,14 @@ const resolvers = {
     },
 
     addFriend: async (_parent: any, { friendId }: any, context: any) => {
+      console.log("==================================================")
       if (!context.user) throw new AuthenticationError('Not logged in');
+//update both lists
+      await User.findByIdAndUpdate(
+        friendId,
+        { $addToSet: { friends: context.user._id } },
+        { new: true }
+      )
 
       return await User.findByIdAndUpdate(
         context.user._id,
@@ -130,6 +137,12 @@ const resolvers = {
 
     removeFriend: async (_parent: any, { friendId }: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
+
+      await User.findByIdAndUpdate(
+        friendId,
+        { $pull: { friends: context.user._id } },
+        { new: true }
+      )
 
       return await User.findByIdAndUpdate(
         context.user._id,

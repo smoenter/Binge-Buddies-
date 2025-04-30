@@ -20,11 +20,11 @@ export const signToken = (username: string, email: string, _id: unknown): string
 export const authenticateToken = ({ req }: { req: any }) => {
   let token = req.body.token || req.query.token || req.headers.authorization;
 
-  console.log('🪪 Raw token header:', token);
+  // console.log('🪪 Raw token header:', req.headers);
 
   if (req.headers.authorization) {
     token = token.split(' ').pop().trim(); // 'Bearer <token>'
-    console.log('✅ Token after split:', token);
+    // console.log('✅ Token after split:', token);
   }
 
   if (!token) {
@@ -35,7 +35,7 @@ export const authenticateToken = ({ req }: { req: any }) => {
   try {
     const decoded: any = jwt.verify(token, JWT_SECRET_KEY);
     req.user = decoded.data; // ✅ must use .data because of how it's signed
-    console.log('🧠 Decoded user:', req.user);
+    // console.log('🧠 Decoded user:', req.user);
   } catch (err) {
     console.log('❌ Invalid token:', err);
   }
