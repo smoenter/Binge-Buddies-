@@ -69,14 +69,14 @@ mutation AddFriend($friendId: ID!) {
 `;
 
 export const REMOVE_FRIEND = gql`
-  mutation RemoveFriend($userId: ID!, $friendId: ID!) {
-    deleteFriend(userId: $userId, friendId: $friendId) {
-      id
+mutation RemoveFriend($friendId: ID!) {
+  removeFriend(friendId: $friendId) {
+    _id
+    username
+    friends {
+      _id
       username
-      friends {
-        id
-        username
-      }
     }
   }
+}
 `;

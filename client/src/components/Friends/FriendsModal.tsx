@@ -25,6 +25,7 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
   const [message, setMessage] = useState("");
   const [messageStyle, setMessageStyle] = useState({});
 
+  //Filtered list based on searh term
   useEffect(() => {
     if (friendsData?.friends) {
       setFilteredFriends(
@@ -35,11 +36,13 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
     }
   }, [searchTerm, friendsData]);
 
-  // Populate it on initial data load
-useEffect(() => {
-    const initialFriends = friendsData?.user?.friends || [];
-    setCurrentFriendIds(new Set(initialFriends.map((f: Friends) => f._id)));
-  }, [friendsData]);
+  // Populate currentFriends once from user.friends
+  useEffect(() => {
+    if (friendsData?.user?.friends && currentFriendIds.size === 0) {
+      const initialFriends = friendsData.user.friends;
+      setCurrentFriendIds(new Set(initialFriends.map((f: Friends) => f._id)));
+    }
+  }, [friendsData, currentFriendIds]);
 
   const handleSearch = () => {
     const result = filteredFriends.filter((friend) =>
@@ -57,28 +60,50 @@ useEffect(() => {
   };
 
 
-  const handleAddFriend = async (friendId: string) => {
-    try {
-      await addFriend({ variables: { friendId } });
-      setCurrentFriendIds((prev) => new Set(prev).add(friendId));
-    } catch (err) {
-      console.error("Error adding friend:", err);
+//   const handleAddFriend = async (friendId: string) => {
+//     try {
+//       await addFriend({ variables: { friendId } });
+//       setCurrentFriendIds((prev) => new Set(prev).add(friendId));
+//     } catch (err) {
+//       console.error("Error adding friend:", err);
+//     }
+//   };
+
+//   const handleRemoveFriend = async (friendId: string) => {
+//     try {
+//       await removeFriend({ variables: { friendId } });
+//       setCurrentFriendIds((prev) => {
+//         const newSet = new Set(prev);
+//         newSet.delete(friendId);
+//         return newSet;
+//       });
+//     } catch (err) {
+//       console.error("Error removing friend:", err);
+//     }
+//   };
+
+//Toggle friend/unfriend status
+const toggleFriendship = async (friendId: string) => {
+    if (isFriend(friendId)) {
+      try {
+        await removeFriend({ variables: { friendId } });
+        setCurrentFriendIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(friendId);
+          return newSet;
+        });
+      } catch (err) {
+        console.error("Error removing friend:", err);
+      }
+    } else {
+      try {
+        await addFriend({ variables: { friendId } });
+        setCurrentFriendIds((prev) => new Set(prev).add(friendId));
+      } catch (err) {
+        console.error("Error adding friend:", err);
+      }
     }
   };
-
-  const handleRemoveFriend = async (friendId: string) => {
-    try {
-      await removeFriend({ variables: { friendId } });
-      setCurrentFriendIds((prev) => {
-        const newSet = new Set(prev);
-        newSet.delete(friendId);
-        return newSet;
-      });
-    } catch (err) {
-      console.error("Error removing friend:", err);
-    }
-  };
-
 
   const isFriend = (id: string) => currentFriendIds.has(id);
 
@@ -115,7 +140,6 @@ useEffect(() => {
             marginBottom: "10px",
             padding: "5px 10px",
             width: "150px",
-            maxWidth: "90%",
             backgroundColor: "#008080",
             color: "white",
             border: "none",
@@ -125,12 +149,11 @@ useEffect(() => {
           Submit
         </button>
         <button
-          onClick={() => setShowAllFriends(!showAllFriends)} 
+          onClick={() => setShowAllFriends(!showAllFriends)}
           style={{
             marginBottom: "10px",
             padding: "5px 10px",
             width: "150px",
-            maxWidth: "90%",
             backgroundColor: "#20B2AA",
             color: "white",
             border: "none",
@@ -139,6 +162,9 @@ useEffect(() => {
         >
           {showAllFriends ? "Hide Friends" : "See All Friends"}
         </button>
+
+        {message && <div style={messageStyle}>{message}</div>}
+
         {(showAllFriends ? friendsData.friends : filteredFriends).map((user: Friends) => (
           <div
             key={user._id}
@@ -154,37 +180,21 @@ useEffect(() => {
             }}
           >
             <span>{user.username}</span>
-            <div>
-              {isFriend(user._id) ? (
-                <button
-                  onClick={() => handleRemoveFriend(user._id)}
-                  style={{
-                    padding: "5px 10px",
-                    backgroundColor: "red",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                  }}
-                >
-                  Unfriend
-                </button>
-              ) : (
-                <button
-                  onClick={() => handleAddFriend(user._id)}
-                  style={{
-                    padding: "5px 10px",
-                    backgroundColor: "teal",
-                    color: "white",
-                    border: "none",
-                    borderRadius: "5px",
-                  }}
-                >
-                  Friend
-                </button>
-              )}
-            </div>
+            <button
+              onClick={() => toggleFriendship(user._id)}
+              style={{
+                padding: "5px 10px",
+                backgroundColor: isFriend(user._id) ? "red" : "teal",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+              }}
+            >
+              {isFriend(user._id) ? "Unfriend" : "Friend"}
+            </button>
           </div>
         ))}
+
         <button
           onClick={onClose}
           style={{
