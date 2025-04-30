@@ -94,6 +94,17 @@ const toggleFriendship = async (friendId: string) => {
     return <p>Error loading friends.</p>;
   }
 
+    // Get friend list based on toggle
+    const displayedUsers = showAllFriends
+    ? friendsData.friends.filter((user: Friends) => currentFriendIds.has(user._id))
+    : filteredFriends;
+
+  if (friendsLoading) return <p>Loading friends...</p>;
+  if (friendsError) {
+    console.error(JSON.stringify(friendsError));
+    return <p>Error loading friends.</p>;
+  }
+
   return (
     <div>
       <h2>Find Users</h2>
@@ -107,7 +118,6 @@ const toggleFriendship = async (friendId: string) => {
             marginBottom: "10px",
             padding: "5px",
             width: "300px",
-            maxWidth: "90%",
             border: "1px solid #ccc",
             borderRadius: "5px",
           }}
@@ -143,7 +153,7 @@ const toggleFriendship = async (friendId: string) => {
 
         {message && <div style={messageStyle}>{message}</div>}
 
-        {(showAllFriends ? friendsData.friends : filteredFriends).map((user: Friends) => (
+        {displayedUsers.map((user: Friends) => (
           <div
             key={user._id}
             style={{
