@@ -60,28 +60,6 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
   };
 
 
-//   const handleAddFriend = async (friendId: string) => {
-//     try {
-//       await addFriend({ variables: { friendId } });
-//       setCurrentFriendIds((prev) => new Set(prev).add(friendId));
-//     } catch (err) {
-//       console.error("Error adding friend:", err);
-//     }
-//   };
-
-//   const handleRemoveFriend = async (friendId: string) => {
-//     try {
-//       await removeFriend({ variables: { friendId } });
-//       setCurrentFriendIds((prev) => {
-//         const newSet = new Set(prev);
-//         newSet.delete(friendId);
-//         return newSet;
-//       });
-//     } catch (err) {
-//       console.error("Error removing friend:", err);
-//     }
-//   };
-
 //Toggle friend/unfriend status
 const toggleFriendship = async (friendId: string) => {
     if (isFriend(friendId)) {
