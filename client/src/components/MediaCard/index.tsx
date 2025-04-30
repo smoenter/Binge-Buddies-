@@ -19,6 +19,16 @@ const MediaCard = ({ title, poster, saved = false }: Props) => {
 
   const posterSrc = poster && poster !== "N/A" ? poster : fallbackPoster;
 
+  // pass to Star
+  const media = {
+    title,
+    type,
+    posterUrl: posterSrc,
+    genre: [],         // You can adjust this if you have genre info available
+    description: "",   // You can adjust this if you have description info available
+    trailerUrl: "",    // You can adjust this if you have trailer info available
+  };
+
   return (
     <div className="card text-dark" style={{ width: "12rem" }}>
       <img 
@@ -32,11 +42,12 @@ const MediaCard = ({ title, poster, saved = false }: Props) => {
         <h5 className="card-title">{title}</h5>
         {/* <p className="card-text">Type: {type}</p> */}
         <div className="d-flex gap-3">
-          <Star saved={saved} />
+          <Star saved={saved} media={media} />
           {/* <Heart /> */}
         </div>
       </div>
     </div>
   );
 };
+
 export default MediaCard;

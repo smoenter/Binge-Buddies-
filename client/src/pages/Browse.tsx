@@ -1,55 +1,43 @@
-
 import { useState } from "react";
-import Toggle from "../components/Toggle/index";
-import SearchComponent from "../components/Search/index";
-// import MediaCard from "../components/MediaCard";
-import MediaSearch from "../components/MediaSearch"; 
-import { QUERY_MEDIA } from "../utils/queries"; 
-import { useMutation } from "@apollo/client"; 
-
+import Toggle from "../components/Toggle";
+import SearchComponent from "../components/Search";
+import MediaSearch from "../components/MediaSearch";
+import { QUERY_MEDIA } from "../utils/queries";
+import { useLazyQuery } from "@apollo/client";
 
 const Browse = () => {
-
-  const [fetchMedia, { error: mediaError } ] = useMutation(QUERY_MEDIA);
-
-  if (mediaError) {
-    console.log(JSON.stringify(mediaError));
-  }
-
   const [type, setType] = useState<"movie" | "series">("movie");
-  const [searchResults, setSearchResults] = useState<any[]>([]); 
+  const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [fetchMedia, { loading, error }] = useLazyQuery(QUERY_MEDIA);
 
   const handleToggle = (newType: "movie" | "series") => {
     setType(newType);
-   };
+  };
 
-   const handleSearch = async (query: string) => {
+  const handleSearch = async (query: string) => {
     try {
-      const { data } = await fetchMedia({
-        variables: { type, title: query },
-      });
-      console.log(data);
-
-      if (data.media) {
-        setSearchResults(data.media); // OMDb returns an array in `Search`
+      const { data } = await fetchMedia({ variables: { title: query, type } });
+      if (data?.media) {
+        setSearchResults(data.media);
       } else {
         setSearchResults([]);
       }
-    } catch (error) {
-      console.error("Error fetching data:", error);
+    } catch (err) {
+      console.error("Search failed:", err);
+      setSearchResults([]);
     }
   };
 
   return (
-    <div className= "container-browse">
+    <div className="container-browse">
       <h1 className="mb-4">Browse</h1>
-      <Toggle handleToggle={handleToggle} type={type}/>
+      <Toggle handleToggle={handleToggle} type={type} />
       <SearchComponent onSearch={handleSearch} />
-      {/* Add a search bar to filter results */}
-      {/* Map over results to render MediaCards inside a carousel or grid */}
       <div className="d-flex flex-wrap gap-3 mt-4">
-      <MediaSearch results={searchResults} />
+        <MediaSearch results={searchResults} />
       </div>
+      {loading && <p>Loading...</p>}
+      {error && <p className="text-danger">Error: {error.message}</p>}
     </div>
   );
 };

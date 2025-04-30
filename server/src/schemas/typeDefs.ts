@@ -17,14 +17,14 @@ const typeDefs = `
     posterUrl: String
     trailerUrl: String
     savedBy: [User]
-  } 
+  }
 
   type MediaCard {
-  Title: String!
-  Year: String!
-  imdbID: String!
-  Type: String!
-  Poster: String 
+    Title: String!
+    Year: String!
+    imdbID: String!
+    Type: String!
+    Poster: String
   }
 
   type Reaction {
@@ -58,23 +58,20 @@ const typeDefs = `
     trailerUrl: String
   }
 
+  type InviteResponse {
+    message: String
+  }
+
   type Query {
     me: User
     savedMedia: [Media]
     friends: [User]
     reactions(mediaId: ID!): [Reaction]
+    searchFriends(username: String!): [User]
+    media(title: String!, type: String!): [MediaCard]
   }
-
-  type Query {
-  searchFriends(username:String!): [User]
-  }
-
-  type InviteResponse {
-  message: String
-}
 
   type Mutation {
-    media(title: String!, type: String!): [MediaCard]
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
     saveMedia(input: MediaInput!): Media
@@ -88,4 +85,5 @@ const typeDefs = `
 `;
 
 export default typeDefs;
+
 
