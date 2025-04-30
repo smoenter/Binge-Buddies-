@@ -20,7 +20,8 @@ const MediaCard = ({ title, poster, saved = false }: Props) => {
   const posterSrc = poster && poster !== "N/A" ? poster : fallbackPoster;
 
   return (
-    <div className="card text-dark" style={{ width: "12rem" }}>
+    
+    <div className="card" style={{ width: "12rem" }}>
       <img 
         src={posterSrc} 
         className="card-img-top" 
@@ -37,6 +38,7 @@ const MediaCard = ({ title, poster, saved = false }: Props) => {
         </div>
       </div>
     </div>
+    
   );
 };
 export default MediaCard;
