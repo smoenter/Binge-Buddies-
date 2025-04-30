@@ -17,6 +17,7 @@ const MediaCard = ({ title, poster, saved = false }: Props) => {
 
   const [showModal, setShowModal] = useState(false);
   const [mediaInfo, setMediaInfo] = useState<any>(null);
+  console.log("Clicked movie info:", mediaInfo);
 
   // Function to handle image error or no poster-- sets fallback image
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -30,7 +31,8 @@ const MediaCard = ({ title, poster, saved = false }: Props) => {
   // Function to handle card click-- fetches additional media info from OMDB API
   const handleCardClick = async () => {
     try {
-      const response = await fetch(`https://www.omdbapi.com/?apikey=YOUR_API_KEY&t=${encodeURIComponent(title)}&plot=full`);
+      const response = await fetch(`https://www.omdbapi.com/?apikey=${import.meta.env.VITE_OMDB_API_KEY}&t=${encodeURIComponent(title)}&plot=full`);
+      console.log("API Key:", import.meta.env.VITE_OMDB_API_KEY);
       const data = await response.json();
       setMediaInfo(data);
       setShowModal(true);

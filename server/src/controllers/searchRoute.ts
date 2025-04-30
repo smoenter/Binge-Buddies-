@@ -42,4 +42,34 @@ router.get("/search", async (req, res) => {
   }
 });
 
+// NEW: Details route
+router.get("/details/:imdbID", async (req, res) => {
+  const { imdbID } = req.params;
+
+  if (!imdbID) {
+    return res.status(400).json({ error: "Missing IMDb ID." });
+  }
+
+  try {
+    const response = await axios.get(OMDB_BASE_URL, {
+      params: {
+        apikey: OMDB_API_KEY,
+        i: imdbID,
+        plot: 'full',
+      },
+    });
+
+    const data = response.data;
+
+    if (data.Response === "True") {
+      return res.json(data);
+    } else {
+      return res.status(404).json({ error: data.Error });
+    }
+  } catch (error) {
+    console.error("Error fetching movie details:", error);
+    return res.status(500).json({ error: "Internal server error." });
+  }
+});
+
 export default router;
