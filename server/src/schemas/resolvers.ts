@@ -54,7 +54,7 @@ const resolvers = {
 
     media: async (_parent: any, { title, type }: { title: string; type: mediaTypeType }) => {
       const data = await fetchMedia(title, type);
-      console.log(data);
+      // console.log(data);
       return data.Search;
     },
 
