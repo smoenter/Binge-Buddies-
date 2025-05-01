@@ -3,7 +3,7 @@
   top: 0;
   left: 0;
   z-index: 99999;
-  width: 60%;  /* full width so it can handle wrapping */
+  max-width: 100%;  /* full width so it can handle wrapping */
   height: 70px;
   display: flex;
   align-items: center;
@@ -22,6 +22,7 @@
   justify-content: center;
   width: 75%;
   gap: 1rem;
+  font-size: 1rem;
 }
 
 .navbar-nav {
