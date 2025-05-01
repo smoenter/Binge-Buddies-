@@ -24,6 +24,33 @@ export const ADD_USER = gql`
   }
 `;
 
+export const ADD_FRIEND = gql`
+  mutation AddFriend($friendId: ID!) {
+    addFriend(friendId: $friendId) {
+      _id
+      username
+      friends {
+        _id
+        username
+      }
+    }
+  }
+`;
+
+export const REMOVE_FRIEND = gql`
+  mutation RemoveFriend($friendId: ID!) {
+    removeFriend(friendId: $friendId) {
+      _id
+      username
+      friends {
+        _id
+        username
+      }
+    }
+  }
+`;
+
+
 export const SAVE_MEDIA = gql`
   mutation saveMedia($imdbID: String!) {
     saveMedia(imdbID: $imdbID) {
