@@ -36,15 +36,15 @@ const YourWatchlist = () => {
   return (
     <div>
       {/* Header and Controls */}
-      <div style={{ display: "flex", justifyContent: "space-between", alignItems: "center" }}>
+      <div >
+      <InviteOptions />
         <div>
           <h1>⭐ Your Watchlist</h1>
           <Toggle handleToggle={handleToggle} type={type} />
         </div>
 
-        <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
+        <div >
           <SearchComponent onSearch={handleSearch} />
-          <InviteOptions />
         </div>
       </div>
 
@@ -62,7 +62,7 @@ const YourWatchlist = () => {
             />
           ))
         ) : (
-          <p>No shows or movies found.</p>
+          <p>No movies/shows saved yet!</p>
         )}
       </div>
     </div>
