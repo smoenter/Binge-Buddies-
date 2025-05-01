@@ -1,12 +1,47 @@
-
-
-/* Video section setup */
-.video-section {
+/* Auth links */
+.auth-link {
+    color: #ffc107;
+    text-decoration: none;
+    font-weight: bold;
     position: relative;
-    height: 90vh; /* Height of the video background */
-    overflow: hidden;
-    min-height: 90vh;
+    transition: all 0.3s ease;
   }
+  
+  .auth-link:hover {
+    color: #ffd700;
+    transform: translateY(-2px) scale(1.05);
+    text-shadow: 0 0 8px #ffc107, 0 0 12px #ffc107;
+  }
+  
+  .auth-link::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: -4px;
+    width: 0;
+    height: 2px;
+    background: #ffc107;
+    transition: width 0.4s ease;
+  }
+  
+  .auth-link:hover::after {
+    width: 100%;
+  }
+
+  
+  /* Title Styling */
+  .card-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+    color: #ffc107;
+    /* text-shadow: 0 0 10px #ffc107; */
+  }
+  
+  /* Paragraph Styling */
+  .card-text {
+    font-size: 1.2rem;
+  }
+
   
   /* Floating card */
   .floating-card-container {
@@ -20,6 +55,17 @@
     max-height: 80vh;
     margin-bottom: 0 !important;
   }
+
+  /* Getting started section */
+  .get-started-section {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start; /* align to top, so padding moves it down */
+    min-height: 100vh;
+    padding-top: 20vh; 
+    z-index: 1;
+    position: relative;
+  }
   
   /* Glassmorphism floating card */
   .glass-card {
@@ -29,7 +75,10 @@
     border-radius: 1rem;
     padding: 1.5rem 2rem;
     color: #fff;
-    box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+    box-shadow:
+    0 4px 30px rgba(134, 28, 28, 0.324),
+    0 0 20px rgba(129, 28, 28, 0.05),
+    0 0 40px rgba(96, 26, 26, 0.15);
     text-align: center;
     transition: transform 0.3s ease;
     margin-bottom: 0 !important;
@@ -78,46 +127,44 @@
     transform: translateY(-5px);
   }
 
-  
-  /* Title Styling */
-  .card-title {
-    font-size: 2.5rem;
-    margin-bottom: 1rem;
-    color: #ffc107;
-    /* text-shadow: 0 0 10px #ffc107; */
+  /* .info-card-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
   }
   
-  /* Paragraph Styling */
-  .card-text {
-    font-size: 1.2rem;
-  }
-  
-  /* Auth links */
-  .auth-link {
-    color: #ffc107;
-    text-decoration: none;
-    font-weight: bold;
+  .info-card-content:hover {
+    transform: scale(1.05);
+    box-shadow: 0 0 20px rgba(255, 193, 7, 0.3);
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 10px;
+  } */
+
+
+  /* Video section setup */
+.video-section {
     position: relative;
-    transition: all 0.3s ease;
+    height: 90vh; /* Height of the video background */
+    overflow: hidden;
+    min-height: 90vh;
+  }
+
+
+  /* fade in up on info cards */
+  @keyframes fadeInUp {
+    from {
+      opacity: 0;
+      transform: translateY(30px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
   }
   
-  .auth-link:hover {
-    color: #ffd700;
-    transform: translateY(-2px) scale(1.05);
-    text-shadow: 0 0 8px #ffc107, 0 0 12px #ffc107;
-  }
-  
-  .auth-link::after {
-    content: "";
-    position: absolute;
-    left: 0;
-    bottom: -4px;
-    width: 0;
-    height: 2px;
-    background: #ffc107;
-    transition: width 0.4s ease;
-  }
-  
-  .auth-link:hover::after {
-    width: 100%;
+  .info-section,
+  .get-started-section {
+    animation: fadeInUp 1s ease-in-out;
   }

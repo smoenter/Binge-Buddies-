@@ -12,8 +12,8 @@ const Home = () => {
       {/* --- BELOW THE VIDEO SECTION --- */}
     <section className="get-started-section">
 
-      {/* LETS GET STARTED */}
-      <div className="info-card text-center">
+      {/* LETS GET STARTED CONTAINER */}
+      <div className=" text-center">
         
         {!Auth.loggedIn() ? (
           <div className="glass-card text-center">
@@ -34,31 +34,12 @@ const Home = () => {
       </div>
     </section>
 
-      {/* <main className="floating-card-container">
-        {!Auth.loggedIn() ? (
-          <div className="glass-card text-center">
-            <h1 className="card-title">Get Started</h1>
-            <p className="card-text">
-              Please <Link to="/login" className="auth-link">log in</Link> or{' '}
-              <Link to="/signup" className="auth-link">sign up</Link> to start sharing your reactions!
-            </p>
-          </div>
-          
-        ) : (
-          <div className="glass-card text-center">
-            <h2>Welcome back, {Auth.getProfile().data.username}!</h2>
-            <p>You're logged in and ready to react!
-            </p>
-          </div>
-        )}
-      </main> */}
     </div>
 
 
-    {/* --- BELOW THE VIDEO SECTION --- */}
+  {/* HOW IT WORKS CONTAINER */}
     <section className="info-section">
 
-      {/* HOW IT WORKS CONTAINER */}
       <div className="info-card text-center">
         <h2>How It Works:</h2>
 
