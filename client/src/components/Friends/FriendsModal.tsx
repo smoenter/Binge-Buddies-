@@ -13,7 +13,7 @@ interface FriendsModalProp {
   userId: string;
 }
 
-export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
+export default function FriendsModal({ onClose }: FriendsModalProp) {
   const { loading: friendsLoading, data: friendsData, error: friendsError } = useQuery(QUERY_FRIENDS);
   const [addFriend] = useMutation(ADD_FRIEND);
   const [removeFriend] = useMutation(REMOVE_FRIEND);
