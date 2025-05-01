@@ -44,6 +44,7 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
     }
   }, [friendsData, currentFriendIds]);
 
+  //Search for a friend by user
   const handleSearch = () => {
     const result = filteredFriends.filter((friend) =>
       friend.username.toLowerCase() === searchTerm.toLowerCase()
