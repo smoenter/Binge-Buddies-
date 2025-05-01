@@ -1,15 +1,37 @@
-// import MediaCard from "../components/MediaCard";
+import { useState } from "react";
+import { useQuery } from "@apollo/client";
+import { QUERY_ME } from "../utils/queries";
 import Toggle from "../components/Toggle";
 import SearchComponent from "../components/Search";
 import InviteOptions from "../components/Invites/InviteOptions";
-import { useState } from "react";
+import MediaCard from "../components/MediaCard";
 
 const YourWatchlist = () => {
+  const { loading, data } = useQuery(QUERY_ME);
   const [type, setType] = useState<"movie" | "series">("movie");
+  const [searchTerm, setSearchTerm] = useState("");
 
   const handleToggle = (newType: "movie" | "series") => {
     setType(newType);
   };
+
+  const handleSearch = (query: string) => {
+    setSearchTerm(query.toLowerCase());
+  };
+
+  if (loading) {
+    return <h2>Loading your watchlist...</h2>;
+  }
+
+  const savedMedia = data?.me?.savedMedia || [];
+
+  const filteredMedia = savedMedia.filter((media: any) => {
+    const title = media.title?.toLowerCase() || "";
+    const mediaType = media.type?.toLowerCase() || "";
+    const matchesType = mediaType === type;
+    const matchesSearch = title.includes(searchTerm);
+    return matchesType && matchesSearch;
+  });
 
   return (
     <div>
@@ -21,15 +43,32 @@ const YourWatchlist = () => {
         </div>
 
         <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>
-          <SearchComponent onSearch={(query) => console.log(query)} />
+          <SearchComponent onSearch={handleSearch} />
           <InviteOptions />
         </div>
       </div>
 
       {/* Media Cards */}
-      
+      <div className="d-flex flex-wrap gap-3 mt-4">
+        {filteredMedia.length > 0 ? (
+          filteredMedia.map((media: any) => (
+            <MediaCard
+              key={media._id}
+              title={media.title}
+              type={media.type}
+              poster={media.posterUrl || ""}
+              saved
+            />
+          ))
+        ) : (
+          <p>No shows or movies found.</p>
+        )}
+      </div>
     </div>
   );
 };
 
 export default YourWatchlist;
+
+
+

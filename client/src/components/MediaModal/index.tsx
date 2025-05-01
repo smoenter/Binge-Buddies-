@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
+import { useQuery } from '@apollo/client';
+import { QUERY_MEDIA_DETAILS } from '../../utils/queries';
 import './index.css';
 
 type Props = {
@@ -8,33 +9,13 @@ type Props = {
 };
 
 const MediaModal = ({ imdbID, onClose }: Props) => {
-    const [movieData, setMovieData] = useState<null | {
-      Title: string;
-      Poster?: string;
-      Plot: string;
-      Year: string;
-      imdbID: string;
-      TrailerLink?: string;
-    }>(null);
+    console.log(imdbID);
+    const { loading, data } = useQuery(QUERY_MEDIA_DETAILS, {
+      variables: { imdbID },
+    });
   
-    const [loading, setLoading] = useState(true);
-  
-    useEffect(() => {
-      const fetchMovieDetails = async () => {
-        try {
-          const res = await fetch(`/api/details/${imdbID}`);
-          const data = await res.json();
-          setMovieData(data);
-        } catch (error) {
-          console.error('Error fetching movie details:', error);
-        } finally {
-          setLoading(false);
-        }
-      };
-  
-      fetchMovieDetails();
-    }, [imdbID]);
-  
+    const movieData = data?.mediaDetails;
+
     if (loading || !movieData) {
       return (
         <div className="custom-modal-overlay" onClick={onClose}>
