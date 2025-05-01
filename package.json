@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "node server/dist/server.js",
+    "start": "cd server && node dist/server.js",
     "start:dev": "concurrently \"cd server && npm run watch\" \"wait-on tcp:3001 && cd client && npm run dev\"",
     "server": "cd server && npm start",
     "server:dev": "cd server && npm run watch",
@@ -12,7 +12,7 @@
     "client:build": "cd client && npm run build",
     "client:dev": "cd client && npm run dev",
     "seed": "cd server && npm run seed",
-    "build": "concurrently \"cd server && npm run build\" \"cd client && npm run build\"",
+    "build": "cd server && npm run build && cd ../client && npm run build",
     "watch": "cd server && nodemon dist/server.js",
     "render-build": "npm install && npm run build"
   },
@@ -31,7 +31,6 @@
     "@apollo/client": "^3.13.8",
     "@sendgrid/mail": "^8.1.5",
     "bootstrap": "^5.3.5",
-    "dotenv": "^16.5.0",
     "framer-motion": "^12.9.2",
     "graphql": "^16.11.0",
     "node-fetch": "^3.3.2",
