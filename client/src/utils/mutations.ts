@@ -56,30 +56,31 @@ export const ADD_COMMENT = gql`
 `;
 
 export const ADD_FRIEND = gql`
-  mutation AddFriend($userId: ID!, $friendId: ID!) {
-    addFriend(userId: $userId, friendId: $friendId) {
-      id
+mutation AddFriend($friendId: ID!) {
+  addFriend(friendId: $friendId) {
+    _id
+    username
+    friends {
+      _id
       username
-      friends {
-        id
-        username
-      }
     }
   }
+}
 `;
 
 export const REMOVE_FRIEND = gql`
-  mutation RemoveFriend($userId: ID!, $friendId: ID!) {
-    deleteFriend(userId: $userId, friendId: $friendId) {
-      id
+mutation RemoveFriend($friendId: ID!) {
+  removeFriend(friendId: $friendId) {
+    _id
+    username
+    friends {
+      _id
       username
-      friends {
-        id
-        username
-      }
     }
   }
+}
 `;
+
 export const SAVE_MEDIA = gql`
   mutation saveMedia($imdbID: String!) {
     saveMedia(imdbID: $imdbID) {

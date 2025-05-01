@@ -20,9 +20,12 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
 
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFriends, setFilteredFriends] = useState<Friends[]>([]);
+  const [showAllFriends, setShowAllFriends] = useState(false);
+  const [currentFriendIds, setCurrentFriendIds] = useState<Set<string>>(new Set());
   const [message, setMessage] = useState("");
   const [messageStyle, setMessageStyle] = useState({});
 
+  //Filtered list based on searh term
   useEffect(() => {
     if (friendsData?.friends) {
       setFilteredFriends(
@@ -33,6 +36,15 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
     }
   }, [searchTerm, friendsData]);
 
+  // Populate currentFriends once from user.friends
+  useEffect(() => {
+    if (friendsData?.user?.friends && currentFriendIds.size === 0) {
+      const initialFriends = friendsData.user.friends;
+      setCurrentFriendIds(new Set(initialFriends.map((f: Friends) => f._id)));
+    }
+  }, [friendsData, currentFriendIds]);
+
+  //Search for a friend by user
   const handleSearch = () => {
     const result = filteredFriends.filter((friend) =>
       friend.username.toLowerCase() === searchTerm.toLowerCase()
@@ -48,31 +60,31 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
     }
   };
 
-  const handleAddFriend = async (friendId: string) => {
-    console.log("Adding friend with userId:", userId, "and friendId:", friendId);
-    try {
-      const { data } = await addFriend({
-        variables: { userId, friendId },
-      });
-      alert(`Friend added`);
-      console.log("Friend added:", data);
-    } catch (err) {
-      console.error("Error adding friend:", err);
+
+//Toggle friend/unfriend status
+const toggleFriendship = async (friendId: string) => {
+    if (isFriend(friendId)) {
+      try {
+        await removeFriend({ variables: { friendId } });
+        setCurrentFriendIds((prev) => {
+          const newSet = new Set(prev);
+          newSet.delete(friendId);
+          return newSet;
+        });
+      } catch (err) {
+        console.error("Error removing friend:", err);
+      }
+    } else {
+      try {
+        await addFriend({ variables: { friendId } });
+        setCurrentFriendIds((prev) => new Set(prev).add(friendId));
+      } catch (err) {
+        console.error("Error adding friend:", err);
+      }
     }
   };
 
-  const handleRemoveFriend = async (friendId: string) => {
-    console.log("Deleting friend with userId:", userId, "and friendId:", friendId);
-    try {
-      const { data } = await removeFriend({
-        variables: { userId, friendId },
-      });
-      alert(`Friend removed`);
-      console.log("Friend removed:", data);
-    } catch (err) {
-      console.error("Error removing friend:", err);
-    }
-  };
+  const isFriend = (id: string) => currentFriendIds.has(id);
 
   if (friendsLoading) {
     return <p>Loading friends...</p>;
@@ -83,9 +95,20 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
     return <p>Error loading friends.</p>;
   }
 
+    // Get friend list based on toggle
+    const displayedUsers = showAllFriends
+    ? friendsData.friends.filter((user: Friends) => currentFriendIds.has(user._id))
+    : filteredFriends;
+
+  if (friendsLoading) return <p>Loading friends...</p>;
+  if (friendsError) {
+    console.error(JSON.stringify(friendsError));
+    return <p>Error loading friends.</p>;
+  }
+
   return (
     <div>
-      <h2>All Users</h2>
+      <h2>Find Users</h2>
       <div style={{ display: "flex", flexDirection: "column", alignItems: "left" }}>
         <input
           type="text"
@@ -96,7 +119,6 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
             marginBottom: "10px",
             padding: "5px",
             width: "300px",
-            maxWidth: "90%",
             border: "1px solid #ccc",
             borderRadius: "5px",
           }}
@@ -107,7 +129,6 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
             marginBottom: "10px",
             padding: "5px 10px",
             width: "150px",
-            maxWidth: "90%",
             backgroundColor: "#008080",
             color: "white",
             border: "none",
@@ -116,7 +137,24 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
         >
           Submit
         </button>
-        {filteredFriends.map((user: Friends) => (
+        <button
+          onClick={() => setShowAllFriends(!showAllFriends)}
+          style={{
+            marginBottom: "10px",
+            padding: "5px 10px",
+            width: "150px",
+            backgroundColor: "#20B2AA",
+            color: "white",
+            border: "none",
+            borderRadius: "5px",
+          }}
+        >
+          {showAllFriends ? "Hide Friends" : "See All Friends"}
+        </button>
+
+        {message && <div style={messageStyle}>{message}</div>}
+
+        {displayedUsers.map((user: Friends) => (
           <div
             key={user._id}
             style={{
@@ -131,36 +169,21 @@ export default function FriendsModal({ onClose, userId }: FriendsModalProp) {
             }}
           >
             <span>{user.username}</span>
-            <div>
-              <button
-                onClick={() => handleAddFriend(user._id)}
-                style={{
-                  marginRight: "10px",
-                  padding: "5px 10px",
-                  backgroundColor: "#20B2AA",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "5px",
-                }}
-              >
-                Friend
-              </button>
-              <button
-                onClick={() => handleRemoveFriend(user._id)}
-                style={{
-                  padding: "5px 10px",
-                  backgroundColor: "#20B2AA",
-                  color: "white",
-                  border: "none",
-                  borderRadius: "5px",
-                }}
-              >
-                Unfriend
-              </button>
-            </div>
+            <button
+              onClick={() => toggleFriendship(user._id)}
+              style={{
+                padding: "5px 10px",
+                backgroundColor: isFriend(user._id) ? "red" : "teal",
+                color: "white",
+                border: "none",
+                borderRadius: "5px",
+              }}
+            >
+              {isFriend(user._id) ? "Unfriend" : "Friend"}
+            </button>
           </div>
         ))}
-        <div style={messageStyle}>{message}</div>
+
         <button
           onClick={onClose}
           style={{

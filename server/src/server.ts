@@ -51,9 +51,9 @@ const startApolloServer = async (): Promise<void> => {
 
     app.use('/graphql', expressMiddleware(server, {
       context: async ({ req }) => {
-        console.log('Incoming request headers:', req.headers);
+        // console.log('Incoming request headers:', req.headers);
         const authResult = await authenticateToken({ req });
-        console.log('Authentication result:', authResult);
+        // console.log('Authentication result:', authResult);
         return authResult;
       },
     }));
