@@ -3,8 +3,8 @@ import Star from "../Star/index";
 import MediaModal from "../MediaModal/index";
 import "./index.css";
 import fallbackPoster from "../../assets/default-movie-poster.jpg";
-import { useQuery } from "@apollo/client";
-import { QUERY_MEDIA_DETAILS } from "../../utils/queries";
+// import { useQuery } from "@apollo/client";
+// import { QUERY_MEDIA_DETAILS } from "../../utils/queries";
 
 type Props = {
   title: string;
