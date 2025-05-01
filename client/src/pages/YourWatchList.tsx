@@ -37,9 +37,10 @@ const YourWatchlist = () => {
     <div>
       {/* Header and Controls */}
       <div >
-      <InviteOptions />
+      {/* <InviteOptions /> */}
         <div>
           <h1>⭐ Your Watchlist</h1>
+          <InviteOptions />
           <Toggle handleToggle={handleToggle} type={type} />
         </div>
 
