@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import Star from "../Star/index";
-import MediaModal from "../MediaModal/index";
+import Star from "../Star";
+import MediaModal from "../MediaModal";
 import "./index.css";
 import fallbackPoster from "../../assets/default-movie-poster.jpg";
 // import { useQuery } from "@apollo/client";
@@ -11,30 +11,21 @@ type Props = {
   type: "movie" | "series";
   saved?: boolean;
   poster: string;
-  imdbID: string;
+  imdbID: string; // Required now
 };
 
-//MediaCard-- used to display the media card for each movie or series.
-//this displays the title, poster, and a star icon to indicate if the media is saved or not.
 const MediaCard = ({ imdbID, title, poster, saved = false }: Props) => {
-
   const [showModal, setShowModal] = useState(false);
 
-  // Function to handle image error or no poster-- sets fallback image
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackPoster;
   };
 
-  // Sets poster or fallback image
   const posterSrc = poster && poster !== "N/A" ? poster : fallbackPoster;
 
-  // Function to handle card click-- fetches additional media info from OMDB API
-  const handleCardClick = async () => {
-      setShowModal(true);
+  const handleCardClick = () => {
+    setShowModal(true);
   };
-
-  console.log(imdbID);
-
 
   return (
     <>
@@ -48,19 +39,14 @@ const MediaCard = ({ imdbID, title, poster, saved = false }: Props) => {
         />
         <div className="card-body">
           <h5 className="card-title">{title}</h5>
-          {/* <p className="card-text">Type: {type}</p> */}
           <div className="d-flex gap-3">
-            <Star saved={saved}  imdbID={imdbID} />
-            {/* <Heart /> */}
+            <Star imdbID={imdbID} saved={saved} />
           </div>
         </div>
       </div>
 
       {showModal && (
-        <MediaModal
-          imdbID={imdbID}
-          onClose={() => setShowModal(false)}
-        />
+        <MediaModal imdbID={imdbID} onClose={() => setShowModal(false)} />
       )}
     </>
   );
