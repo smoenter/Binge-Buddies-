@@ -104,27 +104,7 @@ export const QUERY_FRIENDS = gql`
     }
   }
 `;
-export const QUERY_FRIENDS = gql`
-query Friends {
-  friends {
-    username
-    _id
-  }
-}
-`;
 
-
-export const QUERY_MEDIA = gql`
-  mutation Media($title: String!, $type: String!) {
-  media(title: $title, type: $type) {
-    Title
-    Year
-    imdbID
-    Type
-    Poster
-  }
-}
-`;
 
 export const QUERY_USER_FRIENDS = gql`
   query GetUserFriends($userId: ID!) {
