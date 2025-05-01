@@ -1,6 +1,11 @@
 /* Reset base text styles */
 body, h1, h2, h3, h4, h5, h6, p, a, span, div {
     text-shadow: none;
+    
+  }
+
+  body {
+    padding-top: 20px; /* Match this to the height of your navbar */
   }
 
   * {

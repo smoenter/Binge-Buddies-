@@ -1,39 +1,90 @@
 .custom-nav {
-    max-width: fit-content;
-    border-radius: 9999px; /* pill shape */
-    background-color: rgba(38, 42, 45, 0.333); /* translucent dark */
-    backdrop-filter: blur(8px); /* glass effect */
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.21); /* soft shadow */
-    max-height: 80px;
-  }
-  
-  .custom-nav-link {
-    padding: 0.5rem 1rem;
-    border-radius: 9999px;
-    color: #f8f9fa;
-    text-decoration: none;
-    transition: color 0.3s ease;
-  }
-  
-  .custom-nav-link:hover {
-    color: #ffc107; /* Bootstrap warning color */
-  }
-  
-  .active-nav-link {
-    color: #ffc107;
-    font-weight: bold;
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 99999;
+  width: 60%;  /* full width so it can handle wrapping */
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+  border-radius: 9999px;
+  background-color: rgba(38, 42, 45, 0.333);
+  backdrop-filter: blur(8px);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.21);
+  /* overflow: hidden; */
+}
+
+.custom-navbar-nav{
+  display: flex;
+  /* align-items: center; */
+  justify-content: center;
+  width: 75%;
+  gap: 1rem;
+}
+
+.navbar-nav {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.navbar-brand {
+  padding: 0;
+  margin-right: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+.nav-logo {
+  height: 80px;
+  width: auto;
+  object-fit: contain;
+  padding-right: 10px;
+  margin-top: 15px;  /* removed margin-top */
+}
+
+.custom-nav-link {
+  padding: 0.5rem 1rem;
+  /* border-radius: 9999px; */
+  color: #f8f9fa;
+  text-decoration: none;
+  transition: color 0.3s ease;
+  line-height: 1;  /* keeps link text compact */
+  margin: 0 0.5rem;
+  word-spacing: .05em;
+}
+
+.custom-nav-link:hover {
+  color: #ffc107;
+}
+
+.active-nav-link {
+  color: #ffc107;
+  font-weight: bold;
+}
+
+@media (max-width: 768px) {
+  .custom-nav {
+    height: auto;
+    flex-direction: column;
+    align-items: center;
+    padding: 0.5rem;
   }
 
-  .navbar-brand {
-    padding: 0;
-    margin-right: 1rem;
-    display: flex;
-    align-items: center;
+  .navbar-nav {
+    justify-content: center;
   }
-  
+
   .nav-logo {
-    height: 250px; /* or 70px or however tall you want, but less than your navbar max-height */
-    max-height: 100%;
-    width: auto;
-    object-fit: contain;
+    height: 50px;
   }
+
+  .custom-nav-link {
+    padding: 0.25rem 0.5rem;
+    font-size: 0.9rem;
+  }
+}
