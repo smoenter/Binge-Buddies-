@@ -1,5 +1,55 @@
 import { gql } from '@apollo/client';
 
+// Query to get logged-in user’s info
+export const QUERY_ME = gql`
+  query me {
+    me {
+      _id
+      username
+      email
+      savedMedia {
+        _id
+        title
+        type
+        posterUrl
+      }
+      friends {
+        _id
+        username
+      }
+    }
+  }
+`;
+
+// Query for fetching media results from OMDB
+export const QUERY_MEDIA = gql`
+  query Media($title: String!, $type: String!) {
+    media(title: $title, type: $type) {
+      Title
+      Year
+      imdbID
+      Type
+      Poster
+    }
+  }
+`;
+
+export const QUERY_MEDIA_DETAILS = gql`
+  query MediaDetails($imdbID: String!) {
+    mediaDetails(imdbID: $imdbID) {
+      Title
+      Year
+      imdbID
+      Type
+      Poster
+      Plot
+      TrailerLink
+    }
+  }
+`;
+
+
+// Query for user by username
 export const QUERY_USER = gql`
   query user($username: String!) {
     user(username: $username) {
@@ -15,6 +65,7 @@ export const QUERY_USER = gql`
   }
 `;
 
+// Query for all thoughts
 export const QUERY_THOUGHTS = gql`
   query getThoughts {
     thoughts {
@@ -26,6 +77,7 @@ export const QUERY_THOUGHTS = gql`
   }
 `;
 
+// Query for single thought by ID
 export const QUERY_SINGLE_THOUGHT = gql`
   query getSingleThought($thoughtId: ID!) {
     thought(thoughtId: $thoughtId) {
@@ -43,18 +95,12 @@ export const QUERY_SINGLE_THOUGHT = gql`
   }
 `;
 
-export const QUERY_ME = gql`
-  query me {
-    me {
-      _id
+// Query for friends list
+export const QUERY_FRIENDS = gql`
+  query Friends {
+    friends {
       username
-      email
-      thoughts {
-        _id
-        thoughtText
-        thoughtAuthor
-        createdAt
-      }
+      _id
     }
   }
 `;

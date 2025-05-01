@@ -80,3 +80,14 @@ mutation RemoveFriend($friendId: ID!) {
   }
 }
 `;
+
+export const SAVE_MEDIA = gql`
+  mutation saveMedia($imdbID: String!) {
+    saveMedia(imdbID: $imdbID) {
+      _id
+      title
+      type
+      posterUrl
+    }
+  }
+`;
