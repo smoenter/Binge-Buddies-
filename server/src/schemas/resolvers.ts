@@ -7,7 +7,6 @@ const resolvers = {
   Query: {
     me: async (_parent: any, _args: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
-
       return await User.findById(context.user._id)
         .populate('savedMedia')
         .populate('friends');
@@ -15,14 +14,11 @@ const resolvers = {
 
     media: async (_parent: any, { title, type }: { title: string; type: mediaTypeType }) => {
       const data = await fetchMedia(title, type);
-      // console.log(data);
       return data.Search;
     },
 
     mediaDetails: async (_parent: any, { imdbID }: { imdbID: string }) => {
-      const data = await fetchMediaByImdb(imdbID);
-      // console.log(data);
-      return data;
+      return await fetchMediaByImdb(imdbID);
     },
 
     savedMedia: async (_parent: any, _args: any, context: any) => {
@@ -36,9 +32,7 @@ const resolvers = {
         .sort({ createdAt: -1 });
     },
 
-    friends: async () => {
-      return await User.find({});
-    },
+    friends: async () => await User.find({}),
   },
 
   Mutation: {
@@ -53,7 +47,6 @@ const resolvers = {
       if (!user || !(await user.isCorrectPassword(password))) {
         throw new AuthenticationError('Invalid credentials');
       }
-
       const token = signToken(user.username, user.email, user._id);
       return { token, user };
     },
@@ -61,29 +54,26 @@ const resolvers = {
     saveMedia: async (_parent: any, { imdbID }: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
 
-      let media = await Media.findOne({ imdbID: imdbID });
-
+      let media = await Media.findOne({ imdbID });
       if (!media) {
-        const data = await fetchMediaByImdb(imdbID);
-        const { Title, Type, Poster, Plot, TrailerLink } = data;
-        const genre = data.Genre ? data.Genre.split(', ') : [];
+        const fetched = await fetchMediaByImdb(imdbID);
+        const { Title, Type, Poster, Plot, Genre } = fetched;
         media = await Media.create({
+          imdbID,
           title: Title,
           type: Type,
-          genre: genre,
-          description: Plot,
           posterUrl: Poster,
-          trailerUrl: TrailerLink,
-          imdbID: imdbID,
+          description: Plot,
+          genre: Genre ? Genre.split(', ') : [],
         });
       }
 
-      await Media.findByIdAndUpdate(media._id, {
-        $addToSet: { savedBy: context.user._id },
-      });
-
       await User.findByIdAndUpdate(context.user._id, {
         $addToSet: { savedMedia: media._id },
+      });
+
+      await Media.findByIdAndUpdate(media._id, {
+        $addToSet: { savedBy: context.user._id },
       });
 
       return media;
@@ -129,49 +119,39 @@ const resolvers = {
     },
 
     addFriend: async (_parent: any, { friendId }: any, context: any) => {
-      console.log("==================================================")
       if (!context.user) throw new AuthenticationError('Not logged in');
-//update both lists
-      await User.findByIdAndUpdate(
-        friendId,
-        { $addToSet: { friends: context.user._id } },
-        { new: true }
-      )
 
-      return await User.findByIdAndUpdate(
-        context.user._id,
-        { $addToSet: { friends: friendId } },
-        { new: true }
-      ).populate('friends');
+      await User.findByIdAndUpdate(friendId, {
+        $addToSet: { friends: context.user._id },
+      });
+
+      return await User.findByIdAndUpdate(context.user._id, {
+        $addToSet: { friends: friendId },
+      }, { new: true }).populate('friends');
     },
 
     removeFriend: async (_parent: any, { friendId }: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
 
-      await User.findByIdAndUpdate(
-        friendId,
-        { $pull: { friends: context.user._id } },
-        { new: true }
-      )
+      await User.findByIdAndUpdate(friendId, {
+        $pull: { friends: context.user._id },
+      });
 
-      return await User.findByIdAndUpdate(
-        context.user._id,
-        { $pull: { friends: friendId } },
-        { new: true }
-      ).populate('friends');
+      return await User.findByIdAndUpdate(context.user._id, {
+        $pull: { friends: friendId },
+      }, { new: true }).populate('friends');
     },
 
     inviteFriend: async (_parent: any, { email }: { email: string }, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
 
-      const fromUsername = context.user.username;
-      await sendInviteEmail(email, fromUsername);
-
+      await sendInviteEmail(email, context.user.username);
       return { message: `Invite sent to ${email}` };
     },
   },
 };
 
 export default resolvers;
+
 
 
