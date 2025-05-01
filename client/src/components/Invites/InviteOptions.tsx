@@ -1,6 +1,8 @@
 import { useState } from 'react';
 import InviteForm from './InviteForm';
 
+import './InviteOptions.css';
+
 
 const InviteOptions = () => {
   const [showOptions, setShowOptions] = useState(false);
@@ -8,12 +10,9 @@ const InviteOptions = () => {
 
   return (
     <div className="max-w-md mx-auto mt-10 text-center">
-      <button
-        onClick={() => setShowOptions(!showOptions)}
-        className="bg-yellow-400 text-black px-6 py-3 rounded-full text-lg font-bold hover:bg-yellow-500 transition"
-      >
-        Invite a Friend!
-      </button>
+
+      <button onClick={() => setShowOptions(!showOptions)}
+        className="button-53" role="button">Invite a Friend!</button>
 
       {showOptions && !selectedMethod && (
         <div className="mt-4 space-x-4">
