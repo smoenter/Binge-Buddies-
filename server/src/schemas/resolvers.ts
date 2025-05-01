@@ -1,6 +1,6 @@
 import { User, Media, Reaction } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
-import { fetchMedia, mediaTypeType } from '../utils/apiFetchers.js';
+import { fetchMedia, mediaTypeType, fetchMediaByImdb } from '../utils/apiFetchers.js';
 import { sendInviteEmail } from '../utils/inviteSender.js';
 
 const resolvers = {
@@ -15,8 +15,14 @@ const resolvers = {
 
     media: async (_parent: any, { title, type }: { title: string; type: mediaTypeType }) => {
       const data = await fetchMedia(title, type);
-      console.log(data);
+      // console.log(data);
       return data.Search;
+    },
+
+    mediaDetails: async (_parent: any, { imdbID }: { imdbID: string }) => {
+      const data = await fetchMediaByImdb(imdbID);
+      // console.log(data);
+      return data;
     },
 
     savedMedia: async (_parent: any, _args: any, context: any) => {
@@ -52,13 +58,24 @@ const resolvers = {
       return { token, user };
     },
 
-    saveMedia: async (_parent: any, { input }: any, context: any) => {
+    saveMedia: async (_parent: any, { imdbID }: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
 
-      let media = await Media.findOne({ title: input.title });
+      let media = await Media.findOne({ imdbID: imdbID });
 
       if (!media) {
-        media = await Media.create(input);
+        const data = await fetchMediaByImdb(imdbID);
+        const { Title, Type, Poster, Plot, TrailerLink } = data;
+        const genre = data.Genre ? data.Genre.split(', ') : [];
+        media = await Media.create({
+          title: Title,
+          type: Type,
+          genre: genre,
+          description: Plot,
+          posterUrl: Poster,
+          trailerUrl: TrailerLink,
+          imdbID: imdbID,
+        });
       }
 
       await Media.findByIdAndUpdate(media._id, {

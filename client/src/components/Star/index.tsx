@@ -6,24 +6,17 @@ import { useNavigate } from "react-router-dom"; //redirecting manually
 
 type StarProps = {
   saved?: boolean;
-  media: {
-    title: string;
-    type: string;
-    genre?: string[];
-    description?: string;
-    posterUrl?: string;
-    trailerUrl?: string;
-  };
+  imdbID: string;
 };
 
-const Star = ({ saved, media }: StarProps) => {
+const Star = ({ saved, imdbID }: StarProps) => {
   const [active, setActive] = useState(saved);
   const [saveMedia] = useMutation(SAVE_MEDIA);
   const navigate = useNavigate(); 
 
   const handleClick = async () => {
     try {
-      await saveMedia({ variables: { input: media } });
+      await saveMedia({ variables: { imdbID } });
       setActive(true);
     } catch (error: any) {
       console.error("Error saving media:", error);
@@ -31,8 +24,6 @@ const Star = ({ saved, media }: StarProps) => {
       if (error?.message.includes("Not logged in") || error?.graphQLErrors?.[0]?.extensions?.code === "UNAUTHENTICATED") {
         alert("You must be logged in to save shows!");
         navigate("/login");
-      } else {
-        alert("An unexpected error occurred. Please try again later.");
       }
     }
   };

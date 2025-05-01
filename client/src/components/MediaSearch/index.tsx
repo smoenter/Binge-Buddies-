@@ -22,6 +22,7 @@ const MediaSearch = ({ results }: Props) => {
               title={movie.Title}  // Pass title from search result
               type={movie.Type}    // Pass type (movie or series)
               poster={movie.Poster}  // Pass poster image URL
+              imdbID={movie.imdbID}  // Pass imdbID for fetching details
               saved={false}  // You can manage saved state if needed
             />
           ))}

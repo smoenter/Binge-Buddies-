@@ -81,8 +81,8 @@ export const REMOVE_FRIEND = gql`
   }
 `;
 export const SAVE_MEDIA = gql`
-  mutation saveMedia($input: MediaInput!) {
-    saveMedia(input: $input) {
+  mutation saveMedia($imdbID: String!) {
+    saveMedia(imdbID: $imdbID) {
       _id
       title
       type

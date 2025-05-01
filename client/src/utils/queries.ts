@@ -34,6 +34,20 @@ export const QUERY_MEDIA = gql`
   }
 `;
 
+export const QUERY_MEDIA_DETAILS = gql`
+  query MediaDetails($imdbID: String!) {
+    mediaDetails(imdbID: $imdbID) {
+      Title
+      Year
+      imdbID
+      Type
+      Poster
+      Plot
+      TrailerLink
+    }
+  }
+`;
+
 
 // Query for user by username
 export const QUERY_USER = gql`
