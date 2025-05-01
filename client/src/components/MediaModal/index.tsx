@@ -35,7 +35,7 @@ const MediaModal = ({ imdbID, onClose }: Props) => {
           animate={{ opacity: 1, scale: 1, y: 0 }}
           exit={{ opacity: 0, scale: 0.9, y: 50 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          onClick={(e) => e.stopPropagation()}
+          onClick={(e: { stopPropagation: () => any; }) => e.stopPropagation()}
         >
           <button onClick={onClose} className="close-button">×</button>
           <h2>{movieData.Title} ({movieData.Year})</h2>

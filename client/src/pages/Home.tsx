@@ -38,7 +38,10 @@ const Home = () => {
 
 
   {/* HOW IT WORKS CONTAINER */}
+
+  <div className="how-it-works-container info-section">
     <section className="info-section">
+      
 
       <div className="info-card text-center">
         <h2>How It Works:</h2>
@@ -70,7 +73,9 @@ const Home = () => {
         </p>
         </div>
       </div>
+      
     </section>
+    </div>
   </>
 );
 };

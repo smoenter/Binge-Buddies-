@@ -57,6 +57,7 @@ const YourWatchlist = () => {
               title={media.title}
               type={media.type}
               poster={media.posterUrl || ""}
+              imdbID={media.imdbID || ""}
               saved
             />
           ))
