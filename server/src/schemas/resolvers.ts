@@ -55,11 +55,18 @@ const resolvers = {
       if (!context.user) throw new AuthenticationError('Not logged in');
 
       let media = await Media.findOne({ imdbID });
+
       if (!media) {
-        const fetched = await fetchMediaByImdb(imdbID);
-        const { Title, Type, Poster, Plot, Genre } = fetched;
+        const data = await fetchMediaByImdb(imdbID);
+        console.log("🔍 OMDB result:", data);
+
+        if (!data || !data.Title || !data.imdbID) {
+          throw new Error("Invalid media data from OMDB");
+        }
+
+        const { Title, Type, Poster, Plot, Genre, imdbID: returnedImdbID } = data;
         media = await Media.create({
-          imdbID,
+          imdbID: returnedImdbID,
           title: Title,
           type: Type,
           posterUrl: Poster,
@@ -76,6 +83,7 @@ const resolvers = {
         $addToSet: { savedBy: context.user._id },
       });
 
+      console.log("HERE", media);
       return media;
     },
 

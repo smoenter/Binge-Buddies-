@@ -3,15 +3,13 @@ import Star from "../Star";
 import MediaModal from "../MediaModal";
 import "./index.css";
 import fallbackPoster from "../../assets/default-movie-poster.jpg";
-// import { useQuery } from "@apollo/client";
-// import { QUERY_MEDIA_DETAILS } from "../../utils/queries";
 
 type Props = {
   title: string;
   type: "movie" | "series";
   saved?: boolean;
   poster: string;
-  imdbID: string; // Required now
+  imdbID: string; // Required
 };
 
 const MediaCard = ({ imdbID, title, poster, saved = false }: Props) => {
@@ -26,6 +24,9 @@ const MediaCard = ({ imdbID, title, poster, saved = false }: Props) => {
   const handleCardClick = () => {
     setShowModal(true);
   };
+
+  // Debugging: Confirm IMDb ID is being passed down
+  console.log("🎥 Rendering MediaCard with IMDb ID:", imdbID);
 
   return (
     <>
@@ -53,3 +54,4 @@ const MediaCard = ({ imdbID, title, poster, saved = false }: Props) => {
 };
 
 export default MediaCard;
+

@@ -51,13 +51,6 @@ const typeDefs = `
     password: String!
   }
 
-  input MediaInput {
-    imdbID: String!
-    title: String!
-    type: String!
-    posterUrl: String
-  }
-
   type InviteResponse {
     message: String
   }
@@ -75,7 +68,7 @@ const typeDefs = `
   type Mutation {
     addUser(input: UserInput!): Auth
     login(email: String!, password: String!): Auth
-    saveMedia(input: MediaInput!): Media
+    saveMedia(imdbID: String!): Media
     removeMedia(mediaId: ID!): Media
     addReaction(mediaId: ID!, comment: String!, season: Int, episode: Int, rating: Int): Reaction
     removeReaction(reactionId: ID!): Reaction
