@@ -3,6 +3,7 @@
     justify-content: flex-end;
     align-items: center;
     gap: 1.5rem;
+    
   }
 
   /* Applies only to Login and Signup links */
@@ -32,4 +33,16 @@
     gap: 1.5rem;
   }
 
-  
+
+  /* Make the logout button transparent by default */
+.authentication-logout-button .custom-btn {
+  background-color: transparent;
+  border: none;
+  padding: 10px 15px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  border-radius: 100px;
+}
+
+
+

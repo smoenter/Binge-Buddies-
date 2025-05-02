@@ -110,11 +110,17 @@ const toggleFriendship = async (friendId: string) => {
 
   return (
     <div className="friends-modal">
+
+      <div className="friends-header">
+      {/* X BUTTON */}
+      <h2 className="friends-title">Find Friends</h2>
       <button onClick={onClose} className="btn btn-close">
       </button>
-      <h2 className="friends-title">Find Users</h2>
-
+      </div>
+      {/* INPUT COMPONENT */}
       <div className="friends-container">
+
+        <div className="friends-header">
         <input
           type="text"
           placeholder="Search for a friend..."
@@ -122,7 +128,7 @@ const toggleFriendship = async (friendId: string) => {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="friends-input"
         />
-
+        {/* SEARCH BUTTON */}
         <button className="btn btn-search" type="submit">
           <img
             width="20"
@@ -131,7 +137,9 @@ const toggleFriendship = async (friendId: string) => {
             alt="search"
           />
         </button>
+        </div>
 
+        {/* SHOW YOUR FRIENDS or HIDE ALL FRIENDS */}
         <button
           onClick={() => setShowAllFriends(!showAllFriends)}
           className="btn btn-toggle"
@@ -140,10 +148,11 @@ const toggleFriendship = async (friendId: string) => {
         </button>
 
         {message && <div className="friends-message" style={messageStyle}>{message}</div>}
-
+        {/* DISPLAYS ALL USERS */}
         {displayedUsers.map((user: Friends) => (
           <div key={user._id} className="friend-card">
             <span>{user.username}</span>
+            {/* FRIEND/UNFRIEND BUTTON */}
             <button
               onClick={() => toggleFriendship(user._id)}
               className={`btn ${isFriend(user._id) ? "btn-unfriend" : "btn-friend"}`}
