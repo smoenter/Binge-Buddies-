@@ -1,5 +1,5 @@
 // src/pages/Reactions.tsx
-import PostCard from "../components/Post/index";
+// import PostCard from "../components/Post/index";
 import FriendsButton from "../components/Friends/index"
 import ThoughtForm from "../components/ThoughtForm";
 // import CommentForm from "../components/CommentForm";
