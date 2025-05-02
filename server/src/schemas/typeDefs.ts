@@ -40,6 +40,25 @@ const typeDefs = `
     createdAt: String
   }
 
+    type Thought {
+    _id: ID
+    thoughtText: String
+    thoughtAuthor: String
+    createdAt: String
+    comments: [Comment]!
+  }
+
+  type Comment {
+    _id: ID
+    commentText: String
+    createdAt: String
+  }
+
+  input ThoughtInput {
+    thoughtText: String!
+    thoughtAuthor: String!
+  }
+
   type Auth {
     token: ID!
     user: User
@@ -74,6 +93,10 @@ const typeDefs = `
     removeReaction(reactionId: ID!): Reaction
     addFriend(friendId: ID!): User
     removeFriend(friendId: ID!): User
+    addThought(input: ThoughtInput!): Thought
+    addComment(thoughtId: ID!, commentText: String!): Thought
+    removeThought(thoughtId: ID!): Thought
+    removeComment(thoughtId: ID!, commentId: ID!): Thought
     inviteFriend(email: String!): InviteResponse
   }
 `;

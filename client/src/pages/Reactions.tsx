@@ -2,6 +2,7 @@
 import PostCard from "../components/Post/index";
 import FriendsButton from "../components/Friends/index"
 import ThoughtForm from "../components/ThoughtForm";
+import CommentForm from "../components/CommentForm";
 
 const Reactions = () => {
   return (
@@ -14,6 +15,7 @@ const Reactions = () => {
         {/* <PostCard username="friend1" content="LOVED The Matrix!" /> */}
         {/* <PostCard username="you" content="Omg Succession finale 💀" /> */}
       </div>
+      <CommentForm/>
       <FriendsButton/>
    
     </div>
