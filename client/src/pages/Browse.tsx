@@ -1,24 +1,34 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Toggle from "../components/Toggle";
 import SearchComponent from "../components/Search";
 import MediaSearch from "../components/MediaSearch";
-import { QUERY_MEDIA } from "../utils/queries";
-import { useLazyQuery } from "@apollo/client";
+import { QUERY_MEDIA, QUERY_ME } from "../utils/queries";
+import { useQuery, useLazyQuery } from "@apollo/client";
 
 const Browse = () => {
   const [type, setType] = useState<"movie" | "series">("movie");
   const [searchResults, setSearchResults] = useState<any[]>([]);
+  const [lastQuery, setLastQuery] = useState("");
   const [fetchMedia, { loading, error }] = useLazyQuery(QUERY_MEDIA);
+  const { data: userData, refetch: refetchUser } = useQuery(QUERY_ME);
+
+  const savedList = userData?.me?.savedMedia || [];
 
   const handleToggle = (newType: "movie" | "series") => {
     setType(newType);
   };
 
   const handleSearch = async (query: string) => {
+    setLastQuery(query);
+
     try {
-      const { data } = await fetchMedia({ variables: { title: query, type } });
-      if (data?.media) {
-        setSearchResults(data.media);
+      const { data: searchData } = await fetchMedia({
+        variables: { title: query, type },
+      });
+
+      if (searchData?.media) {
+        const merged = mergeSearchWithSaved(searchData.media, savedList);
+        setSearchResults(merged);
       } else {
         setSearchResults([]);
       }
@@ -28,13 +38,46 @@ const Browse = () => {
     }
   };
 
+  // Update stars after refetch
+  useEffect(() => {
+    if (!lastQuery || !userData?.me) return;
+
+    const updateAfterRefetch = async () => {
+      try {
+        const { data: searchData } = await fetchMedia({
+          variables: { title: lastQuery, type },
+        });
+
+        if (searchData?.media) {
+          const updated = mergeSearchWithSaved(searchData.media, savedList);
+          setSearchResults(updated);
+        }
+      } catch (err) {
+        console.error("Failed to update stars after refetch:", err);
+      }
+    };
+
+    updateAfterRefetch();
+  }, [userData, lastQuery, type]);
+
+  const mergeSearchWithSaved = (results: any[], saved: any[]) => {
+    return results.map((item: any) => {
+      const match = saved.find((s: any) => s.imdbID === item.imdbID);
+      return {
+        ...item,
+        saved: Boolean(match),
+        mediaId: match?._id || null,
+      };
+    });
+  };
+
   return (
     <div className="container-browse">
       <h1 className="mb-4">Browse</h1>
       <Toggle handleToggle={handleToggle} type={type} />
       <SearchComponent onSearch={handleSearch} />
       <div className="d-flex flex-wrap gap-3 mt-4">
-        <MediaSearch results={searchResults} />
+        <MediaSearch results={searchResults} refetch={refetchUser} />
       </div>
       {loading && <p>Loading...</p>}
       {error && <p className="text-danger">Error: {error.message}</p>}
@@ -43,3 +86,6 @@ const Browse = () => {
 };
 
 export default Browse;
+
+
+

@@ -7,7 +7,7 @@ import InviteOptions from "../components/Invites/InviteOptions";
 import MediaCard from "../components/MediaCard";
 
 const YourWatchlist = () => {
-  const { loading, data } = useQuery(QUERY_ME);
+  const { loading, data, refetch } = useQuery(QUERY_ME);
   const [type, setType] = useState<"movie" | "series">("movie");
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -35,21 +35,13 @@ const YourWatchlist = () => {
 
   return (
     <div>
-      {/* Header and Controls */}
-      <div >
-      {/* <InviteOptions /> */}
-        <div>
-          <h1>⭐ Your Watchlist</h1>
-          <InviteOptions />
-          <Toggle handleToggle={handleToggle} type={type} />
-        </div>
-
-        <div >
-          <SearchComponent onSearch={handleSearch} />
-        </div>
+      <div>
+        <h1>⭐ Your Watchlist</h1>
+        <InviteOptions />
+        <Toggle handleToggle={handleToggle} type={type} />
+        <SearchComponent onSearch={handleSearch} />
       </div>
 
-      {/* Media Cards */}
       <div className="d-flex flex-wrap gap-3 mt-4">
         {filteredMedia.length > 0 ? (
           filteredMedia.map((media: any) => (
@@ -61,6 +53,7 @@ const YourWatchlist = () => {
               imdbID={media.imdbID || ""}
               saved={true}
               mediaId={media._id}
+              refetch={refetch} 
             />
           ))
         ) : (
@@ -72,6 +65,8 @@ const YourWatchlist = () => {
 };
 
 export default YourWatchlist;
+
+
 
 
 

@@ -9,11 +9,12 @@ type Props = {
   type: "movie" | "series";
   saved?: boolean;
   poster: string;
-  imdbID: string; // Required
-  mediaId?: string; //  needed for delete
+  imdbID: string;
+  mediaId?: string;
+  refetch?: () => void;
 };
 
-const MediaCard = ({ imdbID, title, poster, saved = false, mediaId }: Props) => {
+const MediaCard = ({ imdbID, title, poster, saved = false, mediaId, refetch }: Props) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -25,9 +26,6 @@ const MediaCard = ({ imdbID, title, poster, saved = false, mediaId }: Props) => 
   const handleCardClick = () => {
     setShowModal(true);
   };
-
-  // Debugging: Confirm IMDb ID is being passed down
-  console.log("🎥 Rendering MediaCard with IMDb ID:", imdbID);
 
   return (
     <>
@@ -42,7 +40,7 @@ const MediaCard = ({ imdbID, title, poster, saved = false, mediaId }: Props) => 
         <div className="card-body">
           <h5 className="card-title">{title}</h5>
           <div className="d-flex gap-3">
-            <Star imdbID={imdbID} saved={saved} mediaId={mediaId} />
+            <Star imdbID={imdbID} saved={saved} mediaId={mediaId} refetch={refetch} />
           </div>
         </div>
       </div>
@@ -55,4 +53,8 @@ const MediaCard = ({ imdbID, title, poster, saved = false, mediaId }: Props) => 
 };
 
 export default MediaCard;
+
+
+
+
 
