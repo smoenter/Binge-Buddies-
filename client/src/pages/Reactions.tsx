@@ -1,6 +1,6 @@
 // import PostCard from "../components/Post/index";
 // import FriendsButton from "../components/Friends/index"
-import ThoughtForm from "../components/ThoughtForm";
+import AddReactionForm from "../components/AddReactionForm";
 // import CommentForm from "../components/CommentForm";
 
 const Reactions = () => {
@@ -11,7 +11,7 @@ const Reactions = () => {
       {/* Friend search + add/unfriend UI here */}
       <div className="my-4">
 
-      <ThoughtForm/>
+      <AddReactionForm/>
 
         {/* PostCard could include heart + comment functionality */}
         {/* <PostCard username="friend1" content="LOVED The Matrix!" /> */}

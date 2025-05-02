@@ -1,21 +1,28 @@
 /* Reset base text styles */
 body, h1, h2, h3, h4, h5, h6, p, a, span, div {
-    text-shadow: none;
-    
-  }
+  text-shadow: none;
+}
 
-  body {
-    padding-top: 20px; /* Match this to the height of your navbar */
-  }
+body {
+  background-color: #1f2937; /* dark gray */
+  color: #f9fafb;           /* light text */
+  margin: 0;
+  font-family: system-ui, sans-serif;
+  padding-top: 20px; /* adjust if you have a navbar */
+  min-height: 100vh; /* ensures body fills viewport */
+}
 
-  * {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-  }
-  
-  html, body {
-    height: 100%;
-    width: 100%;
-    overflow-x: hidden;
-  }
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  height: 100%;
+}
+
+body {
+  width: 100%;
+  background-color: #1f2937;
+}

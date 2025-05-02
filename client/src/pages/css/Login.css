@@ -1,110 +1,109 @@
 /* Page layout */
 main {
-    /* background-color: #a3a3a3; */
-    min-height: 60vh;
-    padding-top: 5rem;
-    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    display: flex;
-    justify-content: center;
-    
-  }
-
-
-  /* LOGIN AND SIGNUP BACKGROUND */
-  .custom-bg-container {
-  min-height: 100vh;  /* make sure it fills the full screen height */
-  background-color: #909090;  /* change this to any color you like */
-  /* background-image: url('../../assets/confetti.png'); */
-  background-size: 400px 400px;;       
-  background-position: center; 
-  background-repeat: repeat;
+  /* background-color: #a3a3a3; */
+  min-height: 60vh;
+  padding-top: 5rem;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
   display: flex;
-  align-items: center;
   justify-content: center;
-  padding: 2rem;
-  border-radius: 98px;
+  
+}
+
+
+/* LOGIN AND SIGNUP BACKGROUND */
+.custom-bg-container {
+min-height: 100vh;  /* make sure it fills the full screen height */
+background-color: #909090;  /* change this to any color you like */
+/* background-image: url('../../assets/confetti.png'); */
+background-size: 400px 400px;;       
+background-position: center; 
+background-repeat: repeat;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 2rem;
+border-radius: 98px;
 }
 
 
 
-  /* Card container */
-  .card {
-    background-color: #ffffff;
-    border: 1px solid #9AB5D9;
-    border-radius: 10px;
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-    max-width: 500px;
-    margin: 0 auto;
-  }
-  
-  /* Card header */
-  .card-header {
-    background-color: #45869F;
-    color: #fff;
-    font-size: 1.5rem;
-    border-top-left-radius: 10px;
-    border-top-right-radius: 10px;
-    padding: 1rem;
-    text-align: center;
-  }
-  
-  /* Card body */
-  .card-body {
-    padding: 2rem;
-  }
-  
-  /* Form Inputs */
-  .form-input {
-    width: 100%;
-    padding: 0.75rem;
-    margin-bottom: 1rem;
-    border: 2px solid #9AB5D9;
-    border-radius: 8px;
-    font-size: 1rem;
-    transition: border 0.2s ease-in-out;
-  }
-  
-  .form-input:focus {
-    outline: none;
-    border-color: #45869F;
-    box-shadow: 0 0 0 2px rgba(69, 134, 159, 0.2);
-  }
-  
-  /* Submit Button */
-  .btn.btn-primary {
-    background-color: #45869F;
-    border: none;
-    color: #fff;
-    padding: 0.75rem 1.5rem;
-    font-size: 1rem;
-    border-radius: 8px;
-    transition: background-color 0.2s ease-in-out;
-  }
-  
-  .btn.btn-primary:hover {
-    background-color: #3D3D3D;
-  }
-  
-  /* Error Message */
-  .bg-danger {
-    background-color: #D9484F !important;
-    border-radius: 6px;
-    font-size: 0.9rem;
-  }
-  
-  /* Success Message */
-  .card-body p {
-    font-size: 1rem;
-    color: #45869F;
-  }
-  
-  /* Link Styling */
-  .card-body a {
-    color: #FFE44A;
-    text-decoration: underline;
-  }
-  
-  .card-body a:hover {
-    color: #D9484F;
-  }
-  
+/* Card container */
+.card {
+  background-color: #ffffff;
+  border: 1px solid #9AB5D9;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* Card header */
+.card-header {
+  background-color: #45869F;
+  color: #fff;
+  font-size: 1.5rem;
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+  padding: 1rem;
+  text-align: center;
+}
+
+/* Card body */
+.card-body {
+  padding: 2rem;
+}
+
+/* Form Inputs */
+.form-input {
+  width: 100%;
+  padding: 0.75rem;
+  margin-bottom: 1rem;
+  border: 2px solid #9AB5D9;
+  border-radius: 8px;
+  font-size: 1rem;
+  transition: border 0.2s ease-in-out;
+}
+
+.form-input:focus {
+  outline: none;
+  border-color: #45869F;
+  box-shadow: 0 0 0 2px rgba(69, 134, 159, 0.2);
+}
+
+/* Submit Button */
+.btn.btn-primary {
+  background-color: #45869F;
+  border: none;
+  color: #fff;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  border-radius: 8px;
+  transition: background-color 0.2s ease-in-out;
+}
+
+.btn.btn-primary:hover {
+  background-color: #3D3D3D;
+}
+
+/* Error Message */
+.bg-danger {
+  background-color: #D9484F !important;
+  border-radius: 6px;
+  font-size: 0.9rem;
+}
+
+/* Success Message */
+.card-body p {
+  font-size: 1rem;
+  color: #45869F;
+}
+
+/* Link Styling */
+.card-body a {
+  color: #FFE44A;
+  text-decoration: underline;
+}
+
+.card-body a:hover {
+  color: #D9484F;
+}
