@@ -43,6 +43,7 @@ const InviteForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-2">
+      <h2 className="invite-header">Invite a Friend!</h2>
       <input
         type="email"
         placeholder="Friend's email"

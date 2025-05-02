@@ -1,9 +1,10 @@
-.auth-buttons {
+.authentication-logout-button {
     display: flex;
     justify-content: flex-end;
     align-items: center;
     gap: 1.5rem;
   }
+
   /* Applies only to Login and Signup links */
 .auth-link {
     text-decoration: none;
@@ -30,3 +31,5 @@
     align-items: center;
     gap: 1.5rem;
   }
+
+  

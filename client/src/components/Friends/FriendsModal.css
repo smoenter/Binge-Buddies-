@@ -1,0 +1,71 @@
+.friends-modal {
+    padding: 20px;
+    background-color: rgb(211, 210, 210);
+    border-radius: 45px;
+  }
+  
+  .friends-title {
+    font-size: 24px;
+    margin-bottom: 10px;
+  }
+  
+  .friends-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .friends-input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 300px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+  }
+  
+  .btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  .btn-search {
+    background-color: transparent;
+  }
+  
+  .btn-toggle {
+    margin-bottom: 10px;
+    width: 150px;
+    background-color: #20b2aa;
+  }
+  
+  .btn-friend {
+    background-color: teal;
+  }
+  
+  .btn-unfriend {
+    background-color: red;
+  }
+  
+  .friend-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: gray;
+    width: 100%;
+  }
+  
+  .btn-close {
+    background-color: #ccc;
+  }
+  
+  .friends-message {
+    font-weight: bold;
+    margin-top: 10px;
+  }
