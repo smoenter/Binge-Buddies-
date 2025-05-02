@@ -1,7 +1,5 @@
 # 🎬 Binge Buddies
-<p align="center">
-  <img src="" alt="Binge Buddies Logo" width="600"/><br>
-</p>
+
 <p align="center"> 🍿 Plan. Watch. React. Binge. </center> <br> </p>
 
 ![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)

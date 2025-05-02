@@ -1,31 +1,37 @@
-// import React from "react";
-import MediaCard from "../MediaCard/index"; // Import the MediaCard component\
-import "./index.css"; 
-
+import { useQuery } from "@apollo/client";
+import MediaCard from "../MediaCard";
+import { QUERY_ME } from "../../utils/queries";
+import "./index.css";
 
 type Props = {
-    results: any[];
-  };
+  results: any[];
+  refetch?: () => void;
+};
 
-const MediaSearch = ({ results }: Props) => {
+const MediaSearch = ({ results, refetch }: Props) => {
+  const { data } = useQuery(QUERY_ME);
+  const savedMedia = data?.me?.savedMedia || [];
 
   return (
     <div>
       <h1>Search results</h1>
-
-      {/* Render results if they exist */}
       {results.length > 0 ? (
         <div className="movie-results">
-          {results.map((movie: any) => (
-            <MediaCard
-              key={movie.imdbID}  // Use unique identifier
-              title={movie.Title}  // Pass title from search result
-              type={movie.Type}    // Pass type (movie or series)
-              poster={movie.Poster}  // Pass poster image URL
-              imdbID={movie.imdbID}  // Pass imdbID for fetching details
-              saved={false}  // You can manage saved state if needed
-            />
-          ))}
+          {results.map((movie: any) => {
+            const match = savedMedia.find((item: any) => item.imdbID === movie.imdbID);
+            return (
+              <MediaCard
+                key={movie.imdbID}
+                title={movie.Title}
+                type={movie.Type}
+                poster={movie.Poster}
+                imdbID={movie.imdbID}
+                saved={Boolean(match)}
+                mediaId={match?._id || null}
+                refetch={refetch}
+              />
+            );
+          })}
         </div>
       ) : (
         <p>No results found. Please try again.</p>
@@ -35,3 +41,9 @@ const MediaSearch = ({ results }: Props) => {
 };
 
 export default MediaSearch;
+
+
+
+
+
+

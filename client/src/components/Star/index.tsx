@@ -3,23 +3,19 @@ import { FaStar } from "react-icons/fa";
 import { useMutation } from "@apollo/client";
 import { SAVE_MEDIA, REMOVE_MEDIA } from "../../utils/mutations";
 import Auth from "../../utils/auth";
-import { QUERY_ME } from "../../utils/queries";
+import toast from "react-hot-toast";
 
 type StarProps = {
   saved?: boolean;
   imdbID: string;
-  mediaId?: string; // <- needed for delete
+  mediaId?: string;
+  refetch?: () => void;
 };
 
-const Star = ({ saved = false, imdbID, mediaId }: StarProps) => {
+const Star = ({ saved = false, imdbID, mediaId, refetch }: StarProps) => {
   const [active, setActive] = useState(saved);
-  const [saveMedia] = useMutation(SAVE_MEDIA, {
-    refetchQueries: [{ query: QUERY_ME }],
-  });
-
-  const [removeMedia] = useMutation(REMOVE_MEDIA, {
-    refetchQueries: [{ query: QUERY_ME }],
-  });
+  const [saveMedia] = useMutation(SAVE_MEDIA);
+  const [removeMedia] = useMutation(REMOVE_MEDIA);
 
   useEffect(() => {
     setActive(saved);
@@ -31,48 +27,54 @@ const Star = ({ saved = false, imdbID, mediaId }: StarProps) => {
       return;
     }
 
-    if (active) {
-      // Already saved, ask to remove
-      const confirmDelete = window.confirm(
-        "Do you want to remove this from your watchlist?"
-      );
-      if (!confirmDelete) return;
-
-      if (!mediaId) {
-        console.error("Missing mediaId. Cannot delete.");
-        return;
-      }
+    if (active && mediaId) {
+      const confirmed = window.confirm("Remove this from your Watchlist?");
+      if (!confirmed) return;
 
       try {
-        await removeMedia({
-          variables: { mediaId },
-        });
+        await removeMedia({ variables: { mediaId } });
         setActive(false);
+        toast.success("Removed from Watchlist");
+        if (refetch) refetch();
       } catch (error) {
         console.error("Error removing media:", error);
+        toast.error("Failed to remove");
       }
-    } else {
-      // Not saved yet, save it
-      try {
-        await saveMedia({
-          variables: { imdbID },
-        });
-        setActive(true);
-      } catch (error) {
-        console.error("Error saving media:", error);
-      }
+      return;
+    }
+
+    if (active) {
+      toast("This is already in your Watchlist", {
+        icon: "⭐",
+        style: { background: "#fef3c7", color: "#92400e" },
+      });
+      return;
+    }
+
+    try {
+      await saveMedia({ variables: { imdbID } });
+      setActive(true);
+      toast.success("Saved to Watchlist");
+      if (refetch) refetch(); // Trigger refresh so star updates on re-search
+    } catch (error) {
+      console.error("Error saving media:", error);
+      toast.error("Failed to save");
     }
   };
 
   return (
-    <div onClick={handleClick} style={{ cursor: "pointer" }}>
+    <div
+      onClick={handleClick}
+      style={{
+        cursor: active && !mediaId ? "not-allowed" : "pointer",
+        opacity: active && !mediaId ? 0.6 : 1,
+      }}
+      title={active ? (mediaId ? "Click to remove" : "Already saved") : "Click to save"}
+    >
       <FaStar size={24} color={active ? "gold" : "gray"} />
     </div>
   );
 };
 
 export default Star;
-
-
-
 
