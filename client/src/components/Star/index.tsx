@@ -1,33 +1,29 @@
 import { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
-import { useMutation, useQuery } from "@apollo/client";
-import { SAVE_MEDIA } from "../../utils/mutations";
-import { QUERY_MEDIA_DETAILS } from "../../utils/queries";
+import { useMutation } from "@apollo/client";
+import { SAVE_MEDIA, REMOVE_MEDIA } from "../../utils/mutations";
 import Auth from "../../utils/auth";
+import { QUERY_ME } from "../../utils/queries";
 
 type StarProps = {
   saved?: boolean;
   imdbID: string;
+  mediaId?: string; // <- needed for delete
 };
 
-const Star = ({ saved = false, imdbID }: StarProps) => {
+const Star = ({ saved = false, imdbID, mediaId }: StarProps) => {
   const [active, setActive] = useState(saved);
   const [saveMedia] = useMutation(SAVE_MEDIA, {
-    refetchQueries: ["me", "QUERY_ME"],
+    refetchQueries: [{ query: QUERY_ME }],
   });
 
-  // Fetch full media details from OMDB
-  const { data, loading, error } = useQuery(QUERY_MEDIA_DETAILS, {
-    variables: { imdbID },
-    skip: !imdbID,
+  const [removeMedia] = useMutation(REMOVE_MEDIA, {
+    refetchQueries: [{ query: QUERY_ME }],
   });
 
   useEffect(() => {
     setActive(saved);
   }, [saved]);
-
-  if (loading) return <p>Loading details...</p>;
-  if (error) console.error("❌ Error loading media details:", error);
 
   const handleClick = async () => {
     if (!Auth.loggedIn()) {
@@ -35,20 +31,36 @@ const Star = ({ saved = false, imdbID }: StarProps) => {
       return;
     }
 
-    if (!data?.mediaDetails) {
-      console.warn("Media details not loaded yet.");
-      return;
-    }
+    if (active) {
+      // Already saved, ask to remove
+      const confirmDelete = window.confirm(
+        "Do you want to remove this from your watchlist?"
+      );
+      if (!confirmDelete) return;
 
-    try {
-      await saveMedia({
-        variables: {
-          imdbID
-        },
-      });
-      setActive(true);
-    } catch (err) {
-      console.error("❌ Error saving media:", err);
+      if (!mediaId) {
+        console.error("Missing mediaId. Cannot delete.");
+        return;
+      }
+
+      try {
+        await removeMedia({
+          variables: { mediaId },
+        });
+        setActive(false);
+      } catch (error) {
+        console.error("Error removing media:", error);
+      }
+    } else {
+      // Not saved yet, save it
+      try {
+        await saveMedia({
+          variables: { imdbID },
+        });
+        setActive(true);
+      } catch (error) {
+        console.error("Error saving media:", error);
+      }
     }
   };
 
@@ -60,6 +72,7 @@ const Star = ({ saved = false, imdbID }: StarProps) => {
 };
 
 export default Star;
+
 
 
 
