@@ -1,6 +1,9 @@
 
 .friends-modal {
+    position: absolute;
+    left: 65%;
     padding: 40px;
+    z-index: 999999;
     background-color: rgb(211, 210, 210);
     border-radius: 45px;
     display: flex; /* Use flexbox */
