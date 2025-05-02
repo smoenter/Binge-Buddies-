@@ -142,25 +142,26 @@ const toggleFriendship = async (friendId: string) => {
         {/* SHOW YOUR FRIENDS or HIDE ALL FRIENDS */}
         <button
           onClick={() => setShowAllFriends(!showAllFriends)}
-          className="btn btn-toggle"
+          className="btn-your-friends btn-toggle"
         >
-          {showAllFriends ? "Hide Friends" : "Your Friends"}
+          {showAllFriends ? "Hide Friends" : "Your Friend List"}
         </button>
 
         {message && <div className="friends-message" style={messageStyle}>{message}</div>}
         {/* DISPLAYS ALL USERS */}
-        {displayedUsers.map((user: Friends) => (
+        <div className="friends-list">
+          {displayedUsers.map((user: Friends) => (
           <div key={user._id} className="friend-card">
-            <span>{user.username}</span>
-            {/* FRIEND/UNFRIEND BUTTON */}
-            <button
-              onClick={() => toggleFriendship(user._id)}
-              className={`btn ${isFriend(user._id) ? "btn-unfriend" : "btn-friend"}`}
-            >
-              {isFriend(user._id) ? "Unfriend" : "Friend"}
-            </button>
+          <span>{user.username}</span>
+          <button
+            onClick={() => toggleFriendship(user._id)}
+            className={`btn ${isFriend(user._id) ? "btn-unfriend" : "btn-friend"}`}
+          >
+            {isFriend(user._id) ? "Unfriend" : "Friend"}
+          </button>
           </div>
-        ))}
+          ))} 
+        </div>
 
       </div>
     </div>
