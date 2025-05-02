@@ -1,5 +1,5 @@
 import { useState } from "react";
-
+import "./InviteForm.css"
 
 const InviteForm = () => {
   const [email, setEmail] = useState("");
@@ -49,12 +49,12 @@ const InviteForm = () => {
         value={email}
         onChange={(e) => setEmail(e.target.value)}
         required
-        className="border p-2 rounded"
+        className="invite-input"
       />
-      <button type="submit" className="bg-blue-600 text-white py-2 px-4 rounded">
+      <button type="submit" className="invite-button">
         Send Invite
       </button>
-      {status && <p className="text-sm text-gray-700">{status}</p>}
+      {status && <p className="invite-status">{status}</p>}
     </form>
   );
 };

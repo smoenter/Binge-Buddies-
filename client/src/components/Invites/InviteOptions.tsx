@@ -23,13 +23,13 @@ const InviteOptions = () => {
       <AnimatePresence>
         {showForm && (
           <motion.div
-            className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-20"
+            className="invite-modal-overlay"
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
           >
             <motion.div
-              className="bg-white rounded-lg p-6 w-full max-w-sm shadow-lg relative"
+              className="invite-modal"
               initial={{ y: -50, opacity: 0 }}
               animate={{ y: 0, opacity: 1 }}
               exit={{ y: -50, opacity: 0 }}
@@ -37,7 +37,7 @@ const InviteOptions = () => {
               <InviteForm />
               <button
                 onClick={() => setShowForm(false)}
-                className="absolute top-2 right-2 text-gray-500 hover:text-gray-700 text-xl"
+                className="invite-close"
               >
                 &times;
               </button>
