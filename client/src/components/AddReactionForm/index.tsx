@@ -1,25 +1,22 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
+// import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-
 import { ADD_THOUGHT } from '../../utils/mutations';
 import { QUERY_THOUGHTS, QUERY_ME } from '../../utils/queries';
-
 import Auth from '../../utils/auth';
 
-const AddReactionForm = () => {
-  const [thoughtText, setThoughtText] = useState('');
+import "./index.css"
 
+const AddReactionForm = () => {
+  const [isOpen, setIsOpen] = useState(false);
+  const [title, setTitle] = useState('');
+  const [season, setSeason] = useState('');
+  const [episode, setEpisode] = useState('');
+  const [thoughtText, setThoughtText] = useState('');
   const [characterCount, setCharacterCount] = useState(0);
 
-  const [addThought, { error }] = useMutation
-  (ADD_THOUGHT, {
-    refetchQueries: [
-      QUERY_THOUGHTS,
-      'getThoughts',
-      QUERY_ME,
-      'me'
-    ]
+  const [addThought, { error }] = useMutation(ADD_THOUGHT, {
+    refetchQueries: [QUERY_THOUGHTS, 'getThoughts', QUERY_ME, 'me'],
   });
 
   const handleFormSubmit = async (event: FormEvent) => {
@@ -27,77 +24,107 @@ const AddReactionForm = () => {
 
     try {
       await addThought({
-        variables: { input:{
-          thoughtText,
-          thoughtAuthor: Auth.getProfile().data.username,
-        }},
+        variables: {
+          input: {
+            title,
+            season,
+            episode,
+            thoughtText,
+            thoughtAuthor: Auth.getProfile().data.username,
+          },
+        },
       });
-
+      setTitle('');
+      setSeason('');
+      setEpisode('');
       setThoughtText('');
+      setCharacterCount(0);
+      setIsOpen(false);
     } catch (err) {
       console.error(err);
     }
   };
 
-  const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-
-    if (name === 'thoughtText' && value.length <= 280) {
+  const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
+    const value = event.target.value;
+    if (value.length <= 280) {
       setThoughtText(value);
       setCharacterCount(value.length);
     }
   };
 
   return (
-    <div>
-      {/* hook to get user to login/signup*/}
-      <h3>Ready to make connecting with friends and family simplistic again?</h3>
-
-      {Auth.loggedIn() ? (
-        <>
-          <p
-            className={`m-0 ${
-              characterCount === 280 || error ? 'text-danger' : ''
-            }`}
-          >
-            Character Count: {characterCount}/280
-          </p>
-          <form
-            className="flex-row justify-center justify-space-between-md align-center"
-            onSubmit={handleFormSubmit}
-          >
-            <div className="col-12 col-lg-9">
-              <textarea
-                name="thoughtText"
-                placeholder="Here's a new thought..."
-                value={thoughtText}
-                className="form-input w-100"
-                style={{ lineHeight: '1.5', resize: 'vertical' }}
-                onChange={handleChange}
-              ></textarea>
-            </div>
-
-            <div className="col-12 col-lg-3">
-              <button className="btn btn-primary btn-block py-3" type="submit">
-                <img 
-                width="20" 
-                height="20" 
-                src="https://img.icons8.com/ios/50/plus-math--v1.png" 
-                alt="add reaction"/>
-              </button>
-            </div>
-            {error && (
-              <div className="col-12 my-3 bg-danger text-white p-3">
-                {error.message}
-              </div>
-            )}
-          </form>
-        </>
+    <div className="add-reaction-container">
+      {!isOpen ? (
+        <button
+          onClick={() => setIsOpen(true)}
+          className="add-reaction-button"
+          title="Add Reaction"
+        >
+          <img width="24" height="24" src="https://img.icons8.com/ios/50/plus-math--v1.png" alt="add" />
+        </button>
       ) : (
-        <p>
-          Login or create an account today to begin! Please{' '}
-          <Link to="/login">login</Link> or <Link to="/signup">signup.</Link>
-        </p>
+        <form onSubmit={handleFormSubmit} className="reaction-form">
+          <h3 className="form-title">Add a Reaction</h3>
+
+          <input
+            type="text"
+            placeholder="Title (required)"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
+            required
+            className="form-input"
+          />
+
+          <div className="form-row">
+            <input
+              type="text"
+              placeholder="Season (optional)"
+              value={season}
+              onChange={(e) => setSeason(e.target.value)}
+              className="form-input half-width"
+            />
+            <input
+              type="text"
+              placeholder="Episode (optional)"
+              value={episode}
+              onChange={(e) => setEpisode(e.target.value)}
+              className="form-input half-width"
+            />
+          </div>
+
+          <textarea
+            name="thoughtText"
+            placeholder="Your comment..."
+            value={thoughtText}
+            onChange={handleTextChange}
+            className="form-textarea"
+            rows={3}
+            required
+          ></textarea>
+
+          <div className="char-count">
+            Character Count: {characterCount}/280
+          </div>
+
+          {error && <div className="error-message">{error.message}</div>}
+
+          <div className="form-actions">
+            <button
+              type="button"
+              onClick={() => setIsOpen(false)}
+              className="cancel-button"
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              className="submit-button"
+            >
+              Post
+            </button>
+          </div>
+        </form>
       )}
     </div>
   );
