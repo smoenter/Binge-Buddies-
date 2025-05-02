@@ -18,6 +18,11 @@ const mediaSchema = new Schema<IMedia>(
       required: true,
       trim: true,
     },
+    imdbID: {
+      type: String,
+      unique: true,
+      trim: true,
+    },
     type: {
       type: String,
       enum: ['movie', 'series'],
