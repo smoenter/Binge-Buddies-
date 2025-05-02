@@ -5,6 +5,6 @@ import Reaction from './Reaction.js';
 export {
     User,
     Media,
-    Reaction
+    Reaction,
   };
 
