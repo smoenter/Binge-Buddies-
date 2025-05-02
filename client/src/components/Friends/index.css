@@ -1,0 +1,8 @@
+.friends-button{
+    border-radius: 999px;
+    border: 1px solid #00000063;
+    padding: 0.5rem ;
+    display: flex;
+    justify-content: flex-start;
+}
+

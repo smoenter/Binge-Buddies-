@@ -1,0 +1,128 @@
+
+.friends-modal {
+    position: absolute;
+    left: 65%;
+    padding: 40px;
+    z-index: 999999;
+    background-color: rgb(211, 210, 210);
+    border-radius: 45px;
+    display: flex; /* Use flexbox */
+    flex-direction: column; /* Stack items vertically */
+}
+
+.friends-list {
+    max-height: 400px;
+    overflow-y: auto;
+    width: 100%;
+    margin-top: 10px; /* optional for spacing */
+    background-color: #e3e3e3;
+    padding: 20px;
+    border-radius: 20px;
+  }
+
+.friends-header {
+    display: flex; /* Use flexbox for header */
+    justify-content: space-between; /* Space between title and close button */
+    align-items: center; /* Center items vertically */
+    width: 100%; /* Take full width */
+}
+
+.friends-title {
+    font-size: 24px;
+    margin: 10px; /* Remove margin to align properly */
+}
+  
+  .friends-container {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .friends-header {
+    display: flex; /* Use flexbox for header */
+    justify-content: space-between; /* Space between title and close button */
+    align-items: center; /* Center items vertically */
+    width: 100%; /* Take full width */
+}
+
+  
+  .friends-input {
+    margin-bottom: 10px;
+    padding: 5px;
+    width: 250px;
+    border: 1px solid #ccc;
+    border-radius: 99px;
+  }
+  
+  .btn {
+    padding: 5px 10px;
+    border: none;
+    border-radius: 5px;
+    color: white;
+    cursor: pointer;
+  }
+  
+  
+  .btn-toggle {
+    margin-bottom: 0px;
+    width: 150px;
+    background-color: #45869F;
+    border-top-left-radius: 10px;
+    border-top-right-radius: 10px;
+    border-bottom-left-radius: 0;
+    border-bottom-right-radius: 0;
+    padding: 8px 12px;
+    box-shadow: 0 -2px 5px rgba(0,0,0,0.2);
+    transition: background-color 0.3s, box-shadow 0.3s;
+  }
+  
+  .btn-toggle.active {
+    background-color: #178f8a;
+    box-shadow: none;
+    border-bottom: 2px solid white; /* creates the tab connection look */
+  }
+  
+  .btn.btn-friend {
+    background-color: #3c4c63;
+    /* background-color: #45869F; */
+    color: white;
+  }
+  
+  .btn.btn-unfriend {
+    background-color: #D9484F;
+    color: white;
+  }
+
+  .btn.btn-friend:hover{
+    background-color: #45869F;
+    /* background-color: #3c4c63; */
+  }
+  
+  .btn.btn-unfriend:hover{
+    background-color: #b9383f;
+  }
+  
+  .friend-card {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    background-color: gray;
+    width: 100%;
+  }
+  
+  .btn-close {
+    background-color: #ccc;
+    border: none; /* Optional: Remove border */
+    cursor: pointer; /* Change cursor to pointer */
+}
+  
+  .friends-message {
+    font-weight: bold;
+    margin-top: 10px;
+  }
+
+  

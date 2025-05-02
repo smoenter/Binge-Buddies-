@@ -3,6 +3,8 @@ import { useQuery, useMutation } from "@apollo/client";
 import { QUERY_FRIENDS } from "../../utils/queries";
 import { ADD_FRIEND, REMOVE_FRIEND } from "../../utils/mutations";
 
+import "./FriendsModal.css";
+
 interface Friends {
   _id: string;
   username: string;
@@ -50,7 +52,7 @@ export default function FriendsModal({ onClose }: FriendsModalProp) {
       friend.username.toLowerCase() === searchTerm.toLowerCase()
     );
     if (result.length > 0) {
-      console.log("User found:", result[0]);
+      // console.log("User found:", result[0]);
       setMessage(`User found: ${result[0].username}`);
       setMessageStyle({ color: "teal", fontWeight: "bold", marginTop: "10px" });
     } else {
@@ -107,95 +109,61 @@ const toggleFriendship = async (friendId: string) => {
   }
 
   return (
-    <div>
-      <h2>Find Users</h2>
-      <div style={{ display: "flex", flexDirection: "column", alignItems: "left" }}>
+    <div className="friends-modal">
+
+      <div className="friends-header">
+      {/* X BUTTON */}
+      <h2 className="friends-title">Find Friends</h2>
+      <button onClick={onClose} className="btn btn-close">
+      </button>
+      </div>
+      {/* INPUT COMPONENT */}
+      <div className="friends-container">
+
+        <div className="friends-header">
         <input
           type="text"
           placeholder="Search for a friend..."
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
-          style={{
-            marginBottom: "10px",
-            padding: "5px",
-            width: "300px",
-            border: "1px solid #ccc",
-            borderRadius: "5px",
-          }}
+          className="friends-input"
         />
-        <button
-          onClick={handleSearch}
-          style={{
-            marginBottom: "10px",
-            padding: "5px 10px",
-            width: "150px",
-            backgroundColor: "#008080",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-          }}
-        >
-          Submit
+        {/* SEARCH BUTTON */}
+        <button className="btn btn-search" type="button" onClick={handleSearch}>
+          <img
+            width="20"
+            height="20"
+            src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
+            alt="search"
+            
+          />
         </button>
+        </div>
+
+        {/* SHOW YOUR FRIENDS or HIDE ALL FRIENDS */}
         <button
           onClick={() => setShowAllFriends(!showAllFriends)}
-          style={{
-            marginBottom: "10px",
-            padding: "5px 10px",
-            width: "150px",
-            backgroundColor: "#20B2AA",
-            color: "white",
-            border: "none",
-            borderRadius: "5px",
-          }}
+          className="btn-your-friends btn-toggle"
         >
-          {showAllFriends ? "Hide Friends" : "See All Friends"}
+          {showAllFriends ? "Hide Friends" : "Your Friend List"}
         </button>
 
-        {message && <div style={messageStyle}>{message}</div>}
-
-        {displayedUsers.map((user: Friends) => (
-          <div
-            key={user._id}
-            style={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              marginBottom: "10px",
-              padding: "10px",
-              border: "1px solid #ccc",
-              borderRadius: "5px",
-              background: "gray",
-            }}
+        {message && <div className="friends-message" style={messageStyle}>{message}</div>}
+        {/* DISPLAYS ALL USERS */}
+        <div className="friends-list">
+          {displayedUsers.map((user: Friends) => (
+          <div key={user._id} className="friend-card">
+          <span>{user.username}</span>
+          <button
+            onClick={() => toggleFriendship(user._id)}
+            className={`btn ${isFriend(user._id) ? "btn-unfriend" : "btn-friend"}`}
           >
-            <span>{user.username}</span>
-            <button
-              onClick={() => toggleFriendship(user._id)}
-              style={{
-                padding: "5px 10px",
-                backgroundColor: isFriend(user._id) ? "red" : "teal",
-                color: "white",
-                border: "none",
-                borderRadius: "5px",
-              }}
-            >
-              {isFriend(user._id) ? "Unfriend" : "Friend"}
-            </button>
+            {isFriend(user._id) ? "Unfriend" : "Friend"}
+          </button>
           </div>
-        ))}
+          ))} 
+        </div>
 
-        <button
-          onClick={onClose}
-          style={{
-            marginTop: "20px",
-            padding: "10px 20px",
-            backgroundColor: "#ccc",
-            border: "none",
-            borderRadius: "5px",
-          }}
-        >
-          Close
-        </button>
       </div>
     </div>
   );
