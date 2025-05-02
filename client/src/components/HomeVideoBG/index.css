@@ -2,8 +2,8 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100vw;    /* Ensure full viewport width */
-  height: 100vh;   /* Full viewport height */
+  width: 100vw;
+  height: 100vh;
   overflow: hidden;
   z-index: -1;
 }
@@ -15,14 +15,17 @@
   width: 100%;
   height: 100%;
   pointer-events: none;
+  overflow: hidden;
 }
 
 .video-iframe-wrapper iframe {
   position: absolute;
   top: 50%;
   left: 50%;
-  width: 120vw;        /* Over-scale horizontally */
-  height: 120vh;       /* Over-scale vertically */
+  width: 100vw;
+  height: 56.25vw; /* 16:9 aspect ratio based on width */
+  min-height: 120vh;
+  min-width: 177.77vh; /* 16:9 aspect ratio based on height */
   transform: translate(-50%, -50%);
   border: none;
   pointer-events: none;
