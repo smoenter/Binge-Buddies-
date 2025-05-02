@@ -47,20 +47,20 @@ export default function FriendsModal({ onClose }: FriendsModalProp) {
   }, [friendsData, currentFriendIds]);
 
   //Search for a friend by user
-  const handleSearch = () => {
-    const result = filteredFriends.filter((friend) =>
-      friend.username.toLowerCase() === searchTerm.toLowerCase()
-    );
-    if (result.length > 0) {
-      console.log("User found:", result[0]);
-      setMessage(`User found: ${result[0].username}`);
-      setMessageStyle({ color: "teal", fontWeight: "bold", marginTop: "10px" });
-    } else {
-      console.log("User not found");
-      setMessage("User not found");
-      setMessageStyle({ color: "red", fontWeight: "bold", marginTop: "10px" });
-    }
-  };
+  // const handleSearch = () => {
+  //   const result = filteredFriends.filter((friend) =>
+  //     friend.username.toLowerCase() === searchTerm.toLowerCase()
+  //   );
+  //   if (result.length > 0) {
+  //     console.log("User found:", result[0]);
+  //     setMessage(`User found: ${result[0].username}`);
+  //     setMessageStyle({ color: "teal", fontWeight: "bold", marginTop: "10px" });
+  //   } else {
+  //     console.log("User not found");
+  //     setMessage("User not found");
+  //     setMessageStyle({ color: "red", fontWeight: "bold", marginTop: "10px" });
+  //   }
+  // };
 
 
 //Toggle friend/unfriend status
