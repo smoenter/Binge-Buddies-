@@ -7,7 +7,7 @@ import { QUERY_THOUGHTS, QUERY_ME } from '../../utils/queries';
 
 import Auth from '../../utils/auth';
 
-const ThoughtForm = () => {
+const AddReactionForm = () => {
   const [thoughtText, setThoughtText] = useState('');
 
   const [characterCount, setCharacterCount] = useState(0);
@@ -79,7 +79,11 @@ const ThoughtForm = () => {
 
             <div className="col-12 col-lg-3">
               <button className="btn btn-primary btn-block py-3" type="submit">
-                Add Thought
+                <img 
+                width="20" 
+                height="20" 
+                src="https://img.icons8.com/ios/50/plus-math--v1.png" 
+                alt="add reaction"/>
               </button>
             </div>
             {error && (
@@ -99,4 +103,4 @@ const ThoughtForm = () => {
   );
 };
 
-export default ThoughtForm;
+export default AddReactionForm;

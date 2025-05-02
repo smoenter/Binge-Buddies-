@@ -12,6 +12,7 @@ body, h1, h2, h3, h4, h5, h6, p, a, span, div {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+    
   }
   
   html, body {
@@ -19,3 +20,5 @@ body, h1, h2, h3, h4, h5, h6, p, a, span, div {
     width: 100%;
     overflow-x: hidden;
   }
+
+  
