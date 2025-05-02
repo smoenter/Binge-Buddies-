@@ -10,9 +10,10 @@ type Props = {
   saved?: boolean;
   poster: string;
   imdbID: string; // Required
+  mediaId?: string; //  needed for delete
 };
 
-const MediaCard = ({ imdbID, title, poster, saved = false }: Props) => {
+const MediaCard = ({ imdbID, title, poster, saved = false, mediaId }: Props) => {
   const [showModal, setShowModal] = useState(false);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
@@ -41,7 +42,7 @@ const MediaCard = ({ imdbID, title, poster, saved = false }: Props) => {
         <div className="card-body">
           <h5 className="card-title">{title}</h5>
           <div className="d-flex gap-3">
-            <Star imdbID={imdbID} saved={saved} />
+            <Star imdbID={imdbID} saved={saved} mediaId={mediaId} />
           </div>
         </div>
       </div>
