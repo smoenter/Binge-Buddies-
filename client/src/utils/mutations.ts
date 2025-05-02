@@ -63,6 +63,14 @@ export const SAVE_MEDIA = gql`
   }
 `;
 
+export const REMOVE_MEDIA = gql`
+  mutation removeMedia($mediaId: ID!) {
+    removeMedia(mediaId: $mediaId) {
+      _id
+    }
+  }
+`;
+
 export const ADD_THOUGHT = gql`
   mutation addThought($thoughtText: String!) {
     addThought(thoughtText: $thoughtText) {
