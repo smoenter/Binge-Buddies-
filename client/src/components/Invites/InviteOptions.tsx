@@ -1,46 +1,50 @@
 import { useState } from 'react';
 import InviteForm from './InviteForm';
+import { motion, AnimatePresence } from "framer-motion";
+import './InviteOptions.css';
 
 
 const InviteOptions = () => {
-  const [showOptions, setShowOptions] = useState(false);
-  const [selectedMethod, setSelectedMethod] = useState<'email' | 'sms' | null>(null);
+  // const [showOptions, setShowOptions] = useState(false);
+  // const [selectedMethod, setSelectedMethod] = useState<'email' | 'sms' | null>(null);
+
+  const [showForm, setShowForm] = useState(false);
 
   return (
     <div className="max-w-md mx-auto mt-10 text-center">
       <button
-        onClick={() => setShowOptions(!showOptions)}
-        className="bg-yellow-400 text-black px-6 py-3 rounded-full text-lg font-bold hover:bg-yellow-500 transition"
+        onClick={() => setShowForm(!showForm)}
+        className="button-53"
+        role="button"
       >
         Invite a Friend!
       </button>
 
-      {showOptions && !selectedMethod && (
-        <div className="mt-4 space-x-4">
-          <button
-            onClick={() => setSelectedMethod('email')}
-            className="bg-yellow-400 text-black px-4 py-2 rounded-full hover:bg-yellow-500"
+      <AnimatePresence>
+        {showForm && (
+          <motion.div
+            className="invite-modal-overlay"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
           >
-            Email
-          </button>
-          
-        </div>
-      )}
-
-      {selectedMethod === 'email' && (
-        <div className="mt-6">
-          <InviteForm />
-          <button
-            onClick={() => {
-              setSelectedMethod(null);
-              setShowOptions(false);
-            }}
-            className="mt-4 text-sm text-gray-500 underline"
-          >
-            Cancel
-          </button>
-        </div>
-      )}
+            <motion.div
+              className="invite-modal"
+              initial={{ y: -50, opacity: 0 }}
+              animate={{ y: 0, opacity: 1 }}
+              exit={{ y: -50, opacity: 0 }}
+            >
+              <InviteForm />
+              <button
+                onClick={() => setShowForm(false)}
+                className="invite-close"
+              >
+                &times;
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };

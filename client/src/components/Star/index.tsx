@@ -1,7 +1,8 @@
 import { useState, useEffect } from "react";
 import { FaStar } from "react-icons/fa";
-import { useMutation } from "@apollo/client";
+import { useMutation, useQuery } from "@apollo/client";
 import { SAVE_MEDIA } from "../../utils/mutations";
+import { QUERY_MEDIA_DETAILS } from "../../utils/queries";
 import Auth from "../../utils/auth";
 
 type StarProps = {
@@ -11,11 +12,22 @@ type StarProps = {
 
 const Star = ({ saved = false, imdbID }: StarProps) => {
   const [active, setActive] = useState(saved);
-  const [saveMedia] = useMutation(SAVE_MEDIA);
+  const [saveMedia] = useMutation(SAVE_MEDIA, {
+    refetchQueries: ["me", "QUERY_ME"],
+  });
+
+  // Fetch full media details from OMDB
+  const { data, loading, error } = useQuery(QUERY_MEDIA_DETAILS, {
+    variables: { imdbID },
+    skip: !imdbID,
+  });
 
   useEffect(() => {
     setActive(saved);
   }, [saved]);
+
+  if (loading) return <p>Loading details...</p>;
+  if (error) console.error("❌ Error loading media details:", error);
 
   const handleClick = async () => {
     if (!Auth.loggedIn()) {
@@ -23,13 +35,20 @@ const Star = ({ saved = false, imdbID }: StarProps) => {
       return;
     }
 
+    if (!data?.mediaDetails) {
+      console.warn("Media details not loaded yet.");
+      return;
+    }
+
     try {
       await saveMedia({
-        variables: { imdbID },
+        variables: {
+          imdbID
+        },
       });
       setActive(true);
-    } catch (error) {
-      console.error("Error saving media:", error);
+    } catch (err) {
+      console.error("❌ Error saving media:", err);
     }
   };
 

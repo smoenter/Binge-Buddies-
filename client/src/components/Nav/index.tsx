@@ -23,7 +23,7 @@ export const Nav = () => {
 
       <div className="custom-navbar-nav d-flex flex-row gap-4">
         {["/", "/browse", "/yourwatchlist", "/reactions"].map((path, index) => {
-          const labels = ["Home", "Browse", "YourWatchlist", "Reactions"];
+          const labels = ["Home", "Browse", "WatchList", "Reactions"];
           const isActive = location.pathname === path;
           return (
             <motion.div
