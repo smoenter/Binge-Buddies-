@@ -153,6 +153,11 @@
     min-height: 90vh;
   }
 
+  .video-section::after {
+    background: rgba(0, 0, 0, 0.4);  /* Dark overlay */
+    z-index: 9999999;
+  }
+
 
   /* fade in up on info cards */
   @keyframes fadeInUp {
