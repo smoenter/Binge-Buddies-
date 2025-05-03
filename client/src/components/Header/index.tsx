@@ -26,32 +26,32 @@ const Header = () => {
         <div className="header-content flex-row align-center gap">
           
           {/* LOGOUT BUTTON */}
-        <div className="authentication-logout-button">
-          <button className="custom-btn btn btn-lg btn-light" onClick={logout}>
-            <img src={logoutIcon} alt="Logout" style={{ width: '24px', height: '24px' }} />
-          </button>
-        </div>
-          {/* FRIEND ICON SHOWS UP ON REACTIONS */}
-          {/* {isReactionPage && <FriendsIcon />} */}
-
-          {/* NAVBAR */}
-          <Nav />
-          
-          {/* FRIEND ICON SHOWS UP ON REACTIONS */}
-          {isReactionPage && <FriendsIcon />}
-
-          {/* LOGOUT BUTTON */}
         {/* <div className="authentication-logout-button">
           <button className="custom-btn btn btn-lg btn-light" onClick={logout}>
             <img src={logoutIcon} alt="Logout" style={{ width: '24px', height: '24px' }} />
           </button>
         </div> */}
+          {/* FRIEND ICON SHOWS UP ON REACTIONS */}
+          {isReactionPage && <FriendsIcon />}
+
+          {/* NAVBAR */}
+          <Nav />
+          
+          {/* FRIEND ICON SHOWS UP ON REACTIONS */}
+          {/* {isReactionPage && <FriendsIcon />} */}
+
+          {/* LOGOUT BUTTON */}
+        <div className="authentication-logout-button">
+          <button className="custom-btn btn btn-lg btn-light" onClick={logout}>
+            <img src={logoutIcon} alt="Logout" style={{ width: '24px', height: '24px' }} />
+          </button>
+        </div>
       </div>
     ) : (
       <div className="auth-buttons">
         {/* LOGIN/SIGNUP LINKS */}
-        <Link className="auth-link" to="/login">Login</Link>
-        <Link className="auth-link" to="/signup">Signup</Link>
+        <Link className="auth-link signup-login" to="/login">Login</Link>
+        <Link className="auth-link signup-login" to="/signup">Signup</Link>
       </div>
     )}
   </div>

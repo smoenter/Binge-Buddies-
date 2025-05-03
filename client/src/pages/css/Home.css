@@ -72,9 +72,9 @@
     padding: 1.5rem 2rem;
     color: #fff;
     box-shadow:
-    0 4px 30px rgba(134, 28, 28, 0.324),
-    0 0 20px rgba(129, 28, 28, 0.05),
-    0 0 40px rgba(96, 26, 26, 0.15);
+    0 4px 30px rgba(171, 171, 171, 0.324),
+    0 0 20px rgba(117, 117, 117, 0.05),
+    0 0 40px rgba(88, 88, 88, 0.15);
     text-align: center;
     transition: transform 0.3s ease;
     margin-bottom: 0 !important;
@@ -98,7 +98,7 @@
   }
 
  .how-it-works-container{
-    background-color: purple;
+    /* background-color: purple; */
     width: auto;
  }
   
@@ -151,6 +151,11 @@
     height: 90vh; /* Height of the video background */
     overflow: hidden;
     min-height: 90vh;
+  }
+
+  .video-section::after {
+    background: rgba(0, 0, 0, 0.4);  /* Dark overlay */
+    z-index: 9999999;
   }
 
 

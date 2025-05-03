@@ -1,47 +1,71 @@
-.authentication-logout-button {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    gap: 1.5rem;
-    
-  }
+/* Overall container setup */
+.custom-header .container {
+  display: flex;
+  justify-content: space-between; /* Space out items */
+  align-items: center;
+  position: relative;
+}
 
-  /* Applies only to Login and Signup links */
-.auth-link {
-    text-decoration: none;
-    color: rgb(111, 111, 111);
-    font-size: 1rem;
-    font-weight: 500;
-    background: none;
-    border: none;
-    padding: 0;
-    cursor: pointer;
-  }
-  
-  .auth-link:hover {
-    color: #ffc107; /* Optional highlight on hover */
-  }
+/* Style for the header content that holds the navbar and logout */
+.header-content {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+  flex-grow: 1; /* Makes the navbar take up available space */
+}
 
-  .custom-header {
-    background-color: #00000006;
-    
-  }
+/* Authentication buttons positioned in the top-right */
+.auth-buttons {
+  display: flex;
+  gap: 15px;
+  position: absolute;
+  top: 10px;
+  right: 20px;
+}
 
-  .header-content {
-    display: flex;
-    align-items: center;
-    gap: 1.5rem;
-  }
+/* Style for login/signup links */
+.auth-link.signup-login {
+  color: rgb(200, 200, 200); /* Light gray */
+  font-size: 1rem;
+  font-weight: 500;
+  text-decoration: none;
+  transition: color 0.3s ease, transform 0.2s ease; /* Smooth transition */
+}
 
+/* Hover effect for links */
+.auth-link.signup-login:hover {
+  color: #4a90e2; /* Soft blue color */
+  transform: scale(1.05); /* Slight scale effect for hover */
+}
 
-  /* Make the logout button transparent by default */
+/* Style for the logout button */
 .authentication-logout-button .custom-btn {
   background-color: transparent;
   border: none;
   padding: 10px 15px;
   cursor: pointer;
   transition: background-color 0.3s ease;
-  border-radius: 100px;
+  border-radius: 10px;
+}
+
+/* Style for navbar items */
+.navbar {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem;
+}
+
+/* Optional: Add space around items within the navbar */
+.navbar a {
+  color: #fff;
+  text-decoration: none;
+  padding: 8px 15px;
+}
+
+
+/* Hover effect for the links */
+.auth-link.signup-login:hover {
+  color: #ffcc00; /* Hover color (change it to your preferred color) */
 }
 
 
