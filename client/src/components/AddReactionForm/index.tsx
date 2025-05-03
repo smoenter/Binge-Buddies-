@@ -1,44 +1,64 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
 // import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
-import { ADD_THOUGHT } from '../../utils/mutations';
-import { QUERY_THOUGHTS, QUERY_ME } from '../../utils/queries';
-import Auth from '../../utils/auth';
+import { ADD_REACTION } from '../../utils/mutations';
+import { QUERY_ME, GET_REACTIONS } from '../../utils/queries';
+// import Auth from '../../utils/auth';
 
 import "./index.css"
 
-const AddReactionForm = () => {
+
+interface AddReactionFormProps {
+  mediaId: string; // required to associate the reaction
+}
+
+const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [season, setSeason] = useState('');
   const [episode, setEpisode] = useState('');
-  const [thoughtText, setThoughtText] = useState('');
+  // const [thoughtText, setThoughtText] = useState('');
+  const [comment, setComment] = useState('')
+  const [rating, setRating] = useState(0);
   const [characterCount, setCharacterCount] = useState(0);
 
-  const [addThought, { error }] = useMutation(ADD_THOUGHT, {
-    refetchQueries: [QUERY_THOUGHTS, 'getThoughts', QUERY_ME, 'me'],
+  // const [addThought, { error }] = useMutation(ADD_THOUGHT, {
+  //   refetchQueries: [QUERY_THOUGHTS, 'getThoughts', QUERY_ME, 'me'],
+  // });
+
+  const [addReaction, { error }] = useMutation(ADD_REACTION, {
+    refetchQueries: [
+      { query: GET_REACTIONS, variables: { mediaId } },
+      { query: QUERY_ME }
+    ]
   });
 
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
+    
+  if (!mediaId) {
+    console.error("No mediaId provided");
+    return;
+  }
+
     try {
-      await addThought({
+      await addReaction({
         variables: {
-          input: {
-            title,
-            season,
-            episode,
-            thoughtText,
-            thoughtAuthor: Auth.getProfile().data.username,
-          },
-        },
+          mediaId,
+          comment,
+          season: season ? parseInt(season) : undefined,
+          episode: episode ? parseInt(episode) : undefined,
+          rating
+        }
       });
-      setTitle('');
+
+      // Reset form fields
       setSeason('');
       setEpisode('');
-      setThoughtText('');
+      setComment('');
       setCharacterCount(0);
+      setRating(5);
       setIsOpen(false);
     } catch (err) {
       console.error(err);
@@ -48,10 +68,15 @@ const AddReactionForm = () => {
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value;
     if (value.length <= 280) {
-      setThoughtText(value);
+      setComment(value);
       setCharacterCount(value.length);
     }
   };
+
+  // const handleRatingChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const value = parseInt(event.target.value, 10);
+  //   setRating(isNaN(value) ? 1 : value); // Default to 1 if invalid
+  // };
 
   return (
     <div className="add-reaction-container">
@@ -93,19 +118,47 @@ const AddReactionForm = () => {
             />
           </div>
 
+          <div className="char-count">
+            Character Count: {characterCount}/280
+          </div>
+
           <textarea
-            name="thoughtText"
-            placeholder="Your comment..."
-            value={thoughtText}
+            name="comment"
+            placeholder="Your reaction..."
+            value={comment}
             onChange={handleTextChange}
             className="form-textarea"
             rows={3}
             required
           ></textarea>
 
-          <div className="char-count">
-            Character Count: {characterCount}/280
+        {/* Emoji picker */}
+        <div className="emoji-picker" style={{ margin: '0.5rem 0' }}>
+            <strong>Add an emoji:</strong>
+            <span onClick={() => setComment(prev => prev + " 😀")}>😀</span>
+            <span onClick={() => setComment(prev => prev + " 😍")}>😍</span>
+            <span onClick={() => setComment(prev => prev + " 🤔")}>🤔</span>
+            <span onClick={() => setComment(prev => prev + " 😢")}>😢</span>
           </div>
+
+           {/* Star Rating */}
+           <div className="form-row">
+            <label>Rate this media:</label>
+            <div style={{ display: 'flex', gap: '0.25rem', fontSize: '1.75rem', cursor: 'pointer' }}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  onClick={() => setRating(star)}
+                  style={{ color: star <= rating ? '#ffc107' : '#e4e5e9' }}
+                  role="button"
+                  aria-label={`Set rating to ${star}`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+          </div>
+         
 
           {error && <div className="error-message">{error.message}</div>}
 
@@ -131,3 +184,26 @@ const AddReactionForm = () => {
 };
 
 export default AddReactionForm;
+
+// try {
+//   await addThought({
+//     variables: {
+//       input: {
+//         title,
+//         season,
+//         episode,
+//         thoughtText,
+//         thoughtAuthor: Auth.getProfile().data.username,
+//       },
+//     },
+//   });
+//   setTitle('');
+//   setComment('')
+//   setSeason('');
+//   setEpisode('');
+//   setThoughtText('');
+//   setCharacterCount(0);
+//   setIsOpen(false);
+// } catch (err) {
+//   console.error(err);
+// }
