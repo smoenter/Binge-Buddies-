@@ -97,7 +97,7 @@ export const QUERY_SINGLE_THOUGHT = gql`
 
 // Query for friends list
 export const QUERY_FRIENDS = gql`
-  query Friends {
+  query getFriends {
     friends {
       username
       _id

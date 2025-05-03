@@ -1,7 +1,8 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
 import { Link } from 'react-router-dom';
-import { useMutation } from '@apollo/client';
+import { useMutation, useApolloClient } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
+import { QUERY_FRIENDS } from '../utils/queries';
 import Auth from '../utils/auth';
 
 import "./css/Login.css"
@@ -9,6 +10,7 @@ import "./css/Login.css"
 const Login = () => {
   const [formState, setFormState] = useState({ email: '', password: '' });
   const [login, { error, data }] = useMutation(LOGIN_USER);
+  const client = useApolloClient();
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -21,13 +23,28 @@ const Login = () => {
 
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
-    console.log(formState);
+
     try {
       const { data } = await login({
         variables: { ...formState },
       });
 
+      // Save token
       Auth.login(data.login.token);
+
+      // Query friends after login
+      const { data: friendsData } = await client.query({
+        query: QUERY_FRIENDS,
+        fetchPolicy: "network-only", // ensure fresh data from server
+      });
+
+      const friendIds = new Set(
+        friendsData?.user?.friends?.map((friend: any) => friend._id)
+      );
+
+      // Save to localStorage (optional)
+      localStorage.setItem('friendIds', JSON.stringify(Array.from(friendIds)));
+
     } catch (e) {
       console.error(e);
     }

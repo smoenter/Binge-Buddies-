@@ -10,9 +10,12 @@ const FriendsIcon: React.FC = () => {
 
   // Load friend IDs from localStorage on mount
   useEffect(() => {
-    const saved = localStorage.getItem('friendIds');
-    if (saved) {
-      setFriendIds(new Set(JSON.parse(saved)));
+    const token = localStorage.getItem('token');
+    if (token) {
+      const saved = localStorage.getItem('friendIds');
+      if (saved) {
+        setFriendIds(new Set<string>(JSON.parse(saved)));
+      }
     }
   }, []);
 
@@ -44,7 +47,7 @@ const FriendsIcon: React.FC = () => {
       {showModal && (
         <FriendsModal
           onClose={handleClose}
-          userId={userId}
+          userId={userId} 
           friendIds={friendIds}
           setFriendIds={setFriendIds}
         />
