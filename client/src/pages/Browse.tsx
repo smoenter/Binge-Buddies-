@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Toggle from "../components/Toggle";
 import SearchComponent from "../components/Search";
 import MediaSearch from "../components/MediaSearch";
+import CategoryCarousel from "../components/Search/CategoryCarousel";
 import { QUERY_MEDIA, QUERY_ME } from "../utils/queries";
 import { useQuery, useLazyQuery } from "@apollo/client";
 
@@ -38,7 +39,6 @@ const Browse = () => {
     }
   };
 
-  // Update stars after refetch
   useEffect(() => {
     if (!lastQuery || !userData?.me) return;
 
@@ -76,9 +76,14 @@ const Browse = () => {
       <h1 className="mb-4">Browse</h1>
       <Toggle handleToggle={handleToggle} type={type} />
       <SearchComponent onSearch={handleSearch} />
+
+      {/* Category Carousels */}
+      <CategoryCarousel savedList={savedList} type={type} />
+
       <div className="d-flex flex-wrap gap-3 mt-4">
         <MediaSearch results={searchResults} refetch={refetchUser} />
       </div>
+
       {loading && <p>Loading...</p>}
       {error && <p className="text-danger">Error: {error.message}</p>}
     </div>
@@ -86,6 +91,8 @@ const Browse = () => {
 };
 
 export default Browse;
+
+
 
 
 
