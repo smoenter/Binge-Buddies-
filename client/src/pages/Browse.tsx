@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import Toggle from "../components/Toggle";
 import SearchComponent from "../components/Search";
 import MediaSearch from "../components/MediaSearch";
-import CategoryCarousel from "../components/Search/CategoryCarousel";
+import CategoryCarousel from "../components/Carousel/CategoryCarousel";
 import { QUERY_MEDIA, QUERY_ME } from "../utils/queries";
 import { useQuery, useLazyQuery } from "@apollo/client";
 

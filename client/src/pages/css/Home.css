@@ -158,6 +158,10 @@
     z-index: 9999999;
   }
 
+  .wlcm-bck-txt{
+    font-size: 1.8rem;
+  }
+
 
   /* fade in up on info cards */
   @keyframes fadeInUp {

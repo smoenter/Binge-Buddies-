@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import "./CategoryCarousel.css";
 import MediaCard from "../MediaCard";
+import MediaModal from "../MediaModal";
 import { useLazyQuery } from "@apollo/client";
 import { QUERY_MEDIA } from "../../utils/queries";
 
@@ -17,6 +18,8 @@ type Props = {
 
 const CategoryCarousel = ({ savedList, type }: Props) => {
     const [mediaByCategory, setMediaByCategory] = useState<{ [key: string]: any[] }>({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedMedia, setSelectedMedia] = useState<any>(null);
     const carouselsRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
     const [loadMedia] = useLazyQuery(QUERY_MEDIA);
@@ -83,7 +86,6 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
                         </button>
                         <div className="carousel" ref={(el) => (carouselsRef.current[category] = el)}>
                             {mediaByCategory[category]?.map((media) => {
-                                console.log("Media Item:", media); // <- ADD THIS
                                 return (
                                     <MediaCard
                                         key={media.imdbID}
@@ -93,6 +95,10 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
                                         imdbID={media.imdbID}
                                         saved={media.saved}
                                         mediaId={media.mediaId}
+                                        onClick={() => {
+                                            setSelectedMedia(media);
+                                            setIsModalOpen(true);
+                                        }}
                                     />
                                 );
                             })}
@@ -107,6 +113,12 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
                     </div>
                 </div>
             ))}
+            {isModalOpen && selectedMedia && (
+                <MediaModal
+                    imdbID={selectedMedia.imdbID}
+                    onClose={() => setIsModalOpen(false)}
+                />
+            )}
         </div>
     );
 };

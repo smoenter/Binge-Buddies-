@@ -12,20 +12,32 @@ type Props = {
   imdbID: string;
   mediaId?: string;
   refetch?: () => void;
+  onClick?: () => void;
 };
-
-const MediaCard = ({ imdbID, title, poster, saved = false, mediaId, refetch }: Props) => {
-  const [showModal, setShowModal] = useState(false);
+const MediaCard = ({
+  imdbID,
+  title,
+  poster,
+  saved = false,
+  mediaId,
+  refetch,
+  onClick,
+}: Props) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
 
   const handleImageError = (e: React.SyntheticEvent<HTMLImageElement, Event>) => {
     e.currentTarget.src = fallbackPoster;
   };
 
-  const posterSrc = poster && poster !== "N/A" ? poster : fallbackPoster;
-
   const handleCardClick = () => {
-    setShowModal(true);
+    if (onClick) {
+      onClick();
+    } else {
+      setIsModalOpen(true);
+    }
   };
+
+  const posterSrc = poster && poster !== "N/A" ? poster : fallbackPoster;
 
   return (
     <>
@@ -45,16 +57,15 @@ const MediaCard = ({ imdbID, title, poster, saved = false, mediaId, refetch }: P
         </div>
       </div>
 
-      {showModal && (
-        <MediaModal imdbID={imdbID} onClose={() => setShowModal(false)} />
+      {isModalOpen && (
+        <MediaModal
+          imdbID={imdbID}
+          title={title}
+          onClose={() => setIsModalOpen(false)}
+        />
       )}
     </>
   );
 };
 
 export default MediaCard;
-
-
-
-
-
