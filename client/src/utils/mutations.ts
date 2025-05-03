@@ -96,3 +96,27 @@ export const ADD_COMMENT = gql`
   }
 `;
 
+export const ADD_REACTION = gql`
+  mutation AddReaction(
+    $mediaId: ID!
+    $comment: String!
+    $season: Int
+    $episode: Int
+    $rating: Int
+  ) {
+    addReaction(
+      mediaId: $mediaId
+      comment: $comment
+      season: $season
+      episode: $episode
+      rating: $rating
+    ) {
+      _id
+      comment
+      season
+      episode
+      rating
+      createdAt
+    }
+  }
+`;
