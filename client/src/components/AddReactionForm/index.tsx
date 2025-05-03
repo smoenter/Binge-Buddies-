@@ -73,10 +73,10 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
     }
   };
 
-  const handleRatingChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const value = parseInt(event.target.value, 10);
-    setRating(isNaN(value) ? 1 : value); // Default to 1 if invalid
-  };
+  // const handleRatingChange = (event: ChangeEvent<HTMLInputElement>) => {
+  //   const value = parseInt(event.target.value, 10);
+  //   setRating(isNaN(value) ? 1 : value); // Default to 1 if invalid
+  // };
 
   return (
     <div className="add-reaction-container">
