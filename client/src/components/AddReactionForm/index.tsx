@@ -75,7 +75,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
 
   const handleRatingChange = (event: ChangeEvent<HTMLInputElement>) => {
     const value = parseInt(event.target.value, 10);
-    setRating(isNaN(value) ? 5 : value); // Default to 5 if invalid
+    setRating(isNaN(value) ? 1 : value); // Default to 1 if invalid
   };
 
   return (
@@ -132,19 +132,48 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
             required
           ></textarea>
 
+            {/* Emoji picker */}
+            <div className="emoji-picker" style={{ margin: '0.5rem 0' }}>
+            <strong>Add an emoji:</strong>
+            <span
+              style={{ cursor: 'pointer', fontSize: '1.5rem', margin: '0 0.25rem' }}
+              onClick={() => setComment((prev) => prev + " 😀")}
+            >
+              😀
+            </span>
+            <span
+              style={{ cursor: 'pointer', fontSize: '1.5rem', margin: '0 0.25rem' }}
+              onClick={() => setComment((prev) => prev + " 😍")}
+            >
+              😍
+            </span>
+            <span
+              style={{ cursor: 'pointer', fontSize: '1.5rem', margin: '0 0.25rem' }}
+              onClick={() => setComment((prev) => prev + " 🤔")}
+            >
+              🤔
+            </span>
+            <span
+              style={{ cursor: 'pointer', fontSize: '1.5rem', margin: '0 0.25rem' }}
+              onClick={() => setComment((prev) => prev + " 😢")}
+            >
+              😢
+            </span>
+          </div>
+
           <div className="form-row">
-             Rate this media (1 = worst, 10 = best):
+             Rate this media (1 = worst, 5 = best):
              </div>
 
             <input
               id="rating-input"
               type="number"
               min={1}
-              max={10}
+              max={5}
               value={rating}
               onChange={handleRatingChange}
               className="form-input"
-              placeholder="Rating (1-10)"
+              placeholder="Rating (1-5)"
               required
             />
          
