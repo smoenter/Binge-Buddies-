@@ -14,7 +14,7 @@ interface FriendsModalProp {
   onClose: () => void;
   userId: string;
   friendIds: Set<string>;
-  setFriendIds: (ids: Set<string>) => void;
+  setFriendIds: (ids: Set<string> | ((prev: Set<string>) => Set<string>)) => void;
 }
 
 export default function FriendsModal({
@@ -56,15 +56,14 @@ export default function FriendsModal({
     }
   };
 
-  // ✅ Toggle between add/remove and update state
   const toggleFriendship = async (friendId: string) => {
     if (isFriend(friendId)) {
       try {
         await removeFriend({ variables: { friendId } });
-        setFriendIds((prev) => {
+        setFriendIds((prev: Set<string>) => {
           const updated = new Set(prev);
           updated.delete(friendId);
-          return new Set(updated);
+          return updated;
         });
       } catch (err) {
         console.error("Error removing friend:", err);
@@ -72,13 +71,16 @@ export default function FriendsModal({
     } else {
       try {
         await addFriend({ variables: { friendId } });
-        setFriendIds((prev) => new Set(prev).add(friendId));
+        setFriendIds((prev: Set<string>) => {
+          const updated = new Set(prev);
+          updated.add(friendId);
+          return updated;
+        });
       } catch (err) {
         console.error("Error adding friend:", err);
       }
     }
   };
-
   const isFriend = (id: string) => friendIds.has(id);
 
   if (friendsLoading) return <p>Loading friends...</p>;
