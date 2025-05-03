@@ -27,7 +27,23 @@ export default function FriendsModal({ onClose }: FriendsModalProp) {
   const [message, setMessage] = useState("");
   const [messageStyle, setMessageStyle] = useState({});
 
-  //Filtered list based on searh term
+  // ✅ Load once from localStorage, fallback to GraphQL once
+  useEffect(() => {
+    const savedFriends = localStorage.getItem("friendIds");
+    if (savedFriends !== null) {
+      setCurrentFriendIds(new Set(JSON.parse(savedFriends)));
+    } else if (friendsData?.user?.friends) {
+      const friendIdsFromQuery = friendsData.user.friends.map((f: Friends) => f._id);
+      setCurrentFriendIds(new Set(friendIdsFromQuery));
+    }
+  }, []);
+
+  // ✅ Persist changes to localStorage
+  useEffect(() => {
+    localStorage.setItem("friendIds", JSON.stringify(Array.from(currentFriendIds)));
+  }, [currentFriendIds]);
+
+  // ✅ Filter friends as user types
   useEffect(() => {
     if (friendsData?.friends) {
       setFilteredFriends(
@@ -38,33 +54,21 @@ export default function FriendsModal({ onClose }: FriendsModalProp) {
     }
   }, [searchTerm, friendsData]);
 
-  // Populate currentFriends once from user.friends
-  useEffect(() => {
-    if (friendsData?.user?.friends && currentFriendIds.size === 0) {
-      const initialFriends = friendsData.user.friends;
-      setCurrentFriendIds(new Set(initialFriends.map((f: Friends) => f._id)));
-    }
-  }, [friendsData, currentFriendIds]);
-
-  //Search for a friend by user
   const handleSearch = () => {
     const result = filteredFriends.filter((friend) =>
       friend.username.toLowerCase() === searchTerm.toLowerCase()
     );
     if (result.length > 0) {
-      // console.log("User found:", result[0]);
       setMessage(`User found: ${result[0].username}`);
       setMessageStyle({ color: "teal", fontWeight: "bold", marginTop: "10px" });
     } else {
-      console.log("User not found");
       setMessage("User not found");
       setMessageStyle({ color: "red", fontWeight: "bold", marginTop: "10px" });
     }
   };
 
-
-//Toggle friend/unfriend status
-const toggleFriendship = async (friendId: string) => {
+  // ✅ Toggle between add/remove and update state
+  const toggleFriendship = async (friendId: string) => {
     if (isFriend(friendId)) {
       try {
         await removeFriend({ variables: { friendId } });
@@ -88,59 +92,42 @@ const toggleFriendship = async (friendId: string) => {
 
   const isFriend = (id: string) => currentFriendIds.has(id);
 
-  if (friendsLoading) {
-    return <p>Loading friends...</p>;
-  }
-
+  if (friendsLoading) return <p>Loading friends...</p>;
   if (friendsError) {
-    console.error(JSON.stringify(friendsError));
+    console.error(friendsError);
     return <p>Error loading friends.</p>;
   }
 
-    // Get friend list based on toggle
-    const displayedUsers = showAllFriends
+  const displayedUsers = showAllFriends
     ? friendsData.friends.filter((user: Friends) => currentFriendIds.has(user._id))
     : filteredFriends;
 
-  if (friendsLoading) return <p>Loading friends...</p>;
-  if (friendsError) {
-    console.error(JSON.stringify(friendsError));
-    return <p>Error loading friends.</p>;
-  }
-
   return (
     <div className="friends-modal">
-
       <div className="friends-header">
-      {/* X BUTTON */}
-      <h2 className="friends-title">Find Friends</h2>
-      <button onClick={onClose} className="btn btn-close">
-      </button>
+        <h2 className="friends-title">Find Friends</h2>
+        <button onClick={onClose} className="btn btn-close" />
       </div>
-      {/* INPUT COMPONENT */}
-      <div className="friends-container">
 
+      <div className="friends-container">
         <div className="friends-header">
-        <input
-          type="text"
-          placeholder="Search for a friend..."
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="friends-input"
-        />
-        {/* SEARCH BUTTON */}
-        <button className="btn btn-search" type="button" onClick={handleSearch}>
-          <img
-            width="20"
-            height="20"
-            src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
-            alt="search"
-            
+          <input
+            type="text"
+            placeholder="Search for a friend..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="friends-input"
           />
-        </button>
+          <button className="btn btn-search" type="button" onClick={handleSearch}>
+            <img
+              width="20"
+              height="20"
+              src="https://img.icons8.com/ios-glyphs/30/search--v1.png"
+              alt="search"
+            />
+          </button>
         </div>
 
-        {/* SHOW YOUR FRIENDS or HIDE ALL FRIENDS */}
         <button
           onClick={() => setShowAllFriends(!showAllFriends)}
           className="btn-your-friends btn-toggle"
@@ -149,21 +136,20 @@ const toggleFriendship = async (friendId: string) => {
         </button>
 
         {message && <div className="friends-message" style={messageStyle}>{message}</div>}
-        {/* DISPLAYS ALL USERS */}
+
         <div className="friends-list">
           {displayedUsers.map((user: Friends) => (
-          <div key={user._id} className="friend-card">
-          <span>{user.username}</span>
-          <button
-            onClick={() => toggleFriendship(user._id)}
-            className={`btn ${isFriend(user._id) ? "btn-unfriend" : "btn-friend"}`}
-          >
-            {isFriend(user._id) ? "Unfriend" : "Friend"}
-          </button>
-          </div>
-          ))} 
+            <div key={user._id} className="friend-card">
+              <span>{user.username}</span>
+              <button
+                onClick={() => toggleFriendship(user._id)}
+                className={`btn ${isFriend(user._id) ? "btn-unfriend" : "btn-friend"}`}
+              >
+                {isFriend(user._id) ? "Unfriend" : "Friend"}
+              </button>
+            </div>
+          ))}
         </div>
-
       </div>
     </div>
   );

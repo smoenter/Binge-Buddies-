@@ -116,3 +116,17 @@ export const QUERY_USER_FRIENDS = gql`
     }
   }
 `;
+
+//Query for Reactions
+export const GET_REACTIONS = gql`
+  query GetReactions($mediaId: ID!) {
+    reactions(mediaId: $mediaId) {
+      _id
+      comment
+      season
+      episode
+      rating
+      createdAt
+    }
+  }
+`;
