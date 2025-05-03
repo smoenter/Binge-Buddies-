@@ -4,7 +4,8 @@ import MediaCard from "../MediaCard";
 import { useLazyQuery } from "@apollo/client";
 import { QUERY_MEDIA } from "../../utils/queries";
 
-const categories = ["Action", "Comedy", "Drama", "Horror", "Romance"];
+const categories = ["Action", "Comedy", "Horror", "Family", "Fantasy"];
+//     };
 
 type Props = {
     savedList: {
