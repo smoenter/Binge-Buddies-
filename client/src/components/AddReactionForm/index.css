@@ -107,3 +107,7 @@
   .submit-button:hover {
     background-color: #D9484F;
   }
+
+  .emoji-button{
+    cursor: pointer
+  }

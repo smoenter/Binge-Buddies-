@@ -135,15 +135,17 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
         {/* Emoji picker */}
         <div className="emoji-picker" style={{ margin: '0.5rem 0' }}>
             <strong>Add an emoji:</strong>
-            <span onClick={() => setComment(prev => prev + " 😀")}>😀</span>
-            <span onClick={() => setComment(prev => prev + " 😍")}>😍</span>
-            <span onClick={() => setComment(prev => prev + " 🤔")}>🤔</span>
-            <span onClick={() => setComment(prev => prev + " 😢")}>😢</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😀")}>😀</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😍")}>😍</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + " 🤔")}>🤔</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😢")}>😢</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😠")}>😠</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😲")}>😲</span>
           </div>
 
            {/* Star Rating */}
            <div className="form-row">
-            <label>Rate this media:</label>
+            <label>Rating:</label>
             <div style={{ display: 'flex', gap: '0.25rem', fontSize: '1.75rem', cursor: 'pointer' }}>
               {[1, 2, 3, 4, 5].map((star) => (
                 <span
