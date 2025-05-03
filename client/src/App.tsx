@@ -18,7 +18,7 @@ const httpLink = createHttpLink({
 
 const authLink = setContext((_, { headers }) => {
   const token = localStorage.getItem('token');
-  const idToken = localStorage.getItem('id-token');
+  const idToken = localStorage.getItem('id_token');
   return {
     headers: {
       ...headers,
@@ -26,7 +26,6 @@ const authLink = setContext((_, { headers }) => {
     },
   };
 });
-
 
 
 const client = new ApolloClient({

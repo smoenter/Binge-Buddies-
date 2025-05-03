@@ -132,50 +132,32 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
             required
           ></textarea>
 
-            {/* Emoji picker */}
-            <div className="emoji-picker" style={{ margin: '0.5rem 0' }}>
+        {/* Emoji picker */}
+        <div className="emoji-picker" style={{ margin: '0.5rem 0' }}>
             <strong>Add an emoji:</strong>
-            <span
-              style={{ cursor: 'pointer', fontSize: '1.5rem', margin: '0 0.25rem' }}
-              onClick={() => setComment((prev) => prev + " 😀")}
-            >
-              😀
-            </span>
-            <span
-              style={{ cursor: 'pointer', fontSize: '1.5rem', margin: '0 0.25rem' }}
-              onClick={() => setComment((prev) => prev + " 😍")}
-            >
-              😍
-            </span>
-            <span
-              style={{ cursor: 'pointer', fontSize: '1.5rem', margin: '0 0.25rem' }}
-              onClick={() => setComment((prev) => prev + " 🤔")}
-            >
-              🤔
-            </span>
-            <span
-              style={{ cursor: 'pointer', fontSize: '1.5rem', margin: '0 0.25rem' }}
-              onClick={() => setComment((prev) => prev + " 😢")}
-            >
-              😢
-            </span>
+            <span onClick={() => setComment(prev => prev + " 😀")}>😀</span>
+            <span onClick={() => setComment(prev => prev + " 😍")}>😍</span>
+            <span onClick={() => setComment(prev => prev + " 🤔")}>🤔</span>
+            <span onClick={() => setComment(prev => prev + " 😢")}>😢</span>
           </div>
 
-          <div className="form-row">
-             Rate this media (1 = worst, 5 = best):
-             </div>
-
-            <input
-              id="rating-input"
-              type="number"
-              min={1}
-              max={5}
-              value={rating}
-              onChange={handleRatingChange}
-              className="form-input"
-              placeholder="Rating (1-5)"
-              required
-            />
+           {/* Star Rating */}
+           <div className="form-row">
+            <label>Rate this media:</label>
+            <div style={{ display: 'flex', gap: '0.25rem', fontSize: '1.75rem', cursor: 'pointer' }}>
+              {[1, 2, 3, 4, 5].map((star) => (
+                <span
+                  key={star}
+                  onClick={() => setRating(star)}
+                  style={{ color: star <= rating ? '#ffc107' : '#e4e5e9' }}
+                  role="button"
+                  aria-label={`Set rating to ${star}`}
+                >
+                  ★
+                </span>
+              ))}
+            </div>
+          </div>
          
 
           {error && <div className="error-message">{error.message}</div>}

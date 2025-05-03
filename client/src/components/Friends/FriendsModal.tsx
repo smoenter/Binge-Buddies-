@@ -13,9 +13,15 @@ interface Friends {
 interface FriendsModalProp {
   onClose: () => void;
   userId: string;
+  friendIds: Set<string>;
+  setFriendIds: (ids: Set<string>) => void;
 }
 
-export default function FriendsModal({ onClose }: FriendsModalProp) {
+export default function FriendsModal({
+  onClose,
+  friendIds,
+  setFriendIds,
+}: FriendsModalProp) {
   const { loading: friendsLoading, data: friendsData, error: friendsError } = useQuery(QUERY_FRIENDS);
   const [addFriend] = useMutation(ADD_FRIEND);
   const [removeFriend] = useMutation(REMOVE_FRIEND);
@@ -23,27 +29,10 @@ export default function FriendsModal({ onClose }: FriendsModalProp) {
   const [searchTerm, setSearchTerm] = useState("");
   const [filteredFriends, setFilteredFriends] = useState<Friends[]>([]);
   const [showAllFriends, setShowAllFriends] = useState(false);
-  const [currentFriendIds, setCurrentFriendIds] = useState<Set<string>>(new Set());
   const [message, setMessage] = useState("");
   const [messageStyle, setMessageStyle] = useState({});
 
-  // ✅ Load once from localStorage, fallback to GraphQL once
-  useEffect(() => {
-    const savedFriends = localStorage.getItem("friendIds");
-    if (savedFriends !== null) {
-      setCurrentFriendIds(new Set(JSON.parse(savedFriends)));
-    } else if (friendsData?.user?.friends) {
-      const friendIdsFromQuery = friendsData.user.friends.map((f: Friends) => f._id);
-      setCurrentFriendIds(new Set(friendIdsFromQuery));
-    }
-  }, []);
-
-  // ✅ Persist changes to localStorage
-  useEffect(() => {
-    localStorage.setItem("friendIds", JSON.stringify(Array.from(currentFriendIds)));
-  }, [currentFriendIds]);
-
-  // ✅ Filter friends as user types
+ // ✅ Filter friends as user types
   useEffect(() => {
     if (friendsData?.friends) {
       setFilteredFriends(
@@ -72,10 +61,10 @@ export default function FriendsModal({ onClose }: FriendsModalProp) {
     if (isFriend(friendId)) {
       try {
         await removeFriend({ variables: { friendId } });
-        setCurrentFriendIds((prev) => {
-          const newSet = new Set(prev);
-          newSet.delete(friendId);
-          return newSet;
+        setFriendIds((prev) => {
+          const updated = new Set(prev);
+          updated.delete(friendId);
+          return new Set(updated);
         });
       } catch (err) {
         console.error("Error removing friend:", err);
@@ -83,14 +72,14 @@ export default function FriendsModal({ onClose }: FriendsModalProp) {
     } else {
       try {
         await addFriend({ variables: { friendId } });
-        setCurrentFriendIds((prev) => new Set(prev).add(friendId));
+        setFriendIds((prev) => new Set(prev).add(friendId));
       } catch (err) {
         console.error("Error adding friend:", err);
       }
     }
   };
 
-  const isFriend = (id: string) => currentFriendIds.has(id);
+  const isFriend = (id: string) => friendIds.has(id);
 
   if (friendsLoading) return <p>Loading friends...</p>;
   if (friendsError) {
@@ -99,8 +88,9 @@ export default function FriendsModal({ onClose }: FriendsModalProp) {
   }
 
   const displayedUsers = showAllFriends
-    ? friendsData.friends.filter((user: Friends) => currentFriendIds.has(user._id))
+    ? friendsData.friends.filter((user: Friends) => friendIds.has(user._id))
     : filteredFriends;
+
 
   return (
     <div className="friends-modal">
