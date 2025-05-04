@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useQuery } from "@apollo/client";
 import { QUERY_ME } from "../utils/queries";
 import Toggle from "../components/Toggle";
@@ -8,6 +8,9 @@ import MediaCard from "../components/MediaCard";
 
 const YourWatchlist = () => {
   const { loading, data, refetch } = useQuery(QUERY_ME);
+  useEffect(() => {
+    refetch();
+  }, []);
   const [type, setType] = useState<"movie" | "series">("movie");
   const [searchTerm, setSearchTerm] = useState("");
 
