@@ -43,6 +43,15 @@ export default function FriendsModal({
     }
   }, [searchTerm, friendsData]);
 
+    // Auto-clear message after 3 seconds
+    useEffect(() => {
+      if (message) {
+        const timer = setTimeout(() => setMessage(""), 3000);
+        return () => clearTimeout(timer);
+      }
+    }, [message]);
+
+
   const handleSearch = () => {
     const result = filteredFriends.filter((friend) =>
       friend.username.toLowerCase() === searchTerm.toLowerCase()
@@ -56,7 +65,7 @@ export default function FriendsModal({
     }
   };
 
-  const toggleFriendship = async (friendId: string) => {
+  const toggleFriendship = async (friendId: string, username: string) => {
     if (isFriend(friendId)) {
       try {
         await removeFriend({ variables: { friendId } });
@@ -65,6 +74,8 @@ export default function FriendsModal({
           updated.delete(friendId);
           return updated;
         });
+        setMessage(`Removed ${username} from your friends.`);
+        setMessageStyle({ color: "red", fontWeight: "bold", marginTop: "10px" });
       } catch (err) {
         console.error("Error removing friend:", err);
       }
@@ -76,11 +87,14 @@ export default function FriendsModal({
           updated.add(friendId);
           return updated;
         });
+        setMessage(`Added ${username} to your friends.`);
+        setMessageStyle({ color: "green", fontWeight: "bold", marginTop: "10px" });
       } catch (err) {
         console.error("Error adding friend:", err);
       }
     }
-  };
+  }
+
   const isFriend = (id: string) => friendIds.has(id);
 
   if (friendsLoading) return <p>Loading friends...</p>;
@@ -134,7 +148,7 @@ export default function FriendsModal({
             <div key={user._id} className="friend-card">
               <span>{user.username}</span>
               <button
-                onClick={() => toggleFriendship(user._id)}
+                onClick={() => toggleFriendship(user._id, user.username)}
                 className={`btn ${isFriend(user._id) ? "btn-unfriend" : "btn-friend"}`}
               >
                 {isFriend(user._id) ? "Unfriend" : "Friend"}
