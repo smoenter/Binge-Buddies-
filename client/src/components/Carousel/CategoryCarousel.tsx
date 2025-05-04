@@ -118,6 +118,7 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
             {isModalOpen && selectedMedia && (
                 <MediaModal
                     imdbID={selectedMedia.imdbID}
+                    title={selectedMedia.title}
                     onClose={() => setIsModalOpen(false)}
                 />
             )}

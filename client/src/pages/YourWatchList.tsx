@@ -8,11 +8,12 @@ import MediaCard from "../components/MediaCard";
 
 const YourWatchlist = () => {
   const { loading, data, refetch } = useQuery(QUERY_ME);
+  const [type, setType] = useState<"movie" | "series">("movie");
+  const [searchTerm, setSearchTerm] = useState("");
+
   useEffect(() => {
     refetch();
   }, []);
-  const [type, setType] = useState<"movie" | "series">("movie");
-  const [searchTerm, setSearchTerm] = useState("");
 
   const handleToggle = (newType: "movie" | "series") => {
     setType(newType);
