@@ -26,8 +26,9 @@ const Reactions = () => {
     <div>
       <h1>💬 Reaction Dashboard</h1>
       <div className="my-4">
-        <AddReactionForm mediaId={media._id} />
+        {/* <AddReactionForm mediaId={media._id} /> */}
         <ReactionList mediaId={media._id} />
+        <AddReactionForm mediaId={media._id} />
       </div>
     </div>
   );

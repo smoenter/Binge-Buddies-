@@ -40,6 +40,7 @@ const Header = () => {
           {/* FRIEND ICON SHOWS UP ON REACTIONS */}
           {/* {isReactionPage && <FriendsIcon />} */}
 
+
           {/* LOGOUT BUTTON */}
         <div className="authentication-logout-button">
           <button className="custom-btn btn btn-lg btn-light" onClick={logout}>
