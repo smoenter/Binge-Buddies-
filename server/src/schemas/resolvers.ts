@@ -2,6 +2,7 @@ import { User, Media, Reaction } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 import { fetchMedia, mediaTypeType, fetchMediaByImdb } from '../utils/apiFetchers.js';
 import { sendInviteEmail } from '../utils/inviteSender.js';
+import mongoose from 'mongoose';
 
 const resolvers = {
   Query: {
@@ -103,10 +104,21 @@ const resolvers = {
 
     addReaction: async (_parent: any, { mediaId, comment, season, episode, rating }: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
-
+    
+      // ✅ Check if mediaId is a valid ObjectId
+      if (!mongoose.Types.ObjectId.isValid(mediaId)) {
+        throw new Error('Invalid media ID format');
+      }
+    
+      // ✅ Optional: verify media exists
+      const mediaExists = await Media.findById(mediaId);
+      if (!mediaExists) {
+        throw new Error("Media not found.");
+      }
+    
       return await Reaction.create({
         user: context.user._id,
-        media: mediaId,
+        media: new mongoose.Types.ObjectId(mediaId),
         comment,
         season,
         episode,

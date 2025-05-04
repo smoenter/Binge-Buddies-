@@ -19,7 +19,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
   const [episode, setEpisode] = useState('');
   // const [thoughtText, setThoughtText] = useState('');
   const [comment, setComment] = useState('')
-  const [rating, setRating] = useState(0);
+  const [rating, setRating] = useState(1);
   const [characterCount, setCharacterCount] = useState(0);
 
   // const [addThought, { error }] = useMutation(ADD_THOUGHT, {
@@ -33,15 +33,16 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
     ]
   });
 
+  const isValidObjectId = (id: string) => /^[a-f\d]{24}$/i.test(id);
+
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
-
-    
-  if (!mediaId) {
-    console.error("No mediaId provided");
-    return;
-  }
-
+  
+    if (!mediaId || !isValidObjectId(mediaId)) {
+      console.error("Invalid or missing mediaId.");
+      return;
+    }
+  
     try {
       await addReaction({
         variables: {
