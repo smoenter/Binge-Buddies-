@@ -1,5 +1,5 @@
 import { useQuery } from '@apollo/client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { GET_REACTIONS } from '../../utils/queries';
 import CommentForm from '../CommentForm';
 import CommentList from '../CommentList';
@@ -12,24 +12,44 @@ const ReactionList = ({ mediaId }: { mediaId: string }) => {
     variables: { mediaId },
   });
 
+ const [reactions, setReactions] = useState<any[]>([]);
   const [activeCommentId, setActiveCommentId] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (data?.reactions) {
+      setReactions(data.reactions);
+    }
+  }, [data]);
+ 
   const toggleCommentForm = (reactionId: string) => {
     setActiveCommentId((prev) => (prev === reactionId ? null : reactionId));
   };
-
-
+  
   if (reactionLoading) return <p>Loading reactions...</p>;
   if (reactionError) return <p>Error loading reactions.</p>;
 
-  return (
+  const handleCommentAdded = (reactionId: string, newComment: any) => {
+    setReactions((prevReactions) =>
+      prevReactions.map((reaction) =>
+        reaction._id === reactionId
+          ? {
+              ...reaction,
+              comments: [...(reaction.comments || []), newComment],
+            }
+          : reaction
+      )
+    );
+  };
+
+   return (
     <div className="reaction-list-container">
       <h3>Reactions</h3>
-      {data.reactions.length === 0 ? (
+      {reactions.length === 0 ? (
         <p>No reactions yet.</p>
       ) : (
-        data.reactions.map((r: any) => (
+        reactions.map((r: any) => (
           <div key={r._id} className="reaction-card">
+            <p>Title {r.title}</p>
             <p>{r.comment}</p>
             <p>Season {r.season}, Episode {r.episode}</p>
             <p>Rating: {r.rating}</p>
@@ -43,14 +63,15 @@ const ReactionList = ({ mediaId }: { mediaId: string }) => {
               />
             </button>
 
+            {/* Ensure comments is always an array */}
             {activeCommentId === r._id && (
               <>
                 <CommentForm
-                  thoughtId={r._id}
-                  onCommentAdded={fetch} // trigger refetch on new comment
+                  reactionId={r._id}
+                  onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment)}
                 />
-                <CommentList comments={r.comments} />
-                </>
+                <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
+              </>
             )}
 
           </div>

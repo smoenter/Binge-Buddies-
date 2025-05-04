@@ -95,6 +95,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
 
           <input
             type="text"
+            name="title"
             placeholder="Title (required)"
             value={title}
             onChange={(e) => setTitle(e.target.value)}
@@ -188,25 +189,4 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
 
 export default AddReactionForm;
 
-// try {
-//   await addThought({
-//     variables: {
-//       input: {
-//         title,
-//         season,
-//         episode,
-//         thoughtText,
-//         thoughtAuthor: Auth.getProfile().data.username,
-//       },
-//     },
-//   });
-//   setTitle('');
-//   setComment('')
-//   setSeason('');
-//   setEpisode('');
-//   setThoughtText('');
-//   setCharacterCount(0);
-//   setIsOpen(false);
-// } catch (err) {
-//   console.error(err);
-// }
+ 

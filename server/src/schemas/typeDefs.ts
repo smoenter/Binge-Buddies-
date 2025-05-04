@@ -38,6 +38,7 @@ const typeDefs = `
     episode: Int
     rating: Int
     createdAt: String
+    comments: [Comment]
   }
 
     type Thought {
@@ -49,9 +50,9 @@ const typeDefs = `
   }
 
   type Comment {
-    _id: ID
-    commentText: String
-    createdAt: String
+    _id: ID!
+    commentText: String!
+    createdAt: String!
   }
 
   input ThoughtInput {
@@ -94,7 +95,7 @@ const typeDefs = `
     addFriend(friendId: ID!): User
     removeFriend(friendId: ID!): User
     addThought(input: ThoughtInput!): Thought
-    addComment(thoughtId: ID!, commentText: String!): Thought
+    addComment(reactionId: ID!, commentText: String!): Reaction
     removeThought(thoughtId: ID!): Thought
     removeComment(thoughtId: ID!, commentId: ID!): Thought
     inviteFriend(email: String!): InviteResponse
