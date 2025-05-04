@@ -3,27 +3,32 @@
 // import { useParams } from "react-router-dom";
 import AddReactionForm from "../components/AddReactionForm";
 import ReactionList from "../components/ReactionList.tsx";
+import { useParams } from "react-router-dom";
+import { useQuery } from "@apollo/client";
+import { QUERY_ME } from "../utils/queries";
 
 
 const Reactions = () => {
-  const mediaId = "exampleMediaId"; // Replace with actual mediaId logic
+  const { imdbID } = useParams(); // Get imdbID from route
+  const { data, loading, error } = useQuery(QUERY_ME);
+
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error loading user data.</p>;
+
+  const savedMedia = data?.me?.savedMedia || [];
+  const media = savedMedia.find((m: any) => m.imdbID === imdbID);
+
+  if (!media) {
+    return <p>Media not found. Please save it to your watchlist first.</p>;
+  }
 
   return (
     <div>
-      {/* <FriendsButton/> */}
       <h1>💬 Reaction Dashboard</h1>
-      {/* Friend search + add/unfriend UI here */}
       <div className="my-4">
-      <AddReactionForm mediaId={mediaId} />
-      <ReactionList mediaId={mediaId}/>
-
-        {/* PostCard could include heart + comment functionality */}
-        {/* <PostCard username="friend1" content="LOVED The Matrix!" /> */}
-        {/* <PostCard username="you" content="Omg Succession finale 💀" /> */}
+        <AddReactionForm mediaId={media._id} />
+        <ReactionList mediaId={media._id} />
       </div>
-   
-      {/* <FriendsButton/> */}
-   
     </div>
   );
 };
