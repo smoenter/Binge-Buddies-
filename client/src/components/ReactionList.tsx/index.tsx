@@ -1,6 +1,7 @@
-import { useQuery } from '@apollo/client';
+import { useQuery, useMutation } from '@apollo/client';
 import { useState, useEffect } from 'react';
 import { GET_REACTIONS } from '../../utils/queries';
+import { REMOVE_REACTION } from '../../utils/mutations';
 import CommentForm from '../CommentForm';
 import CommentList from '../CommentList';
 
@@ -8,8 +9,13 @@ import './index.css';
 
 const ReactionList = ({ mediaId }: { mediaId: string }) => {
 
-  const { loading: reactionLoading, error: reactionError, data } = useQuery(GET_REACTIONS, {
+  const { loading: reactionLoading, error: reactionError, data, refetch } = useQuery(GET_REACTIONS, {
     variables: { mediaId },
+  });
+
+  const [removeReaction] = useMutation(REMOVE_REACTION, {
+    onCompleted: () => refetch(),
+    onError: (err) => console.error('Failed to delete reaction:', err),
   });
 
  const [reactions, setReactions] = useState<any[]>([]);
@@ -23,6 +29,10 @@ const ReactionList = ({ mediaId }: { mediaId: string }) => {
  
   const toggleCommentForm = (reactionId: string) => {
     setActiveCommentId((prev) => (prev === reactionId ? null : reactionId));
+  };
+
+  const handleDelete = async (reactionId: string) => {
+    await removeReaction({ variables: { reactionId } });
   };
   
   if (reactionLoading) return <p>Loading reactions...</p>;
@@ -49,11 +59,20 @@ const ReactionList = ({ mediaId }: { mediaId: string }) => {
       ) : (
         reactions.map((r: any) => (
           <div key={r._id} className="reaction-card">
-            <p>Title {r.title}</p>
+             <p><strong>Title:</strong> {r.title || 'Untitled'}</p>
             <p>{r.comment}</p>
             <p>Season {r.season}, Episode {r.episode}</p>
             <p>Rating: {r.rating}</p>
             <small>{new Date(r.createdAt).toLocaleString()}</small>
+
+            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+              <button onClick={() => toggleCommentForm(r._id)} title="Add comment">
+                💬
+              </button>
+              <button onClick={() => handleDelete(r._id)} title="Delete reaction">
+                🗑️
+              </button>
+            </div>
 
             <button onClick={() => toggleCommentForm(r._id)}>
               <img

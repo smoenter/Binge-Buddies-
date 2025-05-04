@@ -119,3 +119,11 @@ export const ADD_REACTION = gql`
     }
   }
 `;
+
+export const REMOVE_REACTION = gql`
+  mutation RemoveReaction($reactionId: ID!) {
+    removeReaction(reactionId: $reactionId) {
+      _id
+    }
+  }
+`;
