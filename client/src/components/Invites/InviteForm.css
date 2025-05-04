@@ -41,7 +41,7 @@
   }
   
   .invite-button {
-    background: linear-gradient(to right, #D9484F, #d64e55);
+    background:  #D9484F;
     color: white;
     padding: 0.75rem;
     border: none;
@@ -53,7 +53,8 @@
   }
   
   .invite-button:hover {
-    background: linear-gradient(to right, #2563eb, #1d4ed8);
+    background: #d11717;
+    /* #d11717 */
     transform: translateY(-2px);
   }
   
