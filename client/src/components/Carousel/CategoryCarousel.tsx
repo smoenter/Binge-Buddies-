@@ -76,14 +76,15 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
             {categories.map((category) => (
                 <div key={category} className="category-section">
                     <h2 className="category-title">{category}</h2>
-                    <div className="carousel-wrapper">
+                    <div className="carousel-and-buttons">
                         <button
                             className="scroll-btn left"
                             onClick={() => scrollCarousel(category, "left")}
                             aria-label="Scroll left"
                         >
-                            ◀
+                            <img width="30" height="30" src="https://img.icons8.com/fluency-systems-regular/48/less-than.png" alt="less-than"/>
                         </button>
+                        <div className="carousel-wrapper">
                         <div className="carousel" ref={(el) => (carouselsRef.current[category] = el)}>
                             {mediaByCategory[category]?.map((media) => {
                                 return (
@@ -102,13 +103,14 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
                                     />
                                 );
                             })}
+                            </div>
                         </div>
                         <button
                             className="scroll-btn right"
                             onClick={() => scrollCarousel(category, "right")}
                             aria-label="Scroll right"
                         >
-                            ▶
+                            <img width="30" height="30" src="https://img.icons8.com/fluency-systems-regular/48/more-than.png" alt="more-than"/>
                         </button>
                     </div>
                 </div>

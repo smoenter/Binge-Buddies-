@@ -30,6 +30,17 @@
     padding: 10px 20px;
     scrollbar-width: none;
   }
+
+  .carousel-and-buttons {
+    display: flex;
+    align-items: center;
+    position: relative;
+}
+
+  .carousel-wrapper {
+    overflow: hidden;
+    flex: 1; /* take up as much space as possible between buttons */
+}
   
   .carousel::-webkit-scrollbar {
     display: none;
@@ -42,30 +53,22 @@
   }
   
   .scroll-btn {
-    position: absolute;
-    top: 40%;
-    transform: translateY(-50%);
-    background-color: rgba(255, 255, 255, 0.9);
+    background: none;
     border: none;
-    border-radius: 50%;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
-    font-size: 20px;
-    padding: 10px 14px;
     cursor: pointer;
     z-index: 10;
-    transition: transform 0.2s ease, background-color 0.2s ease;
-  }
+    padding: 0.5rem;
+}
+
+.scroll-btn.left {
+    margin-right: 1rem;
+}
+
+.scroll-btn.right {
+    margin-left: 1rem;
+}
   
-  .scroll-btn:hover {
-    transform: translateY(-50%) scale(1.1);
-    background-color: rgba(255, 255, 255, 1);
-  }
   
-  .scroll-btn.left {
-    left: 5px;
-  }
   
-  .scroll-btn.right {
-    right: 5px;
-  }
+  
   
