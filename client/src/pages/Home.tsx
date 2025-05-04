@@ -26,8 +26,8 @@ const Home = () => {
           
         ) : (
           <div className="glass-card text-center">
-            <h2>Welcome back, {Auth.getProfile().data.username}!</h2>
-            <p>You're logged in and ready to react!
+            <h2 className="wlcm-bck-txt">Welcome back, {Auth.getProfile().data.username}!</h2>
+            <p>You're logged in and ready to binge!
             </p>
           </div>
         )}

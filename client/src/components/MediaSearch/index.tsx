@@ -20,6 +20,7 @@ const MediaSearch = ({ results, refetch }: Props) => {
           {results.map((movie: any) => {
             const match = savedMedia.find((item: any) => item.imdbID === movie.imdbID);
             return (
+              
               <MediaCard
                 key={movie.imdbID}
                 title={movie.Title}
