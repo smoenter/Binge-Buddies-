@@ -32,6 +32,21 @@ export default function FriendsModal({
   const [message, setMessage] = useState("");
   const [messageStyle, setMessageStyle] = useState({});
 
+    // ✅ Load friendIds from localStorage on mount
+    useEffect(() => {
+      const storedFriendIds = localStorage.getItem("friendIds");
+      if (storedFriendIds) {
+        try {
+          const parsedIds = JSON.parse(storedFriendIds);
+          if (Array.isArray(parsedIds)) {
+            setFriendIds(new Set(parsedIds));
+          }
+        } catch (e) {
+          console.error("Failed to parse stored friend IDs:", e);
+        }
+      }
+    }, []);
+
  // ✅ Filter friends as user types
   useEffect(() => {
     if (friendsData?.friends) {
@@ -66,34 +81,36 @@ export default function FriendsModal({
   };
 
   const toggleFriendship = async (friendId: string, username: string) => {
-    if (isFriend(friendId)) {
-      try {
+    const isCurrentlyFriend = friendIds.has(friendId);
+
+    try {
+      if (isCurrentlyFriend) {
         await removeFriend({ variables: { friendId } });
-        setFriendIds((prev: Set<string>) => {
-          const updated = new Set(prev);
-          updated.delete(friendId);
-          return updated;
-        });
-        setMessage(`Removed ${username} from your friends.`);
-        setMessageStyle({ color: "red", fontWeight: "bold", marginTop: "10px" });
-      } catch (err) {
-        console.error("Error removing friend:", err);
-      }
-    } else {
-      try {
+      } else {
         await addFriend({ variables: { friendId } });
-        setFriendIds((prev: Set<string>) => {
-          const updated = new Set(prev);
-          updated.add(friendId);
-          return updated;
-        });
-        setMessage(`Added ${username} to your friends.`);
-        setMessageStyle({ color: "green", fontWeight: "bold", marginTop: "10px" });
-      } catch (err) {
-        console.error("Error adding friend:", err);
       }
+
+      setFriendIds((prev: Set<string>) => {
+        const updated = new Set(prev);
+        if (isCurrentlyFriend) {
+          updated.delete(friendId);
+          setMessage(`Removed ${username} from your friends.`);
+          setMessageStyle({ color: "red", fontWeight: "bold", marginTop: "10px" });
+        } else {
+          updated.add(friendId);
+          setMessage(`Added ${username} to your friends.`);
+          setMessageStyle({ color: "green", fontWeight: "bold", marginTop: "10px" });
+        }
+
+        // ✅ Save to localStorage
+        localStorage.setItem("friendIds", JSON.stringify(Array.from(updated)));
+
+        return updated;
+      });
+    } catch (err) {
+      console.error("Error toggling friendship:", err);
     }
-  }
+  };
 
   const isFriend = (id: string) => friendIds.has(id);
 

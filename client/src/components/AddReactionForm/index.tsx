@@ -12,20 +12,18 @@ interface AddReactionFormProps {
   mediaId: string; // required to associate the reaction
 }
 
+
+//Form Fields
 const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
   const [isOpen, setIsOpen] = useState(false);
   const [title, setTitle] = useState('');
   const [season, setSeason] = useState('');
   const [episode, setEpisode] = useState('');
-  // const [thoughtText, setThoughtText] = useState('');
   const [comment, setComment] = useState('')
   const [rating, setRating] = useState(1);
   const [characterCount, setCharacterCount] = useState(0);
 
-  // const [addThought, { error }] = useMutation(ADD_THOUGHT, {
-  //   refetchQueries: [QUERY_THOUGHTS, 'getThoughts', QUERY_ME, 'me'],
-  // });
-
+  //Mutation hook for adding a reaction
   const [addReaction, { error }] = useMutation(ADD_REACTION, {
     refetchQueries: [
       { query: GET_REACTIONS, variables: { mediaId } },
@@ -33,17 +31,20 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
     ]
   });
 
+  //Helper to validate MongoDB ObjectId format
   const isValidObjectId = (id: string) => /^[a-f\d]{24}$/i.test(id);
 
+  //Form submission handler
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
-  
+
     if (!mediaId || !isValidObjectId(mediaId)) {
       console.error("Invalid or missing mediaId.");
       return;
     }
-  
+
     try {
+      // Perform the mutation
       await addReaction({
         variables: {
           mediaId,
@@ -66,6 +67,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
     }
   };
 
+  //Character count and comment handler
   const handleTextChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value;
     if (value.length <= 280) {
@@ -74,10 +76,6 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
     }
   };
 
-  // const handleRatingChange = (event: ChangeEvent<HTMLInputElement>) => {
-  //   const value = parseInt(event.target.value, 10);
-  //   setRating(isNaN(value) ? 1 : value); // Default to 1 if invalid
-  // };
 
   return (
     <div className="add-reaction-container">
@@ -90,6 +88,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
           <img width="24" height="24" src="https://img.icons8.com/ios/50/plus-math--v1.png" alt="add" />
         </button>
       ) : (
+        // Render the form when isOpen is true
         <form onSubmit={handleFormSubmit} className="reaction-form">
           <h3 className="form-title">Add a Reaction</h3>
 
@@ -134,8 +133,8 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
             required
           ></textarea>
 
-        {/* Emoji picker */}
-        <div className="emoji-picker" style={{ margin: '0.5rem 0' }}>
+          {/* Emoji picker */}
+          <div className="emoji-picker" style={{ margin: '0.5rem 0' }}>
             <strong>Add an emoji:</strong>
             <span className="emoji-button" onClick={() => setComment(prev => prev + " 😀")}>😀</span>
             <span className="emoji-button" onClick={() => setComment(prev => prev + " 😍")}>😍</span>
@@ -145,8 +144,8 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
             <span className="emoji-button" onClick={() => setComment(prev => prev + " 😲")}>😲</span>
           </div>
 
-           {/* Star Rating */}
-           <div className="form-row">
+          {/* Star Rating */}
+          <div className="form-row">
             <label>Rating:</label>
             <div style={{ display: 'flex', gap: '0.25rem', fontSize: '1.75rem', cursor: 'pointer' }}>
               {[1, 2, 3, 4, 5].map((star) => (
@@ -162,7 +161,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
               ))}
             </div>
           </div>
-         
+
 
           {error && <div className="error-message">{error.message}</div>}
 
@@ -189,4 +188,3 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
 
 export default AddReactionForm;
 
- 
