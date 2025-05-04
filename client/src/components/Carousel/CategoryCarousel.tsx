@@ -1,6 +1,7 @@
 import { useEffect, useState, useRef } from "react";
 import "./CategoryCarousel.css";
 import MediaCard from "../MediaCard";
+import MediaModal from "../MediaModal";
 import { useLazyQuery } from "@apollo/client";
 import { QUERY_MEDIA } from "../../utils/queries";
 
@@ -17,6 +18,8 @@ type Props = {
 
 const CategoryCarousel = ({ savedList, type }: Props) => {
     const [mediaByCategory, setMediaByCategory] = useState<{ [key: string]: any[] }>({});
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [selectedMedia, setSelectedMedia] = useState<any>(null);
     const carouselsRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
 
     const [loadMedia] = useLazyQuery(QUERY_MEDIA);
@@ -73,17 +76,17 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
             {categories.map((category) => (
                 <div key={category} className="category-section">
                     <h2 className="category-title">{category}</h2>
-                    <div className="carousel-wrapper">
+                    <div className="carousel-and-buttons">
                         <button
                             className="scroll-btn left"
                             onClick={() => scrollCarousel(category, "left")}
                             aria-label="Scroll left"
                         >
-                            ◀
+                            <img width="30" height="30" src="https://img.icons8.com/fluency-systems-regular/48/less-than.png" alt="less-than"/>
                         </button>
+                        <div className="carousel-wrapper">
                         <div className="carousel" ref={(el) => (carouselsRef.current[category] = el)}>
                             {mediaByCategory[category]?.map((media) => {
-                                console.log("Media Item:", media); // <- ADD THIS
                                 return (
                                     <MediaCard
                                         key={media.imdbID}
@@ -93,20 +96,31 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
                                         imdbID={media.imdbID}
                                         saved={media.saved}
                                         mediaId={media.mediaId}
+                                        onClick={() => {
+                                            setSelectedMedia(media);
+                                            setIsModalOpen(true);
+                                        }}
                                     />
                                 );
                             })}
+                            </div>
                         </div>
                         <button
                             className="scroll-btn right"
                             onClick={() => scrollCarousel(category, "right")}
                             aria-label="Scroll right"
                         >
-                            ▶
+                            <img width="30" height="30" src="https://img.icons8.com/fluency-systems-regular/48/more-than.png" alt="more-than"/>
                         </button>
                     </div>
                 </div>
             ))}
+            {isModalOpen && selectedMedia && (
+                <MediaModal
+                    imdbID={selectedMedia.imdbID}
+                    onClose={() => setIsModalOpen(false)}
+                />
+            )}
         </div>
     );
 };
