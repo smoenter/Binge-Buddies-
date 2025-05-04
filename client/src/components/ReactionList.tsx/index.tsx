@@ -22,7 +22,7 @@ const ReactionList = ({ mediaId }: { mediaId: string }) => {
   if (reactionError) return <p>Error loading reactions.</p>;
 
   return (
-    <div>
+    <div className="reaction-list-container">
       <h3>Reactions</h3>
       {data.reactions.length === 0 ? (
         <p>No reactions yet.</p>
