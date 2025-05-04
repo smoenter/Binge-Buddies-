@@ -1,0 +1,33 @@
+/* .container-browse {
+  background-color: #111827;
+  color: #f9fafb;
+  min-height: calc(100vh - 20px);
+  padding: 20px;
+} */
+
+.container-browse {
+    color: #f9fafb;
+    min-height: 100%;
+    padding: 20px;
+}
+
+.container-browse h1 {
+  margin-bottom: 1rem; /* replaces mb-4 */
+}
+
+.container-browse button {
+  margin-top: 0.5rem; /* replaces mt-2 */
+}
+
+.container-browse .results-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem; /* replaces gap-3 */
+  margin-top: 1rem; /* replaces mt-4 */
+}
+
+main {
+    min-height: 100vh;
+    background-color: #111827;
+    padding-top: 20px;
+  }

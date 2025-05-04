@@ -3,15 +3,6 @@ body, h1, h2, h3, h4, h5, h6, p, a, span, div {
   text-shadow: none;
 }
 
-body {
-  background-color: #1f2937; /* dark gray */
-  color: #f9fafb;           /* light text */
-  margin: 0;
-  font-family: system-ui, sans-serif;
-  padding-top: 20px; /* adjust if you have a navbar */
-  min-height: 100vh; /* ensures body fills viewport */
-}
-
 * {
   margin: 0;
   padding: 0;
@@ -19,11 +10,23 @@ body {
   font-family: Outfit, sans-serif;
 }
 
-html {
+html, body {
   height: 100%;
+  width: 100%;
+  margin: 0;
+  padding: 0;
 }
 
 body {
-  width: 100%;
-  background-color: #1f2937;
+  background-color: #111827; /* or your preferred dark color */
+  margin: 0;
+  padding: 0;
+}
+
+main {
+  padding-top: 20px; /* if you have a navbar, apply padding inside main, not body */
+}
+
+.app-container {
+  flex: 1;
 }

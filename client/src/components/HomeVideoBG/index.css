@@ -22,10 +22,11 @@
   position: absolute;
   top: 50%;
   left: 50%;
+  /* Use the larger of these two to fully cover the screen */
   width: 100vw;
-  height: 56.25vw; /* 16:9 aspect ratio based on width */
-  min-height: 120vh;
-  min-width: 177.77vh; /* 16:9 aspect ratio based on height */
+  height: 56.25vw; /* 16:9 ratio based on width */
+  min-height: 100vh;
+  min-width: 177.78vh; /* 16:9 ratio based on height */
   transform: translate(-50%, -50%);
   border: none;
   pointer-events: none;
@@ -38,6 +39,6 @@
   left: 0;
   width: 100%;
   height: 100%;
-  background-color: #1f2937; /* dark gray background */
-  z-index: -1; /* sits behind the video iframe */
+  background-color: #1f2937;
+  z-index: -2;
 }

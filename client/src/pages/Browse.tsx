@@ -6,6 +6,8 @@ import CategoryCarousel from "../components/Carousel/CategoryCarousel";
 import { QUERY_MEDIA, QUERY_ME } from "../utils/queries";
 import { useQuery, useLazyQuery } from "@apollo/client";
 
+import "./css/Browse.css";
+
 const Browse = () => {
   const [type, setType] = useState<"movie" | "series">("movie");
   const [searchResults, setSearchResults] = useState<any[]>([]);
@@ -83,17 +85,18 @@ const Browse = () => {
   };
 
   return (
-    <div className="container-browse">
-      <h1 className="mb-4">Browse</h1>
+    <div className="container-browse" >
+      <h1>Browse</h1>
       <Toggle handleToggle={handleToggle} type={type} />
       <SearchComponent onSearch={handleSearch} />
 
       {/* Back to Browse button only shows if there are search results */}
       {searchResults.length > 0 && (
         <button
-          className="btn btn-secondary mt-2"
+          className="btn btn-secondary"
           onClick={handleClearSearch}
         >
+          <img width="25" height="25" src="https://img.icons8.com/flat-round/64/back--v1.png" alt="back--v1"/>
           Back to Browse
         </button>
       )}
@@ -103,7 +106,7 @@ const Browse = () => {
         <CategoryCarousel savedList={savedList} type={type} />
       ) : (
         // Show search results when active
-        <div className="d-flex flex-wrap gap-3 mt-4">
+        <div className="results-container">
           <MediaSearch results={searchResults} refetch={refetchUser} />
         </div>
       )}

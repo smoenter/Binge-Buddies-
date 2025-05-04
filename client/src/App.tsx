@@ -35,12 +35,11 @@ const client = new ApolloClient({
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="flex-column justify-flex-start min-100-vh">
+      <div className="d-flex flex-column min-vh-100">
         <Header />
-        <div className="container">
+        <div className="app-container flex-grow-1">
           <Outlet />
         </div>
-        <Footer />
 
         {/* Add toaster here so it works globally */}
         <Toaster
@@ -53,6 +52,7 @@ function App() {
             },
           }}
         />
+        <Footer />
       </div>
     </ApolloProvider>
   );
