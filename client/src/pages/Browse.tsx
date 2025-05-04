@@ -22,6 +22,12 @@ const Browse = () => {
   const handleSearch = async (query: string) => {
     setLastQuery(query);
 
+    if (!query.trim()) {
+      // If search is cleared, reset searchResults
+      setSearchResults([]);
+      return;
+    }
+
     try {
       const { data: searchData } = await fetchMedia({
         variables: { title: query, type },
@@ -77,19 +83,21 @@ const Browse = () => {
       <Toggle handleToggle={handleToggle} type={type} />
       <SearchComponent onSearch={handleSearch} />
 
-      {/* Category Carousels */}
-      <CategoryCarousel savedList={savedList} type={type} />
-
-      <div className="d-flex flex-wrap gap-3 mt-4">
-        <MediaSearch results={searchResults} refetch={refetchUser} />
-      </div>
+      {searchResults.length === 0 ? (
+        // Show carousel when no search results
+        <CategoryCarousel savedList={savedList} type={type} />
+      ) : (
+        // Show search results when active
+        <div className="d-flex flex-wrap gap-3 mt-4">
+          <MediaSearch results={searchResults} refetch={refetchUser} />
+        </div>
+      )}
 
       {loading && <p>Loading...</p>}
       {error && <p className="text-danger">Error: {error.message}</p>}
     </div>
   );
 };
-
 export default Browse;
 
 
