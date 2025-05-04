@@ -2,6 +2,7 @@ import { useQuery } from '@apollo/client';
 import { useState } from 'react';
 import { GET_REACTIONS } from '../../utils/queries';
 import CommentForm from '../CommentForm';
+import CommentList from '../CommentList';
 
 import './index.css';
 
@@ -42,7 +43,15 @@ const ReactionList = ({ mediaId }: { mediaId: string }) => {
               />
             </button>
 
-            {activeCommentId === r._id && <CommentForm thoughtId={r._id} />}
+            {activeCommentId === r._id && (
+              <>
+                <CommentForm
+                  thoughtId={r._id}
+                  onCommentAdded={fetch} // trigger refetch on new comment
+                />
+                <CommentList comments={r.comments} />
+                </>
+            )}
 
           </div>
         ))
