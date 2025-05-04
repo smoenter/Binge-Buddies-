@@ -1,28 +1,24 @@
-.custom-modal-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.6); /* Background with slight transparency */
-  backdrop-filter: blur(8px);
-  display: flex;
-  justify-content: center; /* Center horizontally */
-  align-items: center; /* Center vertically */
-  z-index: 1000;
-  padding: 1rem;
-}
-
 .custom-modal-content {
-  background: #fff;
-  border-radius: 1rem;
+  background: rgba(43, 43, 43, 0.621);
+  border-radius: 1.25rem;
   padding: 2rem;
-  width: auto; /* Auto width for responsiveness */
-  max-width: 500px; /* Set a max-width to avoid squishing */
+  width: 100%;
+  max-width: 400px;
   max-height: 90vh;
-  height: auto; /* Let the height adjust to content */
+  height: auto;
   overflow-y: auto;
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.3);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
   position: relative;
   text-align: center;
-  margin: 0 auto; /* Ensure centered horizontally */
+  margin: 0 auto;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  color: rgba(241, 238, 238, 0.893);
+  padding-right: calc(2rem + 8px);
+}
+
+.custom-modal-content:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5);
 }
 
 .close-button {
@@ -31,28 +27,38 @@
   right: 1rem;
   background: none;
   border: none;
-  font-size: 1.8rem;
+  font-size: 2rem;
   cursor: pointer;
-  color: #333;
-  transition: transform 0.2s ease;
+  color: #444;
+  transition: transform 0.3s ease, color 0.3s ease;
+  margin: 4px;
 }
 
 .close-button:hover {
-  transform: rotate(90deg);
+  transform: rotate(90deg) scale(1.2);
+  color: #d90429;
 }
 
 .modal-poster {
   width: 100%;
   height: auto;
   border-radius: 0.75rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+  transition: transform 0.3s ease;
+  max-width: 200px;
+}
+
+.modal-poster:hover {
+  transform: scale(1.03);
 }
 
 .modal-plot-description {
   font-size: 1rem;
-  color: #555;
-  margin-bottom: 1rem;
+  color: #dad8d8;
+  margin-bottom: 1.2rem;
   text-align: left;
+  line-height: 1.6;
 }
 
 .trailer-link {
@@ -68,6 +74,25 @@
 }
 
 .trailer-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0 6px 15px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px) scale(1.05);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+}
+
+.title-and-year-txt{
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #f8f9fa;
+  margin-bottom: 0.5rem;
+}
+
+.custom-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.7);
+  backdrop-filter: blur(10px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  padding: 1rem;
 }
