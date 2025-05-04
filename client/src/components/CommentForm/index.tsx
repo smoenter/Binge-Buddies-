@@ -1,34 +1,46 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
 import { useMutation } from '@apollo/client';
-
 import { ADD_COMMENT } from '../../utils/mutations';
 
-const CommentForm = ({ thoughtId }: any) => {
+interface CommentFormProps {
+  reactionId: string;
+  onCommentAdded: (newComment: any) => void;
+  onReactionAdded?: (newReaction:any) => void;
+}
+
+const CommentForm = ({ reactionId, onCommentAdded }: CommentFormProps) => {
   const [commentText, setCommentText] = useState('');
   const [characterCount, setCharacterCount] = useState(0);
 
+  
   const [addComment, { error }] = useMutation(ADD_COMMENT);
 
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
     try {
-      await addComment({
-        variables: { 
-          thoughtId, commentText 
-        }
+      const { data } = await addComment({
+        variables: {
+          reactionId,
+          commentText,
+        },
       });
 
+      if (data && data.addComment) {
+        onCommentAdded(data.addComment); // ✅ pass new comment back to parent
+      }
+
+      // Reset form
       setCommentText('');
+      setCharacterCount(0);
     } catch (err) {
       console.error(err);
     }
   };
 
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
-    const { name, value } = event.target;
-
-    if (name === 'commentText' && value.length <= 280) {
+    const value = event.target.value;
+    if (value.length <= 280) {
       setCommentText(value);
       setCharacterCount(value.length);
     }
@@ -36,12 +48,8 @@ const CommentForm = ({ thoughtId }: any) => {
 
   return (
     <div>
-      <h4>What are your thoughts on this thought?</h4>
-      <p
-        className={`m-0 ${
-          characterCount === 280 || error ? 'text-danger' : ''
-        }`}
-      >
+      <h4>What are your thoughts on this reaction?</h4>
+      <p className={`m-0 ${characterCount === 280 || error ? 'text-danger' : ''}`}>
         Character Count: {characterCount}/280
         {error && <span className="ml-2">Something went wrong...</span>}
       </p>
@@ -57,12 +65,13 @@ const CommentForm = ({ thoughtId }: any) => {
             className="form-input w-100"
             style={{ lineHeight: '1.5' }}
             onChange={handleChange}
+            required
           ></textarea>
         </div>
 
         <div className="col-12 col-lg-3">
           <button className="btn btn-primary btn-block py-3" type="submit">
-          Send
+            Send
           </button>
         </div>
       </form>

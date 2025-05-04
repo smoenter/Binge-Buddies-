@@ -83,13 +83,12 @@ export const ADD_THOUGHT = gql`
 `;
 
 export const ADD_COMMENT = gql`
-  mutation addComment($thoughtId: ID!, $commentText: String!) {
-    addComment(thoughtId: $thoughtId, commentText: $commentText) {
+  mutation addComment($reactionId: ID!, $commentText: String!) {
+    addComment(reactionId: $reactionId, commentText: $commentText) {
       _id
       comments {
         _id
         commentText
-        commentAuthor
         createdAt
       }
     }

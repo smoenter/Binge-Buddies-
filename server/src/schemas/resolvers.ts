@@ -138,6 +138,39 @@ const resolvers = {
       return reaction;
     },
 
+    addComment: async (
+      _: any,
+      { reactionId, commentText }: { reactionId: string; commentText: string },
+      context: any
+    ) => {
+      // Optional: Check if user is authenticated
+      if (!context.user) {
+        throw new AuthenticationError('You must be logged in to comment.');
+      }
+
+      const updatedReaction = await Reaction.findByIdAndUpdate(
+        reactionId,
+        {
+          $push: {
+            comments: {
+              commentText,
+              createdAt: new Date(), // optional, can be handled by schema
+            },
+          },
+        },
+        {
+          new: true,
+          runValidators: true,
+        }
+      );
+
+      if (!updatedReaction) {
+        throw new Error('Reaction not found');
+      }
+
+      return updatedReaction;
+    },
+    
     addFriend: async (_parent: any, { friendId }: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
 
