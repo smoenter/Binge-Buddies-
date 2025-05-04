@@ -77,11 +77,26 @@ const Browse = () => {
     });
   };
 
+  const handleClearSearch = () => {
+    setSearchResults([]);
+    setLastQuery("");
+  };
+
   return (
     <div className="container-browse">
       <h1 className="mb-4">Browse</h1>
       <Toggle handleToggle={handleToggle} type={type} />
       <SearchComponent onSearch={handleSearch} />
+
+      {/* Back to Browse button only shows if there are search results */}
+      {searchResults.length > 0 && (
+        <button
+          className="btn btn-secondary mt-2"
+          onClick={handleClearSearch}
+        >
+          Back to Browse
+        </button>
+      )}
 
       {searchResults.length === 0 ? (
         // Show carousel when no search results
