@@ -7,11 +7,12 @@ export const QUERY_ME = gql`
       _id
       username
       email
-      savedMedia {
+      savedMedia{
         _id
         title
         type
         posterUrl
+        imdbID
       }
       friends {
         _id

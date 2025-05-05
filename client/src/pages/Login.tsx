@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import { useMutation, useApolloClient } from '@apollo/client';
 import { LOGIN_USER } from '../utils/mutations';
 import { QUERY_FRIENDS } from '../utils/queries';
@@ -9,7 +9,7 @@ import "./css/Login.css"
 
 const Login = () => {
   const [formState, setFormState] = useState({ email: '', password: '' });
-  const [login, { error, data }] = useMutation(LOGIN_USER);
+  const [login, { error }] = useMutation(LOGIN_USER);
   const client = useApolloClient();
   const navigate = useNavigate();
 
