@@ -2,7 +2,7 @@ import mongoose, { Schema, Document, Types } from 'mongoose';
 
 export interface IMedia extends Document {
   title: string;
-  imdbID: string
+  imdbID: string;
   type: 'movie' | 'series';
   genre: string[];
   description?: string;
