@@ -8,6 +8,7 @@ import Home from './pages/Home';
 import Browse from './pages/Browse';
 import YourWatchlist from './pages/YourWatchList';
 import Reactions from './pages/Reactions';
+import Transition from './pages/Transition';
 import "bootstrap/dist/css/bootstrap.min.css";
 
 // Define your routes
@@ -22,6 +23,8 @@ const router = createBrowserRouter([
       { path: 'browse', element: <Browse /> },
       { path: 'yourwatchlist', element: <YourWatchlist /> },
       { path: 'reactions', element: <Reactions /> },
+      { path: 'transition', element: <Transition /> },
+      
     ],
   },
 ]);

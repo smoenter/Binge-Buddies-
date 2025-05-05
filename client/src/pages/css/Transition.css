@@ -1,0 +1,28 @@
+.transition-fullscreen {
+    height: 100vh;
+    width: 100vw;
+    background-color: #000; /* or another background you like */
+  }
+  
+  .transition-fullscreen .app-container {
+    height: 100%;
+    width: 100%;
+    padding: 0;
+    margin: 0;
+  }
+  
+  .transition-fullscreen .app-container > * {
+    height: 100%;
+    width: 100%;
+  }
+
+  .transition-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #000;
+    color: #fff;
+    height: 100%;
+    width: 100%;
+    font-size: 2rem;
+  }
