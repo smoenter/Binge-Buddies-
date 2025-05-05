@@ -12,17 +12,18 @@ main {
 
 /* LOGIN AND SIGNUP BACKGROUND */
 .custom-bg-container {
-min-height: 100vh;  /* make sure it fills the full screen height */
-background-color: #909090;  /* change this to any color you like */
+min-height: 80vh;  /* make sure it fills the full screen height */
+
+background-color: #e8e8e896;  /* change this to any color you like */
 /* background-image: url('../../assets/confetti.png'); */
-background-size: 400px 400px;;       
+background-size: 200px 200px;       
 background-position: center; 
 background-repeat: repeat;
 display: flex;
 align-items: center;
 justify-content: center;
-padding: 2rem;
-border-radius: 98px;
+/* padding: 0; */
+/* border-radius: 98px; */
 }
 
 

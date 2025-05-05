@@ -49,7 +49,7 @@ class AuthService {
   // This method logs in the user by storing the token in localStorage and redirecting to the home page.
   login(token: string) {
     localStorage.setItem('token', token);
-    window.location.assign('/');
+    // window.location.assign('/');
   }
 
   // This method logs out the user by removing the token from localStorage and redirecting to the home page.
