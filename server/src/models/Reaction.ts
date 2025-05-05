@@ -5,6 +5,7 @@ export interface IComment {
   _id?: Types.ObjectId;
   commentText: string;
   createdAt?: Date;
+  user: Types.ObjectId;
 }
 
 // Extend IReaction to include comments
@@ -22,6 +23,11 @@ export interface IReaction extends Document {
 // Define the comment subdocument schema
 const commentSchema = new Schema<IComment>(
   {
+    user: {
+      type: Schema.Types.ObjectId,
+      ref: 'User',
+      required: true,
+    },
     commentText: {
       type: String,
       required: true,

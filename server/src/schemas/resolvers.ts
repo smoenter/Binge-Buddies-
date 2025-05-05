@@ -30,6 +30,7 @@ const resolvers = {
     reactions: async (_parent: any, { mediaId }: { mediaId: string }) => {
       return await Reaction.find({ media: mediaId })
         .populate('user', 'username')
+        .populate('media')
         .sort({ createdAt: -1 });
     },
 
@@ -153,6 +154,7 @@ const resolvers = {
         {
           $push: {
             comments: {
+            user: context.user._id,
               commentText,
               createdAt: new Date(), // optional, can be handled by schema
             },
