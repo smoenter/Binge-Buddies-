@@ -145,6 +145,16 @@ You can test the following functionality to ensure everything is working correct
 
 ## Credit
 
+-Used ChatGPT to assist in answering questions when encountering issues
+
+-All icons used: https://icons8.com/
+
+-Home page BG video: https://www.pexels.com/video/a-group-of-people-sitting-on-a-rooftop-with-a-projector-4881817/
+
+-SVG popcorn logo: https://www.svgrepo.com/svg/398108/popcorn
+
+-Invite friend button: https://getcssscan.com/css-buttons-examples
+
 
 ## 🔗 Project Links
 

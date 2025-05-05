@@ -4,6 +4,7 @@
   justify-content: space-between; /* Space out items */
   align-items: center;
   position: relative;
+  z-index: 10; 
 }
 
 /* Style for the header content that holds the navbar and logout */
@@ -46,6 +47,7 @@
   cursor: pointer;
   transition: background-color 0.3s ease;
   border-radius: 10px;
+  
 }
 
 /* Style for navbar items */
