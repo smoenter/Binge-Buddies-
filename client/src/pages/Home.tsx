@@ -2,6 +2,7 @@ import { Link } from 'react-router-dom';
 import Auth from '../utils/auth';
 import VideoBackground from '../components/HomeVideoBG/index';
 import "./css/Home.css"
+import { motion } from 'framer-motion';
 
 const Home = () => {
   return (
@@ -14,18 +15,35 @@ const Home = () => {
             {/* LET'S GET STARTED CONTAINER */}
             <div className="text-center">
               {!Auth.loggedIn() ? (
-                <div className="glass-card text-center">
+                <motion.div
+                  className="glass-card text-center"
+                  initial={{ opacity: 0, y: 50 }} // Start from the bottom (y = 50)
+                  animate={{ opacity: 1, y: 0 }} // End at normal position (y = 0)
+                  transition={{
+                    duration: 1.5, // Duration of the animation
+                    ease: [0.68, -0.55, 0.27, 1.55], // Custom ease for a bounce effect
+                  }} // Smooth transition
+                >
                   <h2>Let's get started!</h2>
                   <p className="card-text">
                     Please <Link to="/login" className="auth-link">log in</Link> or{' '}
                     <Link to="/signup" className="auth-link">sign up</Link> to start sharing your reactions!
                   </p>
-                </div>
+                </motion.div>
               ) : (
-                <div className="glass-card text-center">
+                // WELCOME BACK CONTAINER
+                <motion.div
+                  className="glass-card text-center"
+                  initial={{ opacity: 0, y: 50 }} // Start from the bottom (y = 50)
+                  animate={{ opacity: 1, y: 0 }} // End at normal position (y = 0)
+                  transition={{
+                    duration: 1.5, // Duration of the animation
+                    ease: [0.68, -0.55, 0.27, 1.55], // Custom ease for a bounce effect
+                  }} // Smooth transition
+                >
                   <h2 className="wlcm-bck-txt">Welcome back, {Auth.getProfile().data.username}!</h2>
                   <p>You're logged in and ready to binge!</p>
-                </div>
+                </motion.div>
               )}
             </div>
           </section>
@@ -33,43 +51,36 @@ const Home = () => {
       </div>
 
       {/* HOW IT WORKS CONTAINER */}
-      <div className="how-it-works-container info-section">
-        <section className="info-section">
-          <div className="info-card text-center">
-            <h2>How It Works:</h2>
+      <section className="how-it-works-section">
+        <motion.div
+          className="how-it-works-card"
+          initial={{ opacity: 0 }} // Start from transparent
+          animate={{ opacity: 1 }} // End at full opacity
+          transition={{ duration: 1 }} // Smooth transition
+        >
+          <h2>How It Works:</h2>
 
-            {/* Step 1- Search */}
-            <div className="info-card-content">
-              <img width="48" height="48" src="https://img.icons8.com/fluency/48/search.png" alt="search"/>
-              <h3>Search</h3>
-              <p>
-                Find a movie or show and save it to your watchlist!
-              </p>
-            </div>
-
-            {/* Step 2- Share */}
-            <div className="info-card-content">
-              <img width="48" height="48" src="https://img.icons8.com/color/48/send.png" alt="send"/>
-              <h3>Share</h3>
-              <p>
-                Share any show or movie with your friends and family so you each can react together on your own time!
-              </p>
-            </div>
-            
-            {/* Step 3- React */}
-            <div className="info-card-content">
-              <img width="48" height="48" src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/60/external-angry-social-media-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png" alt="external-angry-social-media-vitaliy-gorbachev-lineal-color-vitaly-gorbachev"/>
-              <h3>React</h3>
-              <p>
-                React to any of your saved movies or tv shows, and see your friends' reactions too!
-              </p>
-            </div>
+          <div className="info-card-content">
+            <img width="48" height="48" src="https://img.icons8.com/fluency/48/search.png" alt="search" />
+            <h3>Browse</h3>
+            <p>Find a movie or show and save it to your watchlist!</p>
           </div>
-        </section>
-      </div>
+
+          <div className="info-card-content">
+          <img width="48" height="48" src="https://img.icons8.com/fluency/48/star--v1.png" alt="star--v1"/>
+            <h3>Save</h3>
+            <p>Find a movie or show you want to watch? Save it to your watch list using the star!</p>
+          </div>
+
+          <div className="info-card-content">
+            <img width="48" height="48" src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/60/external-angry-social-media-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png" alt="react" />
+            <h3>React</h3>
+            <p>React to any of your saved movies or tv shows, and see your friends' reactions too!</p>
+          </div>
+        </motion.div>
+      </section>
     </>
   );
 };
-
 
 export default Home;
