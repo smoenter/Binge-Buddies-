@@ -6,7 +6,7 @@ import {
   createHttpLink,
 } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
-import { Outlet } from 'react-router-dom';
+import { Outlet, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast'; 
 
 import Header from './components/Header';
@@ -33,11 +33,15 @@ const client = new ApolloClient({
 });
 
 function App() {
+  const location = useLocation();
+  const isTransitionPage = location.pathname === '/transition';
+
   return (
     <ApolloProvider client={client}>
-      <div className="d-flex flex-column min-vh-100">
-        <Header />
-        <div className="app-container flex-grow-1">
+      <div className={`d-flex flex-column min-vh-100 ${isTransitionPage ? 'transition-fullscreen' : ''}`}>
+      {!isTransitionPage && <Header />}
+        {/* <Header /> */}
+        <div className={`app-container flex-grow-1 ${isTransitionPage ? 'p-0 m-0' : ''}`}>
           <Outlet />
         </div>
 
@@ -52,7 +56,7 @@ function App() {
             },
           }}
         />
-        <Footer />
+        {!isTransitionPage && <Footer />}
       </div>
     </ApolloProvider>
   );
