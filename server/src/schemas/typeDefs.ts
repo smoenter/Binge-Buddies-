@@ -9,7 +9,7 @@ const typeDefs = `
 
   type Media {
     _id: ID!
-    imdbID: String!
+    imdbID: String
     title: String!
     type: String!
     genre: [String]
