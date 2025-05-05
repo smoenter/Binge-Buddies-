@@ -1,6 +1,7 @@
-import { useQuery } from '@apollo/client';
-import { useState } from 'react';
+import { useQuery, useMutation } from '@apollo/client';
+import { useState, useEffect } from 'react';
 import { GET_REACTIONS } from '../../utils/queries';
+import { REMOVE_REACTION } from '../../utils/mutations';
 import CommentForm from '../CommentForm';
 import CommentList from '../CommentList';
 
@@ -8,32 +9,70 @@ import './index.css';
 
 const ReactionList = ({ mediaId }: { mediaId: string }) => {
 
-  const { loading: reactionLoading, error: reactionError, data } = useQuery(GET_REACTIONS, {
+  const { loading: reactionLoading, error: reactionError, data, refetch } = useQuery(GET_REACTIONS, {
     variables: { mediaId },
   });
 
+  const [removeReaction] = useMutation(REMOVE_REACTION, {
+    onCompleted: () => refetch(),
+    onError: (err) => console.error('Failed to delete reaction:', err),
+  });
+
+ const [reactions, setReactions] = useState<any[]>([]);
   const [activeCommentId, setActiveCommentId] = useState<string | null>(null);
 
+  useEffect(() => {
+    if (data?.reactions) {
+      setReactions(data.reactions);
+    }
+  }, [data]);
+ 
   const toggleCommentForm = (reactionId: string) => {
     setActiveCommentId((prev) => (prev === reactionId ? null : reactionId));
   };
 
-
+  const handleDelete = async (reactionId: string) => {
+    await removeReaction({ variables: { reactionId } });
+  };
+  
   if (reactionLoading) return <p>Loading reactions...</p>;
   if (reactionError) return <p>Error loading reactions.</p>;
 
-  return (
+  const handleCommentAdded = (reactionId: string, newComment: any) => {
+    setReactions((prevReactions) =>
+      prevReactions.map((reaction) =>
+        reaction._id === reactionId
+          ? {
+              ...reaction,
+              comments: [...(reaction.comments || []), newComment],
+            }
+          : reaction
+      )
+    );
+  };
+
+   return (
     <div className="reaction-list-container">
       <h3>Reactions</h3>
-      {data.reactions.length === 0 ? (
+      {reactions.length === 0 ? (
         <p>No reactions yet.</p>
       ) : (
-        data.reactions.map((r: any) => (
+        reactions.map((r: any) => (
           <div key={r._id} className="reaction-card">
+             <p><strong>Title:</strong> {r.title || 'Untitled'}</p>
             <p>{r.comment}</p>
             <p>Season {r.season}, Episode {r.episode}</p>
             <p>Rating: {r.rating}</p>
             <small>{new Date(r.createdAt).toLocaleString()}</small>
+
+            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+              <button onClick={() => toggleCommentForm(r._id)} title="Add comment">
+                💬
+              </button>
+              <button onClick={() => handleDelete(r._id)} title="Delete reaction">
+                🗑️
+              </button>
+            </div>
 
             <button onClick={() => toggleCommentForm(r._id)}>
               <img
@@ -43,14 +82,15 @@ const ReactionList = ({ mediaId }: { mediaId: string }) => {
               />
             </button>
 
+            {/* Ensure comments is always an array */}
             {activeCommentId === r._id && (
               <>
                 <CommentForm
-                  thoughtId={r._id}
-                  onCommentAdded={fetch} // trigger refetch on new comment
+                  reactionId={r._id}
+                  onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment)}
                 />
-                <CommentList comments={r.comments} />
-                </>
+                <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
+              </>
             )}
 
           </div>
