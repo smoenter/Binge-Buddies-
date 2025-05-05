@@ -1,5 +1,4 @@
 // import PostCard from "../components/Post/index";
-// import FriendsButton from "../components/Friends/index"
 // import { useParams } from "react-router-dom";
 import AddReactionForm from "../components/AddReactionForm";
 import ReactionList from "../components/ReactionList.tsx";
@@ -19,19 +18,35 @@ const Reactions = () => {
   const savedMedia = data?.me?.savedMedia || [];
   const media = savedMedia.find((m: any) => m.imdbID === imdbID);
 
-  if (!media) {
-    return <p>Media not found. Please save it to your watchlist first.</p>;
-  }
+  // if (!media) {
+  //   return <p>Media not found. Please save it to your watchlist first.</p>;
+  // }
 
   return (
     <div>
       <h1>💬 Reaction Dashboard</h1>
       <div className="my-4">
-        {/* <AddReactionForm mediaId={media._id} /> */}
-        <ReactionList mediaId={media._id} />
-        <AddReactionForm mediaId={media._id} />
-        {media.reactions?.map((reaction: any) => (
-          <CommentForm key={reaction._id} reactionId={reaction._id} onCommentAdded={() => { /* Add your logic here */ }} />
+        {media ? (
+          <>
+            <p>Reacting to: {media.title}</p>
+            <ReactionList mediaId={media._id} />
+          </>
+        ) : (
+          <p>⚠️ Media not found in watchlist — you can still leave a reaction.</p>
+        )
+        }
+  
+        {/* Always show the reaction form */}
+        <AddReactionForm mediaId={media ? media._id : imdbID} />
+  
+        {media?.reactions?.map((reaction: any) => (
+          <CommentForm
+            key={reaction._id}
+            reactionId={reaction._id}
+            onCommentAdded={() => {
+              /* Add your logic here */
+            }}
+          />
         ))}
       </div>
     </div>
