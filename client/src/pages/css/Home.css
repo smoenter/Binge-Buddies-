@@ -100,6 +100,7 @@
  .how-it-works-container{
     /* background-color: purple; */
     width: auto;
+    z-index: 1;
  }
   
   /* Section below the video */
@@ -180,4 +181,9 @@
     animation: fadeInUp 1s ease-in-out;
   }
 
+
+  .main-content {
+    position: relative;
+    z-index: 5;
+  }
   
