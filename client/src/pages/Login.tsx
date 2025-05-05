@@ -60,7 +60,9 @@ const Login = () => {
   };
 
   return (
-    <main className="custom-bg-container">
+    <main 
+    className="custom-bg-container"
+    >
       <div className="col-12 col-lg-10">
         <div className="card">
           <h4 className="card-header bg-dark text-light p-2">Login</h4>
