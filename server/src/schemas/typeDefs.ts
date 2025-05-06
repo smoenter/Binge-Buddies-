@@ -51,6 +51,7 @@ const typeDefs = `
 
   type Comment {
     _id: ID!
+    user: User!
     commentText: String!
     createdAt: String!
   }
@@ -79,7 +80,7 @@ const typeDefs = `
     me: User
     savedMedia: [Media]
     friends: [User]
-    reactions(mediaId: ID!): [Reaction]
+    reactions: [Reaction]
     searchFriends(username: String!): [User]
     media(title: String!, type: String!): [MediaCard]
     mediaDetails(imdbID: String!): MediaCard

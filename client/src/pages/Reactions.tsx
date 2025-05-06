@@ -1,6 +1,3 @@
-// import PostCard from "../components/Post/index";
-// import { useParams } from "react-router-dom";
-import AddReactionForm from "../components/AddReactionForm";
 import ReactionList from "../components/ReactionList.tsx";
 import CommentForm from "../components/CommentForm/index.tsx";
 import { useParams } from "react-router-dom";
@@ -26,19 +23,9 @@ const Reactions = () => {
     <div>
       <h1>💬 Reaction Dashboard</h1>
       <div className="my-4">
-        {media ? (
-          <>
-            <p>Reacting to: {media.title}</p>
-            <ReactionList mediaId={media._id} />
-          </>
-        ) : (
-          <p>⚠️ Media not found in watchlist — you can still leave a reaction.</p>
-        )
-        }
-  
+        <ReactionList />
+       
         {/* Always show the reaction form */}
-        <AddReactionForm mediaId={media ? media._id : imdbID} />
-  
         {media?.reactions?.map((reaction: any) => (
           <CommentForm
             key={reaction._id}
