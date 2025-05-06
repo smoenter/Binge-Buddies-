@@ -43,6 +43,8 @@ const MediaModal = ({ imdbID, onClose, isWatchlistPage = false }: Props) => {
         >
           {/* X BUTTON */}
           <button onClick={onClose} className="close-button">×</button>
+          {/* AddReactionForm ONLY IF on watchlist page */}
+          {isWatchlistPage && <AddReactionForm mediaId={imdbID} />}
           {/* TITLE AND YEAR */}
           <h2 className="title-and-year-txt">{movieData.Title} ({movieData.Year})</h2>
           {/* MOVIE POSTER */}
@@ -57,7 +59,7 @@ const MediaModal = ({ imdbID, onClose, isWatchlistPage = false }: Props) => {
             </a>
           )} 
           {/* Only show AddReactionForm if on watchlist page */}
-          {isWatchlistPage && <AddReactionForm mediaId={imdbID} />}
+          {/* {isWatchlistPage && <AddReactionForm mediaId={imdbID} />} */}
         </motion.div>
       </div>
     </div>

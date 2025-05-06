@@ -1,31 +1,49 @@
-.add-reaction-container {
-    display: flex;
-    justify-content: center;
-    margin: 1rem;
-  }
+.add-reaction-button {
+  background-color: #db4f56;
+  border: 2px solid #db4f56;
+  color: #d67277;
+  border-radius: 50%;
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0;
+  cursor: pointer;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.add-reaction-button:hover {
+  background-color: #c4262e;
+  border: 2px solid #c4262e;
+  color: white;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
+}
+
+.add-reaction-button img {
+  width: 24px;
+  height: 24px;
+  transition: filter 0.3s ease;
+}
+
+.add-reaction-button:hover img {
+  filter: brightness(0) invert(1);
+}
   
-  .add-reaction-button {
-    background-color: #d67277;
-    border: none;
-    border-radius: 10px;
-    padding: 10px;
-    cursor: pointer;
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
-    transition: background-color 0.3s ease;
-  }
-  
-  .add-reaction-button:hover {
-    background-color: #D9484F;
-  }
-  
-  .reaction-form {
-    background-color: rgb(211, 210, 210);
-    border-radius: 12px;
-    padding: 1.5rem;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  }
+.reaction-form {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+  position: relative;
+  z-index: 1001; /* Above the overlay */
+  color: #374151;
+}
   
   .form-title {
     font-size: 1.2rem;
@@ -108,12 +126,108 @@
     background-color: #D9484F;
   }
 
-  .emoji-button{
-    cursor: pointer
-  }
 
+.emoji-toggle {
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.2s;
+  padding: 5px;
+  margin-bottom: 8px;
+  display: flex;
+  justify-content: flex-end;
+}
+
+.emoji-toggle:hover {
+  transform: scale(1.1);
+}
+
+.emoji-picker {
+  position: absolute;
+  bottom: 100%; /* Positions above the button instead of below */
+  right: 0; /* Aligns with the right edge of the button */
+  background: #1f1f1f;
+  border: 1px solid #444;
+  border-radius: 12px;
+  padding: 10px;
+  width: 250px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+  z-index: 1002;
+  margin-bottom: 10px; /* Adds space between picker and button */
+}
+
+.emoji-picker-container {
+  position: relative;
+  width: 100%;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: flex-end; /* This pushes the button to the right */
+}
+
+.emoji-categories {
+  display: flex;
+  flex-wrap: wrap;
+  margin-bottom: 8px;
+  gap: 4px;
+}
+
+.emoji-category-button {
+  background: none;
+  border: none;
+  color: #ccc;
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px 8px;
+  border-radius: 8px;
+  transition: background 0.2s, color 0.2s;
+}
+
+.emoji-category-button.active,
+.emoji-category-button:hover {
+  background: #333;
+  color: #fff;
+}
+
+.emoji-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.emoji-button {
+  background: none;
+  border: none;
+  font-size: 20px;
+  cursor: pointer;
+  transition: transform 0.2s;
+  padding: 2px;
+}
+
+.emoji-button:hover {
+  transform: scale(1.3);
+}
+
+
+  /* Add these new styles */
+.add-reaction-container {
+  position: relative;
+  z-index: 10; /* Ensure it appears above the modal */
+}
+
+.reaction-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Higher than the modal */
+}
   
-  .message {
+  /* .message {
     background-color: lightgray;
     color: #218eaf;
     padding: 0.5rem 1rem;
@@ -121,4 +235,50 @@
     margin-bottom: 1rem;
     font-weight: bold;
     text-align: center;
+  } */
+
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  
+  .notification-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #2ecc71; /* Green success color */
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+    font-size: 0.95rem;
+    max-width: 300px;
+    border-left: 4px solid #27ae60; /* Darker green accent */
+  }
+  
+  .notification-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    animation: bounce 0.6s ease infinite alternate;
+  }
+  
+  @keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-3px); }
+  }
+  
+  /* For error messages (you can use this if needed) */
+  .notification.error {
+    background-color: #e74c3c;
+    border-left-color: #c0392b;
+  }
+  
+  .notification.warning {
+    background-color: #f39c12;
+    border-left-color: #e67e22;
   }
