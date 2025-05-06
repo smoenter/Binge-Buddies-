@@ -4,28 +4,36 @@ import { ADD_COMMENT } from '../../utils/mutations';
 
 import './index.css'
 
-
-// Props the CommentForm component receives
 interface CommentFormProps {
   reactionId: string;
   onCommentAdded: (newComment: any) => void;
   onReactionAdded?: (newReaction: any) => void;
 }
 
-// Functional component
+const emojiCategories: { [key: string]: string[] } = {
+  Love: ['❤️', '🥰', '😍', '🤩', '💖'],
+  Funny: ['😂', '🤣', '😹', '😆', '😜'],
+  Emotional: ['😭', '😢', '🥺', '💔', '😿'],
+  Shocked: ['😲', '😱', '😮', '🤯', '😵‍💫'],
+  Impressed: ['👏', '🙌', '👍', '🔥', '💯'],
+  Confused: ['🤔', '😕', '😵‍💫', '🫤', '🫣'],
+  Angry: ['😡', '🤬', '😤', '👿', '💢'],
+  Bored: ['🥱', '😴', '😪', '🙄', '😐'],
+  Movie: ['🍿', '🎥', '🎬', '🎞️', '📽️'],
+};
+
 const CommentForm = ({ reactionId, onCommentAdded }: CommentFormProps) => {
   const [commentText, setCommentText] = useState('');
   const [characterCount, setCharacterCount] = useState(0);
+  const [showPicker, setShowPicker] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('Love');
 
-  // GraphQL mutation hook for adding a comment
   const [addComment, { error }] = useMutation(ADD_COMMENT);
 
-  // Handle form submission 
   const handleFormSubmit = async (event: FormEvent) => {
-    event.preventDefault(); // Prevent default page reload on form submission
+    event.preventDefault();
 
     try {
-      // Execute the addComment mutation with the input variables
       const { data } = await addComment({
         variables: {
           reactionId,
@@ -33,12 +41,10 @@ const CommentForm = ({ reactionId, onCommentAdded }: CommentFormProps) => {
         },
       });
 
-      // If the mutation was successful, pass the new comment back up to the parent
       if (data && data.addComment) {
-        onCommentAdded(data.addComment); // ✅ pass new comment back to parent
+        onCommentAdded(data.addComment);
       }
 
-      // Reset form
       setCommentText('');
       setCharacterCount(0);
     } catch (err) {
@@ -46,12 +52,18 @@ const CommentForm = ({ reactionId, onCommentAdded }: CommentFormProps) => {
     }
   };
 
-  // Handle live typing in the textarea
   const handleChange = (event: ChangeEvent<HTMLTextAreaElement>) => {
     const value = event.target.value;
     if (value.length <= 280) {
       setCommentText(value);
       setCharacterCount(value.length);
+    }
+  };
+
+  const handleEmojiClick = (emoji: string) => {
+    if (commentText.length + emoji.length <= 280) {
+      setCommentText(commentText + emoji);
+      setCharacterCount(commentText.length + emoji.length);
     }
   };
 
@@ -65,6 +77,46 @@ const CommentForm = ({ reactionId, onCommentAdded }: CommentFormProps) => {
       </div>
 
       <form className="comment-form-body" onSubmit={handleFormSubmit}>
+        {/* <div className="emoji-picker-container">
+          <button
+            type="button"
+            className="emoji-toggle"
+            onClick={() => setShowPicker(!showPicker)}
+          >
+            <img width="30" height="30" src="https://img.icons8.com/color/48/sticker-square.png" alt="sticker-square"/>
+          </button>
+          {showPicker && (
+            <div className="emoji-picker">
+              <div className="emoji-categories">
+                {Object.keys(emojiCategories).map((category) => (
+                  <button
+                    key={category}
+                    type="button"
+                    className={`emoji-category-button ${
+                      activeCategory === category ? 'active' : ''
+                    }`}
+                    onClick={() => setActiveCategory(category)}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+              <div className="emoji-list">
+                {emojiCategories[activeCategory].map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    className="emoji-button"
+                    onClick={() => handleEmojiClick(emoji)}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div> */}
+
         <textarea
           name="commentText"
           placeholder="What are your thoughts?"
@@ -74,9 +126,48 @@ const CommentForm = ({ reactionId, onCommentAdded }: CommentFormProps) => {
           required
         ></textarea>
 
-        {/* Submit button */}
+<div className="emoji-picker-container">
+          <button
+            type="button"
+            className="emoji-toggle"
+            onClick={() => setShowPicker(!showPicker)}
+          >
+            <img width="30" height="30" src="https://img.icons8.com/color/48/sticker-square.png" alt="sticker-square"/>
+          </button>
+          {showPicker && (
+            <div className="emoji-picker">
+              <div className="emoji-categories">
+                {Object.keys(emojiCategories).map((category) => (
+                  <button
+                    key={category}
+                    type="button"
+                    className={`emoji-category-button ${
+                      activeCategory === category ? 'active' : ''
+                    }`}
+                    onClick={() => setActiveCategory(category)}
+                  >
+                    {category}
+                  </button>
+                ))}
+              </div>
+              <div className="emoji-list">
+                {emojiCategories[activeCategory].map((emoji) => (
+                  <button
+                    key={emoji}
+                    type="button"
+                    className="emoji-button"
+                    onClick={() => handleEmojiClick(emoji)}
+                  >
+                    {emoji}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
+        </div>
+
         <div className="col-12 col-lg-3">
-          <button className="btn btn-primary " type="submit">
+          <button className="btn btn-primary" type="submit">
             Send
           </button>
         </div>
@@ -84,4 +175,15 @@ const CommentForm = ({ reactionId, onCommentAdded }: CommentFormProps) => {
     </div>
   );
 };
+
 export default CommentForm;
+
+
+{/* <button
+type="button"
+className="emoji-toggle-btn"
+onClick={() => setShowEmojis(prev => !prev)}
+aria-label="Toggle emoji picker"
+>
+<img width="30" height="30" src="https://img.icons8.com/color/48/sticker-square.png" alt="sticker-square"/>
+</button> */}
