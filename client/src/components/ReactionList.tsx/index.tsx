@@ -17,8 +17,9 @@ const ReactionList = () => {
     onError: (err) => console.error('Failed to delete reaction:', err),
   });
 
- const [reactions, setReactions] = useState<any[]>([]);
+  const [reactions, setReactions] = useState<any[]>([]);
   const [activeCommentId, setActiveCommentId] = useState<string | null>(null);
+  const [reactionMessage, setReactionMessage] = useState('');
 
   useEffect(() => {
     if (data?.reactions) {
@@ -54,6 +55,13 @@ console.log(reactions)
    return (
     <div className="reaction-list-container">
       <h3>Reactions</h3>
+
+      {reactionMessage && (
+        <div className="reaction-message" style={{ color: 'teal', fontWeight: 'bold', marginBottom: '1rem' }}>
+          {reactionMessage}
+        </div>
+      )}
+
       {reactions.length === 0 ? (
         <p>No reactions yet.</p>
       ) : (
@@ -92,8 +100,7 @@ console.log(reactions)
                   reactionId={r._id}
                   onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment)}
                 />
-                {/* <CommentList comments={Array.isArray(r.comments) ? r.comments : []} /> */}
-                
+                               
               </>
               
             )}
