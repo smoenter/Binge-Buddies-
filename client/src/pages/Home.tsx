@@ -51,36 +51,46 @@ const Home = () => {
       </div>
 
       {/* HOW IT WORKS CONTAINER */}
-      <section className="how-it-works-section">
-        <motion.div
-          className="how-it-works-card"
-          initial={{ opacity: 0 }} // Start from transparent
-          animate={{ opacity: 1 }} // End at full opacity
-          transition={{ duration: 1 }} // Smooth transition
-        >
-          <h2>How It Works:</h2>
+<section className="how-it-works-section">
+  <motion.div
+    className="how-it-works-container"
+    initial={{ opacity: 0 }}
+    animate={{ opacity: 1 }}
+    transition={{ duration: 1 }}
+  >
+    <h2 className="section-title">How It Works</h2>
+    
+    <div className="steps-container">
+      <div className="step-card">
+        <div className="step-icon">
+          <img src="https://img.icons8.com/fluency/48/search.png" alt="search" />
+        </div>
+        <h3 className="step-title">Browse</h3>
+        <p className="step-description">Find a movie or show and save it to your watchlist!</p>
+      </div>
 
-          <div className="info-card-content">
-            <img width="48" height="48" src="https://img.icons8.com/fluency/48/search.png" alt="search" />
-            <h3>Browse</h3>
-            <p>Find a movie or show and save it to your watchlist!</p>
-          </div>
+      <div className="step-card">
+        <div className="step-icon">
+          <img src="https://img.icons8.com/fluency/48/star--v1.png" alt="star"/>
+        </div>
+        <h3 className="step-title">Save</h3>
+        <p className="step-description">Save movies/shows to your watch list using the star!</p>
+      </div>
 
-          <div className="info-card-content">
-          <img width="48" height="48" src="https://img.icons8.com/fluency/48/star--v1.png" alt="star--v1"/>
-            <h3>Save</h3>
-            <p>Find a movie or show you want to watch? Save it to your watch list using the star!</p>
-          </div>
-
-          <div className="info-card-content">
-            <img width="48" height="48" src="https://img.icons8.com/external-vitaliy-gorbachev-lineal-color-vitaly-gorbachev/60/external-angry-social-media-vitaliy-gorbachev-lineal-color-vitaly-gorbachev.png" alt="react" />
-            <h3>React</h3>
-            <p>React to any of your saved movies or tv shows, and see your friends' reactions too!</p>
-          </div>
-        </motion.div>
-      </section>
+      <div className="step-card">
+        <div className="step-icon">
+        <img width="15" height="15" src="https://img.icons8.com/color/48/messaging-.png" alt="messaging-"/>
+        </div>
+        <h3 className="step-title">React</h3>
+        <p className="step-description">React to saved media and see friends' reactions!</p>
+      </div>
+    </div>
+  </motion.div>
+</section>
     </>
   );
 };
 
 export default Home;
+
+
