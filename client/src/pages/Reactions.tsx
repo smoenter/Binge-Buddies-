@@ -15,10 +15,6 @@ const Reactions = () => {
   const savedMedia = data?.me?.savedMedia || [];
   const media = savedMedia.find((m: any) => m.imdbID === imdbID);
 
-  // if (!media) {
-  //   return <p>Media not found. Please save it to your watchlist first.</p>;
-  // }
-
   return (
     <div>
       <h1>💬 Reaction Dashboard</h1>
