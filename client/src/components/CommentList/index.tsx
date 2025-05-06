@@ -37,7 +37,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments = [] }) => {
             <div className="p-3 bg-dark text-light">
               {/* Comment header with timestamp */}
               <h5 className="card-header">
-                An anonymous user commented{' '}
+                {comment.user.username} commented{' '}
                 <span style={{ fontSize: '0.825rem' }}>
                   {/* Convert the timestamp to a readable date string */}
                   on {new Date(Number(comment.createdAt)).toLocaleString()}

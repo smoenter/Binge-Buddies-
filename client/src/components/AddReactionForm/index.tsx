@@ -16,7 +16,6 @@ interface AddReactionFormProps {
 //Form Fields
 const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
   const [isOpen, setIsOpen] = useState(false);
-  const [title, setTitle] = useState('');
   const [season, setSeason] = useState('');
   const [episode, setEpisode] = useState('');
   const [comment, setComment] = useState('')
@@ -26,28 +25,20 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
   //Mutation hook for adding a reaction
   const [addReaction, { error }] = useMutation(ADD_REACTION, {
     refetchQueries: [
-      { query: GET_REACTIONS, variables: { mediaId } },
+      { query: GET_REACTIONS },
       { query: QUERY_ME }
     ]
   });
-
-  //Helper to validate MongoDB ObjectId format
-  const isValidObjectId = (id: string) => /^[a-f\d]{24}$/i.test(id);
 
   //Form submission handler
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-    if (!mediaId || !isValidObjectId(mediaId)) {
-      console.error("Invalid or missing mediaId.");
-      return;
-    }
-
-    try {
+       try {
       // Perform the mutation
       await addReaction({
         variables: {
-          mediaId,
+          mediaId,// this is actually the imdbID
           comment,
           season: season ? parseInt(season) : undefined,
           episode: episode ? parseInt(episode) : undefined,
@@ -91,16 +82,6 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
         // Render the form when isOpen is true
         <form onSubmit={handleFormSubmit} className="reaction-form">
           <h3 className="form-title">Add a Reaction</h3>
-
-          <input
-            type="text"
-            name="title"
-            placeholder="Title (required)"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            required
-            className="form-input"
-          />
 
           <div className="form-row">
             <input

@@ -2,7 +2,7 @@ import { User, Media, Reaction } from '../models/index.js';
 import { signToken, AuthenticationError } from '../utils/auth.js';
 import { fetchMedia, mediaTypeType, fetchMediaByImdb } from '../utils/apiFetchers.js';
 import { sendInviteEmail } from '../utils/inviteSender.js';
-import mongoose from 'mongoose';
+
 
 const resolvers = {
   Query: {
@@ -27,10 +27,12 @@ const resolvers = {
       return await Media.find({ savedBy: context.user._id });
     },
 
-    reactions: async (_parent: any, { mediaId }: { mediaId: string }) => {
-      return await Reaction.find({ media: mediaId })
+    reactions: async (_parent: any, _args:any, context:any) => {
+      if (!context.user) throw new AuthenticationError('Not logged in');
+      return await Reaction.find({ user: context.user._id })
         .populate('user', 'username')
         .populate('media')
+        .populate('comments.user')
         .sort({ createdAt: -1 });
     },
 
@@ -106,20 +108,31 @@ const resolvers = {
     addReaction: async (_parent: any, { mediaId, comment, season, episode, rating }: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
     
-      // ✅ Check if mediaId is a valid ObjectId
-      if (!mongoose.Types.ObjectId.isValid(mediaId)) {
-        throw new Error('Invalid media ID format');
-      }
-    
-      // ✅ Optional: verify media exists
-      const mediaExists = await Media.findById(mediaId);
-      if (!mediaExists) {
-        throw new Error("Media not found.");
+        
+      let media = await Media.findOne({ mediaId });
+
+      if (!media) {
+        const data = await fetchMediaByImdb(mediaId);
+        console.log("🔍 OMDB result:", data);
+
+        if (!data || !data.Title || !data.imdbID) {
+          throw new Error("Invalid media data from OMDB");
+        }
+
+        const { Title, Type, Poster, Plot, Genre, imdbID: returnedImdbID } = data;
+        media = await Media.create({
+          imdbID: returnedImdbID,
+          title: Title,
+          type: Type,
+          posterUrl: Poster,
+          description: Plot,
+          genre: Genre ? Genre.split(', ') : [],
+        });
       }
     
       return await Reaction.create({
         user: context.user._id,
-        media: new mongoose.Types.ObjectId(mediaId),
+        media: media._id,
         comment,
         season,
         episode,

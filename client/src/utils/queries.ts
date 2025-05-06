@@ -120,8 +120,8 @@ export const QUERY_USER_FRIENDS = gql`
 
 //Query for Reactions
 export const GET_REACTIONS = gql`
-query Reactions($mediaId: ID!) {
-  reactions(mediaId: $mediaId) {
+query Reactions {
+  reactions {
     _id
     media {
       title
@@ -145,17 +145,4 @@ query Reactions($mediaId: ID!) {
   }
 }
 `;
-
-// export const GET_REACTIONS = gql`
-//   // query GetReactions($mediaId: ID!) {
-//   //   reactions(mediaId: $mediaId) {
-//   //     _id
-//   //     comment
-//   //     season
-//   //     episode
-//   //     rating
-//   //     createdAt
-//   //   }
-//   // }
-//   `;
 

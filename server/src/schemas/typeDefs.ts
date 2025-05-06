@@ -80,7 +80,7 @@ const typeDefs = `
     me: User
     savedMedia: [Media]
     friends: [User]
-    reactions(mediaId: ID!): [Reaction]
+    reactions: [Reaction]
     searchFriends(username: String!): [User]
     media(title: String!, type: String!): [MediaCard]
     mediaDetails(imdbID: String!): MediaCard
