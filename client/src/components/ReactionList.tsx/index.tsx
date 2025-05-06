@@ -59,19 +59,21 @@ console.log(reactions)
       ) : (
         reactions.map((r: any) => (
           <div key={r._id} className="reaction-card">
+            {/* DELETE REACTION BUTTON */}
+            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+            <button onClick={() => handleDelete(r._id)} title="Delete reaction">
+                <img width="25" height="25" src="https://img.icons8.com/ios/50/delete--v1.png" alt="delete--v1"/>
+              </button>
+            </div>
+
              <p><strong>Title:</strong> {r.media.title || 'Untitled'}</p>
             <p>{r.comment}</p>
             <p>Season {r.season}, Episode {r.episode}</p>
             <p>Rating: {r.rating}</p>
             <small>{new Date(parseInt(r.createdAt)).toLocaleString()}</small>
 
-            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-            <button onClick={() => handleDelete(r._id)} title="Delete reaction">
-                <img width="25" height="25" src="https://img.icons8.com/ios/50/delete--v1.png" alt="delete--v1"/>
-              </button>
-            </div>
+            <div className="icon-row">
             <Heart/>
-
             <button onClick={() => toggleCommentForm(r._id)}>
               <img
                 src="https://img.icons8.com/parakeet-line/48/speech-bubble-with-dots.png"
@@ -79,8 +81,8 @@ console.log(reactions)
                 style={{ width: '24px', height: '24px' }}
               />
             </button>
-
-            {/* <Heart/> */}
+          </div>
+           
 
             {/* Ensure comments is always an array */}
             {activeCommentId === r._id && (
