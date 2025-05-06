@@ -67,9 +67,10 @@ console.log(reactions)
 
             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
             <button onClick={() => handleDelete(r._id)} title="Delete reaction">
-                🗑️
+                <img width="25" height="25" src="https://img.icons8.com/ios/50/delete--v1.png" alt="delete--v1"/>
               </button>
             </div>
+            <Heart/>
 
             <button onClick={() => toggleCommentForm(r._id)}>
               <img
@@ -79,18 +80,22 @@ console.log(reactions)
               />
             </button>
 
-            <Heart/>
+            {/* <Heart/> */}
 
             {/* Ensure comments is always an array */}
             {activeCommentId === r._id && (
               <>
+              <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
                 <CommentForm
                   reactionId={r._id}
                   onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment)}
                 />
-                <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
+                {/* <CommentList comments={Array.isArray(r.comments) ? r.comments : []} /> */}
+                
               </>
+              
             )}
+            
 
           </div>
         ))
