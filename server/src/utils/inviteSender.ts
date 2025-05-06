@@ -1,6 +1,13 @@
 import sgMail from '@sendgrid/mail';
 import dotenv from 'dotenv';
-dotenv.config();
+import path from 'path';
+import { fileURLToPath } from 'url';
+import { dirname } from 'path';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = dirname(__filename);
+
+dotenv.config({ path: path.resolve(__dirname, '../../.env') });
 
 const SENDGRID_API_KEY = process.env.SENDGRID_API_KEY;
 const FROM_EMAIL = process.env.FROM_EMAIL;
