@@ -1,28 +1,28 @@
-
 // Typescript interface representing a single comment
 interface Comment {
   _id: string;
   createdAt: string;
   commentText: string;
-  user: {
-    username: string;
+  user?: {
+    username?: string;
   };
 }
 
-//Props interface for the CommentList component
+// Props interface for the CommentList component
 interface CommentListProps {
   comments?: Comment[];
 }
 
-//Functional component for rendeing a list of comments
+// Functional component for rendering a list of comments
 const CommentList: React.FC<CommentListProps> = ({ comments = [] }) => {
   console.log(comments);
-  // If there are no comments, display a message and return early 
+
+  // If there are no comments, display a message and return early
   if (!comments.length) {
     return <h3>No Comments Yet</h3>;
   }
 
-  return (
+    return (
     <>
       {/* Section header */}
       <h3
@@ -40,7 +40,7 @@ const CommentList: React.FC<CommentListProps> = ({ comments = [] }) => {
             <div className="p-3 bg-dark text-light">
               {/* Comment header with timestamp */}
               <h5 className="card-header">
-                {comment.user.username} commented{' '}
+                {comment.user?.username || "Unknown User"} commented{' '}
                 <span style={{ fontSize: '0.825rem' }}>
                   {/* Convert the timestamp to a readable date string */}
                   on {new Date(Number(comment.createdAt)).toLocaleString()}
