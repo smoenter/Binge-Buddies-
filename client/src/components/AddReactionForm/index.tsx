@@ -1,12 +1,21 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
-// import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { ADD_REACTION } from '../../utils/mutations';
 import { QUERY_ME, GET_REACTIONS } from '../../utils/queries';
-// import Auth from '../../utils/auth';
 
 import "./index.css"
-
+// EMOJI CATEGORIES
+const emojiCategories: { [key: string]: string[] } = {
+  Love: ['❤️', '🥰', '😍', '🤩', '💖'],
+  Funny: ['😂', '🤣', '😹', '😆', '😜'],
+  Emotional: ['😭', '😢', '🥺', '💔', '😿'],
+  Shocked: ['😲', '😱', '😮', '🤯', '😵‍💫'],
+  Impressed: ['👏', '🙌', '👍', '🔥', '💯'],
+  Confused: ['🤔', '😕', '😵‍💫', '🫤', '🫣'],
+  Angry: ['😡', '🤬', '😤', '👿', '💢'],
+  Bored: ['🥱', '😴', '😪', '🙄', '😐'],
+  Movie: ['🍿', '🎥', '🎬', '🎞️', '📽️'],
+};
 
 interface AddReactionFormProps {
   mediaId: string; // required to associate the reaction
@@ -21,6 +30,8 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
   const [comment, setComment] = useState('')
   const [rating, setRating] = useState(1);
   const [characterCount, setCharacterCount] = useState(0);
+  const [showPicker, setShowPicker] = useState(false);
+  const [activeCategory, setActiveCategory] = useState('Love');
 
   //Mutation hook for adding a reaction
   const [addReaction, { error }] = useMutation(ADD_REACTION, {
@@ -64,6 +75,13 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
     if (value.length <= 280) {
       setComment(value);
       setCharacterCount(value.length);
+    }
+  };
+
+  const handleEmojiClick = (emoji: string) => {
+    if (comment.length + emoji.length <= 280) {
+      setComment(comment + emoji);
+      setCharacterCount(comment.length + emoji.length);
     }
   };
 
@@ -115,16 +133,45 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
             required
           ></textarea>
 
-          {/* Emoji picker */}
-          <div className="emoji-picker" style={{ margin: '0.5rem 0' }}>
-            <strong>Add an emoji:</strong>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😀")}>😀</span>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😍")}>😍</span>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 🤔")}>🤔</span>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😢")}>😢</span>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😠")}>😠</span>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😲")}>😲</span>
-          </div>
+<div className="emoji-picker-container">
+              <button
+                type="button"
+                className="emoji-toggle"
+                onClick={() => setShowPicker(!showPicker)}
+              >
+                <img width="30" height="30" src="https://img.icons8.com/color/48/sticker-square.png" alt="sticker-square"/>
+              </button>
+              {showPicker && (
+                <div className="emoji-picker">
+                  <div className="emoji-categories">
+                    {Object.keys(emojiCategories).map((category) => (
+                      <button
+                        key={category}
+                        type="button"
+                        className={`emoji-category-button ${
+                          activeCategory === category ? 'active' : ''
+                        }`}
+                        onClick={() => setActiveCategory(category)}
+                      >
+                        {category}
+                      </button>
+                    ))}
+                  </div>
+                  <div className="emoji-list">
+                    {emojiCategories[activeCategory].map((emoji) => (
+                      <button
+                        key={emoji}
+                        type="button"
+                        className="emoji-button"
+                        onClick={() => handleEmojiClick(emoji)}
+                      >
+                        {emoji}
+                      </button>
+                    ))}
+                  </div>
+                </div>
+              )}
+            </div>
 
           {/* Star Rating */}
           <div className="form-row">
