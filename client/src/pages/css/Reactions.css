@@ -1,0 +1,75 @@
+/* Reactions.css */
+
+.reaction-dashboard {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 1rem;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  .reaction-dashboard h1 {
+    text-align: center;
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .reaction-list-container {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+  
+  .reaction-card {
+    background: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    padding: 1rem;
+    transition: transform 0.2s, box-shadow 0.2s;
+  }
+  
+  .reaction-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+  }
+  
+  .reaction-card strong {
+    font-size: 1.1rem;
+    color: #333;
+  }
+  
+  .reaction-card p {
+    margin: 0.3rem 0;
+    color: #555;
+  }
+  
+  .reaction-card small {
+    display: block;
+    color: #888;
+    margin-top: 0.5rem;
+    font-size: 0.85rem;
+  }
+  
+  .reaction-card .reaction-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-top: 0.75rem;
+  }
+  
+  .reaction-card .reaction-actions button {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 1.2rem;
+    transition: transform 0.2s;
+  }
+  
+  .reaction-card .reaction-actions button:hover {
+    transform: scale(1.2);
+  }
+  
+  .reaction-card .comment-section {
+    margin-top: 1rem;
+    border-top: 1px solid #eee;
+    padding-top: 1rem;
+  }
