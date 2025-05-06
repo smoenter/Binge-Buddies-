@@ -1,4 +1,4 @@
-import { useState, type FormEvent, type ChangeEvent } from 'react';
+import { useState, useEffect, type FormEvent, type ChangeEvent } from 'react';
 // import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { ADD_REACTION } from '../../utils/mutations';
@@ -21,6 +21,8 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
   const [comment, setComment] = useState('')
   const [rating, setRating] = useState(1);
   const [characterCount, setCharacterCount] = useState(0);
+  const [message, setMessage] = useState('');
+
 
   //Mutation hook for adding a reaction
   const [addReaction, { error }] = useMutation(ADD_REACTION, {
@@ -30,11 +32,18 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
     ]
   });
 
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => setMessage(''), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
   //Form submission handler
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-       try {
+    try {
       // Perform the mutation
       await addReaction({
         variables: {
@@ -53,6 +62,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
       setCharacterCount(0);
       setRating(5);
       setIsOpen(false);
+      setMessage('Reaction added successfully!');
     } catch (err) {
       console.error(err);
     }
@@ -70,6 +80,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
 
   return (
     <div className="add-reaction-container">
+      {message && <div className="message">{message}</div>}
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
@@ -79,10 +90,8 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
           <img width="24" height="24" src="https://img.icons8.com/ios/50/plus-math--v1.png" alt="add" />
         </button>
       ) : (
-        // Render the form when isOpen is true
         <form onSubmit={handleFormSubmit} className="reaction-form">
           <h3 className="form-title">Add a Reaction</h3>
-
           <div className="form-row">
             <input
               type="text"
@@ -99,11 +108,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
               className="form-input half-width"
             />
           </div>
-
-          <div className="char-count">
-            Character Count: {characterCount}/280
-          </div>
-
+          <div className="char-count">Character Count: {characterCount}/280</div>
           <textarea
             name="comment"
             placeholder="Your reaction..."
@@ -113,19 +118,15 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
             rows={3}
             required
           ></textarea>
-
-          {/* Emoji picker */}
           <div className="emoji-picker" style={{ margin: '0.5rem 0' }}>
             <strong>Add an emoji:</strong>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😀")}>😀</span>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😍")}>😍</span>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 🤔")}>🤔</span>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😢")}>😢</span>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😠")}>😠</span>
-            <span className="emoji-button" onClick={() => setComment(prev => prev + " 😲")}>😲</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + ' 😀')}>😀</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + ' 😍')}>😍</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + ' 🤔')}>🤔</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + ' 😢')}>😢</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + ' 😠')}>😠</span>
+            <span className="emoji-button" onClick={() => setComment(prev => prev + ' 😲')}>😲</span>
           </div>
-
-          {/* Star Rating */}
           <div className="form-row">
             <label>Rating:</label>
             <div style={{ display: 'flex', gap: '0.25rem', fontSize: '1.75rem', cursor: 'pointer' }}>
@@ -142,10 +143,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
               ))}
             </div>
           </div>
-
-
           {error && <div className="error-message">{error.message}</div>}
-
           <div className="form-actions">
             <button
               type="button"
@@ -166,6 +164,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
     </div>
   );
 };
+
 
 export default AddReactionForm;
 

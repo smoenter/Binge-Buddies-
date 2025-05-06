@@ -100,7 +100,7 @@ export default function FriendsModal({
         } else {
           updated.add(friendId);
           setMessage(`Added ${username} to your friends.`);
-          setMessageStyle({ color: "green", fontWeight: "bold", marginTop: "10px" });
+          setMessageStyle({ color: "teal", fontWeight: "bold", marginTop: "10px" });
         }
 
         // ✅ Save to localStorage
