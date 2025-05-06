@@ -4,6 +4,9 @@ interface Comment {
   _id: string;
   createdAt: string;
   commentText: string;
+  user: {
+    username: string;
+  };
 }
 
 //Props interface for the CommentList component
