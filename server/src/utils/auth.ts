@@ -10,6 +10,8 @@ if (!JWT_SECRET_KEY) {
 
 const TOKEN_EXPIRATION = '2h';
 
+
+
 // 🔐 Sign a token with user info
 export const signToken = (username: string, email: string, _id: unknown): string => {
   const payload = { username, email, _id };

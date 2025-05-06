@@ -7,11 +7,9 @@ import CommentList from '../CommentList';
 
 import './index.css';
 
-const ReactionList = ({ mediaId }: { mediaId: string }) => {
+const ReactionList = () => {
 
-  const { loading: reactionLoading, error: reactionError, data, refetch } = useQuery(GET_REACTIONS, {
-    variables: { mediaId },
-  });
+  const { loading: reactionLoading, error: reactionError, data, refetch } = useQuery(GET_REACTIONS);
 
   const [removeReaction] = useMutation(REMOVE_REACTION, {
     onCompleted: () => refetch(),
@@ -23,6 +21,7 @@ const ReactionList = ({ mediaId }: { mediaId: string }) => {
 
   useEffect(() => {
     if (data?.reactions) {
+      console.log('Fetch reactions', data.reactions)
       setReactions(data.reactions);
     }
   }, [data]);
@@ -50,7 +49,7 @@ const ReactionList = ({ mediaId }: { mediaId: string }) => {
       )
     );
   };
-
+console.log(reactions)
    return (
     <div className="reaction-list-container">
       <h3>Reactions</h3>
@@ -59,17 +58,14 @@ const ReactionList = ({ mediaId }: { mediaId: string }) => {
       ) : (
         reactions.map((r: any) => (
           <div key={r._id} className="reaction-card">
-             <p><strong>Title:</strong> {r.title || 'Untitled'}</p>
+             <p><strong>Title:</strong> {r.media.title || 'Untitled'}</p>
             <p>{r.comment}</p>
             <p>Season {r.season}, Episode {r.episode}</p>
             <p>Rating: {r.rating}</p>
-            <small>{new Date(r.createdAt).toLocaleString()}</small>
+            <small>{new Date(parseInt(r.createdAt)).toLocaleString()}</small>
 
             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-              <button onClick={() => toggleCommentForm(r._id)} title="Add comment">
-                💬
-              </button>
-              <button onClick={() => handleDelete(r._id)} title="Delete reaction">
+            <button onClick={() => handleDelete(r._id)} title="Delete reaction">
                 🗑️
               </button>
             </div>
