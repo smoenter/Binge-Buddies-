@@ -21,6 +21,7 @@ export default function FriendsModal({
   onClose,
   friendIds,
   setFriendIds,
+  userId,
 }: FriendsModalProp) {
   const { loading: friendsLoading, data: friendsData, error: friendsError } = useQuery(QUERY_FRIENDS);
   const [addFriend] = useMutation(ADD_FRIEND);
@@ -34,7 +35,7 @@ export default function FriendsModal({
 
     // ✅ Load friendIds from localStorage on mount
     useEffect(() => {
-      const storedFriendIds = localStorage.getItem("friendIds");
+      const storedFriendIds = localStorage.getItem(`friendIds_${userId}`);
       if (storedFriendIds) {
         try {
           const parsedIds = JSON.parse(storedFriendIds);
@@ -45,7 +46,7 @@ export default function FriendsModal({
           console.error("Failed to parse stored friend IDs:", e);
         }
       }
-    }, []);
+    }, [userId]);
 
  // ✅ Filter friends as user types
   useEffect(() => {
@@ -103,7 +104,7 @@ export default function FriendsModal({
         }
 
         // ✅ Save to localStorage
-        localStorage.setItem("friendIds", JSON.stringify(Array.from(updated)));
+        localStorage.setItem(`friendIds_${userId}`, JSON.stringify(Array.from(updated)));
 
         return updated;
       });
