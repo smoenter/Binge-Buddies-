@@ -226,3 +226,13 @@
   justify-content: center;
   z-index: 1000; /* Higher than the modal */
 }
+  
+  .message {
+    background-color: lightgray;
+    color: #218eaf;
+    padding: 0.5rem 1rem;
+    border-radius: 4px;
+    margin-bottom: 1rem;
+    font-weight: bold;
+    text-align: center;
+  }

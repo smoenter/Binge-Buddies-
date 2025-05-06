@@ -1,4 +1,5 @@
-import { useState, type FormEvent, type ChangeEvent } from 'react';
+import { useState, useEffect, type FormEvent, type ChangeEvent } from 'react';
+// import { Link } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { ADD_REACTION } from '../../utils/mutations';
 import { QUERY_ME, GET_REACTIONS } from '../../utils/queries';
@@ -32,6 +33,8 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
   const [characterCount, setCharacterCount] = useState(0);
   const [showPicker, setShowPicker] = useState(false);
   const [activeCategory, setActiveCategory] = useState('Love');
+  const [message, setMessage] = useState('');
+
 
   //Mutation hook for adding a reaction
   const [addReaction, { error }] = useMutation(ADD_REACTION, {
@@ -41,11 +44,18 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
     ]
   });
 
+  useEffect(() => {
+    if (message) {
+      const timer = setTimeout(() => setMessage(''), 2000);
+      return () => clearTimeout(timer);
+    }
+  }, [message]);
+
   //Form submission handler
   const handleFormSubmit = async (event: FormEvent) => {
     event.preventDefault();
 
-       try {
+    try {
       // Perform the mutation
       await addReaction({
         variables: {
@@ -64,6 +74,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
       setCharacterCount(0);
       setRating(5);
       setIsOpen(false);
+      setMessage('Reaction added successfully!');
     } catch (err) {
       console.error(err);
     }
@@ -88,6 +99,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
 
   return (
     <div className="add-reaction-container">
+      {message && <div className="message">{message}</div>}
       {!isOpen ? (
         <button
           onClick={() => setIsOpen(true)}
@@ -101,7 +113,6 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
         {/* Render the form when isOpen is true */}
         <form onSubmit={handleFormSubmit} className="reaction-form">
           <h3 className="form-title">Add a Reaction</h3>
-
           <div className="form-row">
             <input
               type="text"
@@ -118,11 +129,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
               className="form-input half-width"
             />
           </div>
-
-          <div className="char-count">
-            Character Count: {characterCount}/280
-          </div>
-
+          <div className="char-count">Character Count: {characterCount}/280</div>
           <textarea
             name="comment"
             placeholder="Your reaction..."
@@ -190,10 +197,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
               ))}
             </div>
           </div>
-
-
           {error && <div className="error-message">{error.message}</div>}
-
           <div className="form-actions">
             <button
               type="button"
@@ -215,6 +219,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
     </div>
   );
 };
+
 
 export default AddReactionForm;
 
