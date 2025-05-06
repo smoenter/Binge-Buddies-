@@ -227,7 +227,7 @@
   z-index: 1000; /* Higher than the modal */
 }
   
-  .message {
+  /* .message {
     background-color: lightgray;
     color: #218eaf;
     padding: 0.5rem 1rem;
@@ -235,4 +235,50 @@
     margin-bottom: 1rem;
     font-weight: bold;
     text-align: center;
+  } */
+
+  .notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    pointer-events: none;
+  }
+  
+  .notification-content {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #2ecc71; /* Green success color */
+    color: white;
+    padding: 16px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+    font-weight: 500;
+    font-size: 0.95rem;
+    max-width: 300px;
+    border-left: 4px solid #27ae60; /* Darker green accent */
+  }
+  
+  .notification-icon {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    animation: bounce 0.6s ease infinite alternate;
+  }
+  
+  @keyframes bounce {
+    0% { transform: translateY(0); }
+    100% { transform: translateY(-3px); }
+  }
+  
+  /* For error messages (you can use this if needed) */
+  .notification.error {
+    background-color: #e74c3c;
+    border-left-color: #c0392b;
+  }
+  
+  .notification.warning {
+    background-color: #f39c12;
+    border-left-color: #e67e22;
   }

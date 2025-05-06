@@ -1,5 +1,5 @@
 import { useState, useEffect, type FormEvent, type ChangeEvent } from 'react';
-// import { Link } from 'react-router-dom';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useMutation } from '@apollo/client';
 import { ADD_REACTION } from '../../utils/mutations';
 import { QUERY_ME, GET_REACTIONS } from '../../utils/queries';
@@ -99,54 +99,70 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
 
   return (
     <div className="add-reaction-container">
-      {message && <div className="message">{message}</div>}
-      {!isOpen ? (
-        <button
-          onClick={() => setIsOpen(true)}
-          className="add-reaction-button"
-          title="Add Reaction"
-        >
-          <img width="24" height="24" src="https://img.icons8.com/ios/50/plus-math--v1.png" alt="add" />
-        </button>
-      ) : (
+      <AnimatePresence>
+        {message && (
+          <motion.div
+            className="notification"
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            exit={{ opacity: 0, y: -20 }}
+            transition={{ type: 'spring', damping: 25, stiffness: 300 }}
+          >
+            <div className="notification-content">
+              <svg className="notification-icon" viewBox="0 0 24 24">
+                <path fill="currentColor" d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
+              </svg>
+              {message}
+            </div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+      <button
+        onClick={() => setIsOpen(true)}
+        className="add-reaction-button"
+        title="Add Reaction"
+      >
+        <img width="24" height="24" src="https://img.icons8.com/ios/50/plus-math--v1.png" alt="add" />
+      </button>
+      {isOpen && (
         <div className="reaction-popup-overlay">
-        {/* Render the form when isOpen is true */}
-        <form onSubmit={handleFormSubmit} className="reaction-form">
-          <h3 className="form-title">Add a Reaction</h3>
-          <div className="form-row">
-            <input
-              type="text"
-              placeholder="Season (optional)"
-              value={season}
-              onChange={(e) => setSeason(e.target.value)}
-              className="form-input half-width"
-            />
-            <input
-              type="text"
-              placeholder="Episode (optional)"
-              value={episode}
-              onChange={(e) => setEpisode(e.target.value)}
-              className="form-input half-width"
-            />
-          </div>
-          <div className="char-count">Character Count: {characterCount}/280</div>
-          <textarea
-            name="comment"
-            placeholder="Your reaction..."
-            value={comment}
-            onChange={handleTextChange}
-            className="form-textarea"
-            rows={3}
-            required
-          ></textarea>
+          {/* Render the form when isOpen is true */}
+          <form onSubmit={handleFormSubmit} className="reaction-form">
+            <h3 className="form-title">Add a Reaction</h3>
+            <div className="form-row">
+              <input
+                type="text"
+                placeholder="Season (optional)"
+                value={season}
+                onChange={(e) => setSeason(e.target.value)}
+                className="form-input half-width"
+              />
+              <input
+                type="text"
+                placeholder="Episode (optional)"
+                value={episode}
+                onChange={(e) => setEpisode(e.target.value)}
+                className="form-input half-width"
+              />
+            </div>
+            <div className="char-count">Character Count: {characterCount}/280</div>
+            <textarea
+              name="comment"
+              placeholder="Your reaction..."
+              value={comment}
+              onChange={handleTextChange}
+              className="form-textarea"
+              rows={3}
+              required
+            ></textarea>
 
-<div className="emoji-picker-container">
+            <div className="emoji-picker-container">
               <button
                 type="button"
                 className="emoji-toggle"
                 onClick={() => setShowPicker(!showPicker)}
               >
-                <img width="30" height="30" src="https://img.icons8.com/color/48/sticker-square.png" alt="sticker-square"/>
+                <img width="30" height="30" src="https://img.icons8.com/color/48/sticker-square.png" alt="sticker-square" />
               </button>
               {showPicker && (
                 <div className="emoji-picker">
@@ -155,9 +171,8 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
                       <button
                         key={category}
                         type="button"
-                        className={`emoji-category-button ${
-                          activeCategory === category ? 'active' : ''
-                        }`}
+                        className={`emoji-category-button ${activeCategory === category ? 'active' : ''
+                          }`}
                         onClick={() => setActiveCategory(category)}
                       >
                         {category}
@@ -180,40 +195,40 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
               )}
             </div>
 
-          {/* Star Rating */}
-          <div className="form-row">
-            <label>Rating:</label>
-            <div style={{ display: 'flex', gap: '0.25rem', fontSize: '1.75rem', cursor: 'pointer' }}>
-              {[1, 2, 3, 4, 5].map((star) => (
-                <span
-                  key={star}
-                  onClick={() => setRating(star)}
-                  style={{ color: star <= rating ? '#ffc107' : '#e4e5e9' }}
-                  role="button"
-                  aria-label={`Set rating to ${star}`}
-                >
-                  ★
-                </span>
-              ))}
+            {/* Star Rating */}
+            <div className="form-row">
+              <label>Rating:</label>
+              <div style={{ display: 'flex', gap: '0.25rem', fontSize: '1.75rem', cursor: 'pointer' }}>
+                {[1, 2, 3, 4, 5].map((star) => (
+                  <span
+                    key={star}
+                    onClick={() => setRating(star)}
+                    style={{ color: star <= rating ? '#ffc107' : '#e4e5e9' }}
+                    role="button"
+                    aria-label={`Set rating to ${star}`}
+                  >
+                    ★
+                  </span>
+                ))}
+              </div>
             </div>
-          </div>
-          {error && <div className="error-message">{error.message}</div>}
-          <div className="form-actions">
-            <button
-              type="button"
-              onClick={() => setIsOpen(false)}
-              className="cancel-button"
-            >
-              Cancel
-            </button>
-            <button
-              type="submit"
-              className="submit-button"
-            >
-              Post
-            </button>
-          </div>
-        </form>
+            {error && <div className="error-message">{error.message}</div>}
+            <div className="form-actions">
+              <button
+                type="button"
+                onClick={() => setIsOpen(false)}
+                className="cancel-button"
+              >
+                Cancel
+              </button>
+              <button
+                type="submit"
+                className="submit-button"
+              >
+                Post
+              </button>
+            </div>
+          </form>
         </div>
       )}
     </div>
