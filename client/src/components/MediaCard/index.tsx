@@ -13,6 +13,7 @@ type Props = {
   mediaId?: string;
   refetch?: () => void;
   onClick?: () => void;
+  isWatchlistPage?: boolean;
 };
 const MediaCard = ({
   imdbID,
@@ -22,6 +23,7 @@ const MediaCard = ({
   mediaId,
   refetch,
   onClick,
+  isWatchlistPage = false,
 }: Props) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
@@ -62,6 +64,7 @@ const MediaCard = ({
           imdbID={imdbID}
           title={title}
           onClose={() => setIsModalOpen(false)}
+          isWatchlistPage={isWatchlistPage}
         />
       )}
     </>
