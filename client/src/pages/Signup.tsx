@@ -1,5 +1,5 @@
 import { useState, type FormEvent, type ChangeEvent } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
 import Auth from '../utils/auth';
@@ -14,6 +14,7 @@ const Signup = () => {
     password: '',
   });
   const [addUser, { error, data }] = useMutation(ADD_USER);
+  const navigate = useNavigate(); // Initialize navigate
 
   const handleChange = (event: ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
@@ -32,11 +33,14 @@ const Signup = () => {
         variables: { input: { ...formState } },
       });
 
-      Auth.login(data.addUser.token);
-    } catch (e) {
-      console.error(e);
-    }
-  };
+       // Login and then navigate to transition with fromSignup state
+       Auth.login(data.addUser.token);
+       navigate('/transition', { state: { fromSignup: true } }); // Add this line
+       
+     } catch (e) {
+       console.error(e);
+     }
+   };
 
   return (
     <main className="custom-bg-container flex-row justify-center mb-4">

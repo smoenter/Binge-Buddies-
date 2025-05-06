@@ -26,8 +26,8 @@ const Home = () => {
                 >
                   <h2>Let's get started!</h2>
                   <p className="card-text">
-                    Please <Link to="/login" className="auth-link">log in</Link> or{' '}
-                    <Link to="/signup" className="auth-link">sign up</Link> to start sharing your reactions!
+                    Please <Link to="/login" className="auth-link2">log in</Link> or{' '}
+                    <Link to="/signup" className="auth-link2">sign up</Link> to begin!
                   </p>
                 </motion.div>
               ) : (

@@ -4,6 +4,7 @@ import { GET_REACTIONS } from '../../utils/queries';
 import { REMOVE_REACTION } from '../../utils/mutations';
 import CommentForm from '../CommentForm';
 import CommentList from '../CommentList';
+import Heart from '../Heart'
 
 import './index.css';
 
@@ -77,6 +78,8 @@ console.log(reactions)
                 style={{ width: '24px', height: '24px' }}
               />
             </button>
+
+            <Heart/>
 
             {/* Ensure comments is always an array */}
             {activeCommentId === r._id && (
