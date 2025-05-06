@@ -1,7 +1,6 @@
 import { motion } from 'framer-motion';
 import { useQuery } from '@apollo/client';
 import { QUERY_MEDIA_DETAILS } from '../../utils/queries';
-import Star from '../Star';
 import AddReactionForm from '../AddReactionForm';
 import './index.css';
 
@@ -51,8 +50,6 @@ const MediaModal = ({ imdbID, onClose }: Props) => {
           <h3 className="modal-plot-title">Plot:</h3>
           {/* PLOT DESCRIPTION */}
           <p className="modal-plot-description">{movieData.Plot}</p>
-          {/* STAR */}
-          <Star saved={movieData.Saved} imdbID={imdbID} />
           {movieData.TrailerLink && (
             <a href={movieData.TrailerLink} target="_blank" rel="noopener noreferrer" className="trailer-link">
               🎬 Watch Trailer
