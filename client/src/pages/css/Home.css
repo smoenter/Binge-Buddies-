@@ -1,5 +1,6 @@
-.auth-link {
+.auth-link2 {
   pointer-events: auto; /* Make sure the links are clickable */
+  z-index: 100;
 }
 
 /* Video section setup */
@@ -37,7 +38,7 @@
   align-items: center;  /* was flex-start */
   min-height: 90vh;     /* match the height of .video-section */
   padding-top: 20vh; 
-  z-index: 2; /* Keep it above the video */
+  z-index: 10; /* Keep it above the video */
   position: relative;
 }
 
@@ -57,6 +58,7 @@
   margin-bottom: 0 !important;
   z-index: 10;
   position: relative;
+  pointer-events: auto;
 }
 
 /* This ensures the 'How It Works' section spans across the screen */
@@ -90,7 +92,7 @@
   gap: 2rem;
   width: 100%;
   max-width: 1200px; /* Adjust this to make the card's width fit better */
-  z-index: 2;
+  z-index: 10;
   padding: 2rem; /* Optional padding to create some space around the cards */
 }
 

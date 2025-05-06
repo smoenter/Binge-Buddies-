@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useNavigate, useLocation } from 'react-router-dom';
 import Confetti from 'react-confetti';
 import { useWindowSize } from 'react-use';
 import { motion, useAnimation } from 'framer-motion';
@@ -9,9 +9,13 @@ import transitionSound from '../assets/intro-sound3.mp3';
 
 const Transition = () => {
     const navigate = useNavigate();
+    const location = useLocation();
     const { width, height } = useWindowSize();
     const audioRef = useRef<HTMLAudioElement | null>(null);
     const controls = useAnimation();
+
+    // Check if coming from signup
+    const fromSignup = location.state?.fromSignup || false;
 
     useEffect(() => {
         // Initialize audio
@@ -102,7 +106,8 @@ const Transition = () => {
 
     return (
         <div className="transition-container">
-            <Confetti width={width} height={height} />
+            {fromSignup && <Confetti width={width} height={height} />}
+
             <motion.div
                 initial={{ opacity: 0, scale: 0.6, filter: 'blur(12px)' }}
                 animate={controls}
