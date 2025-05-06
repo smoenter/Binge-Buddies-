@@ -1,142 +1,118 @@
-.auth-link2 {
-  pointer-events: auto; /* Make sure the links are clickable */
-  z-index: 100;
+/* How It Works Section */
+.how-it-works-section {
+  padding: 2rem 1rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
-/* Video section setup */
-.video-section {
-  position: relative;  /* Ensure it's absolutely positioned */
-  top: 0;
-  left: 0;
+.how-it-works-container {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(10px);
+  border-radius: 100px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.section-title {
+  text-align: center;
+  font-size: 2rem;
+  margin-bottom: 2.5rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.steps-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 1.5rem;
+}
+
+.step-card {
+  flex: 1;
+  text-align: center;
+  padding: 1.5rem;
+  transition: transform 0.3s ease;
+}
+
+.step-card:hover {
+  transform: translateY(-5px);
+}
+
+.step-icon {
+  width: 80px;
+  height: 80px;
+  margin: 0 auto 1.5rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #0e2368de, #1c7f91);
+  border-radius: 50%;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
+
+.step-icon img {
+  width: 48px;
+  height: 48px;
+  filter: brightness(0) invert(1);
+}
+
+.step-title {
+  font-size: 1.25rem;
+  margin-bottom: 1rem;
+  color: #333;
+  font-weight: 600;
+}
+
+.step-description {
+  color: #666;
+  line-height: 1.5;
+  font-size: 0.95rem;
+  max-width: 280px;
+  margin: 0 auto;
+}
+
+.get-started-section {
+  position: absolute;
+  bottom: 10%;
+  left: 50%;
+  transform: translateX(-50%);
   width: 100%;
-  height: 90vh; /* Height of the video background */
-  z-index: -1; /* Send the video behind all other content */
+  display: flex;
+  justify-content: center;
+  padding: 1rem;
+  z-index: 2; /* make sure it stays above the video */
+}
+
+.glass-card {
+  background: rgba(255, 255, 255, 0.15);
+  backdrop-filter: blur(10px);
+  padding: 2rem;
+  border-radius: 20px;
+  max-width: 400px;
+  width: 90%;
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+}
+
+.video-section {
+  position: relative;
+  height: 100vh;
   overflow: hidden;
 }
 
-.video-section::after {
-  background: rgba(0, 0, 0, 0.4);  /* Dark overlay */
-  content: "";
-  position: absolute;
-  top: 100vh;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-}
-
-/* Main content section */
-.main-content {
-  position: relative;
-  z-index: 2; /* Keep it above the video background */
-}
-
-/* Getting started section */
-.get-started-section {
-  display: flex;
-  justify-content: center;
-  align-items: center;  /* was flex-start */
-  min-height: 90vh;     /* match the height of .video-section */
-  padding-top: 20vh; 
-  z-index: 10; /* Keep it above the video */
-  position: relative;
-}
-
-/* Glassmorphism floating card */
-.glass-card {
-  background: rgba(0, 0, 0, 0.65); /* semi-transparent black */
-  backdrop-filter: blur(10px);
-  border: 1px solid rgba(255, 255, 255, 0.2);
-  border-radius: 1rem;
-  padding: 1.5rem 2rem;
-  color: #fff;
-  box-shadow: 0 4px 30px rgba(171, 171, 171, 0.324),
-    0 0 20px rgba(117, 117, 117, 0.05),
-    0 0 40px rgba(88, 88, 88, 0.15);
-  text-align: center;
-  transition: transform 0.3s ease;
-  margin-bottom: 0 !important;
-  z-index: 10;
-  position: relative;
-  pointer-events: auto;
-}
-
-/* This ensures the 'How It Works' section spans across the screen */
-.how-it-works-section {
-  background-color: #2f2f2f; /* Dark grey background */
-  padding: 40px 0; /* Adds padding to the top and bottom */
-  width: 100%;
-  display: flex;
-  justify-content: center;
-  margin-top: 0;
-  /* padding-top: 50rem; */
-   /* optional spacing */
-}
-
-/* This makes the 'How It Works' card larger and square-like */
-.how-it-works-card {
-  background-color: rgba(201, 200, 200, 0.694); /* White background for the card */
-  border-radius: 10px; /* Rounded corners */
-  padding: 30px;
-  width: 80%; /* Makes the card take up 80% of the screen */
-  max-width: 1000px; /* Ensures the card doesn’t grow too large on wider screens */
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1); /* Adds subtle shadow for some depth */
-  text-align: center;
-}
-
-/* Info section */
-.info-section {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-  width: 100%;
-  max-width: 1200px; /* Adjust this to make the card's width fit better */
-  z-index: 10;
-  padding: 2rem; /* Optional padding to create some space around the cards */
-}
-
-/* Info card */
-.info-card {
-  background: rgba(205, 205, 205, 0.1); /* Semi-transparent background */
-  backdrop-filter: none; /* Remove blur from the card */
-  padding: 2rem;
-  border-radius: 1rem;
-  width: 100%;
-  max-width: 800px; /* Make the card width responsive */
-  text-align: center;
-  box-shadow: 0 4px 30px rgba(171, 171, 171, 0.324);
-  border: 1px solid rgba(255, 255, 255, 0.2); /* Proper border */
-}
-
-/* Style for each info card content */
-.info-card-content {
-  margin-bottom: 20px;
-}
-
-.info-card-content img {
-  margin-bottom: 10px;
-}
-
-.info-card-content h3 {
-  font-size: 1.5rem;
-  font-weight: 600;
-  color: #333;
-}
-
-.info-card-content p {
-  font-size: 1rem;
-  color: #555;
-}
-
-/* Optional: Adjust font size and margins for responsive design */
+/* Responsive adjustments */
 @media (max-width: 768px) {
-  .how-it-works-card {
-    width: 95%; /* Takes up more of the screen on smaller devices */
+  .how-it-works-container {
+    border-radius: 50px;
+    padding: 2rem 1rem;
   }
-}
-
-/* Fix the section size */
-.info-section {
-  min-height: 50vh; /* Adjust this value to make sure it doesn't overlap */
+  
+  .steps-container {
+    flex-direction: column;
+    gap: 2rem;
+  }
+  
+  .step-card {
+    padding: 1rem;
+  }
 }
