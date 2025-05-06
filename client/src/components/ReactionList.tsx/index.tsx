@@ -78,7 +78,7 @@ console.log(reactions)
             <p>{r.comment}</p>
             <p>Season {r.season}, Episode {r.episode}</p>
             <p>Rating: {r.rating}</p>
-            <small>{new Date(parseInt(r.createdAt)).toLocaleString()}</small>
+            <p className="reaction-date-txt">{new Date(parseInt(r.createdAt)).toLocaleString()}</p>
 
             <div className="icon-row">
             <Heart/>
