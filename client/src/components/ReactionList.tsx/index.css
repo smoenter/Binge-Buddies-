@@ -73,3 +73,10 @@
   display: flex;
   align-items: flex-start;
 }
+
+.reaction-date-txt {
+  color: #178f8a !important; /* This is your teal color */
+  font-weight: bold;
+  font-size: 0.8rem;
+  margin-top: 0.5rem; /* Optional: adds some spacing */
+}

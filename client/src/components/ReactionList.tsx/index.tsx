@@ -51,8 +51,11 @@ const ReactionList = () => {
       )
     );
   };
-console.log(reactions)
-   return (
+
+  if (reactionLoading) return <p>Loading reactions...</p>;
+  if (reactionError) return <p>Error loading reactions.</p>;
+
+  return (
     <div className="reaction-list-container">
       <h3>Reactions</h3>
 
@@ -67,45 +70,41 @@ console.log(reactions)
       ) : (
         reactions.map((r: any) => (
           <div key={r._id} className="reaction-card">
-            {/* DELETE REACTION BUTTON */}
+            {/* DELETE BUTTON */}
             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-            <button onClick={() => handleDelete(r._id)} title="Delete reaction">
-                <img width="25" height="25" src="https://img.icons8.com/ios/50/delete--v1.png" alt="delete--v1"/>
+              <button onClick={() => handleDelete(r._id)} title="Delete reaction">
+                <img width="25" height="25" src="https://img.icons8.com/ios/50/delete--v1.png" alt="delete" />
               </button>
             </div>
 
-             <p><strong>Title:</strong> {r.media.title || 'Untitled'}</p>
+            <p><strong>User:</strong> {r.user?.username || 'Anonymous'}</p>
+            <p><strong>Title:</strong> {r.media?.title || 'Untitled'}</p>
             <p>{r.comment}</p>
             <p>Season {r.season}, Episode {r.episode}</p>
             <p>Rating: {r.rating}</p>
-            <small>{new Date(parseInt(r.createdAt)).toLocaleString()}</small>
+            <p className="reaction-date-txt">{new Date(parseInt(r.createdAt)).toLocaleString()}</p>
 
             <div className="icon-row">
-            <Heart/>
-            <button onClick={() => toggleCommentForm(r._id)}>
-              <img
-                src="https://img.icons8.com/parakeet-line/48/speech-bubble-with-dots.png"
-                alt="comment icon"
-                style={{ width: '24px', height: '24px' }}
-              />
-            </button>
-          </div>
-           
+              <Heart />
+              <button onClick={() => toggleCommentForm(r._id)}>
+                <img
+                  src="https://img.icons8.com/parakeet-line/48/speech-bubble-with-dots.png"
+                  alt="comment icon"
+                  style={{ width: '24px', height: '24px' }}
+                />
+              </button>
+            </div>
 
-            {/* Ensure comments is always an array */}
+            {/* Comments section */}
             {activeCommentId === r._id && (
               <>
-              <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
+                <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
                 <CommentForm
                   reactionId={r._id}
                   onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment)}
                 />
-                               
               </>
-              
             )}
-            
-
           </div>
         ))
       )}

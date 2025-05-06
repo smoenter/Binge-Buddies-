@@ -1,4 +1,4 @@
-// import '../CommentForm/index.css';
+import './index.css';
 
 
 // Typescript interface representing a single comment
