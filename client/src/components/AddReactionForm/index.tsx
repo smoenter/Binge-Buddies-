@@ -79,7 +79,8 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
           <img width="24" height="24" src="https://img.icons8.com/ios/50/plus-math--v1.png" alt="add" />
         </button>
       ) : (
-        // Render the form when isOpen is true
+        <div className="reaction-popup-overlay">
+        {/* Render the form when isOpen is true */}
         <form onSubmit={handleFormSubmit} className="reaction-form">
           <h3 className="form-title">Add a Reaction</h3>
 
@@ -162,6 +163,7 @@ const AddReactionForm = ({ mediaId }: AddReactionFormProps) => {
             </button>
           </div>
         </form>
+        </div>
       )}
     </div>
   );

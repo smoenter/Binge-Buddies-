@@ -1,6 +1,6 @@
 .add-reaction-button {
-  background-color: #e36369;
-  border: 2px solid #e36369;
+  background-color: #db4f56;
+  border: 2px solid #db4f56;
   color: #d67277;
   border-radius: 50%;
   width: 48px;
@@ -15,8 +15,8 @@
 }
 
 .add-reaction-button:hover {
-  background-color: #d6464d;
-  border: 2px solid #d6464d;
+  background-color: #c4262e;
+  border: 2px solid #c4262e;
   color: white;
   transform: translateY(-2px);
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.15);
@@ -32,14 +32,17 @@
   filter: brightness(0) invert(1);
 }
   
-  .reaction-form {
-    background-color: rgb(211, 210, 210);
-    border-radius: 12px;
-    padding: 1.5rem;
-    width: 100%;
-    max-width: 400px;
-    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
-  }
+.reaction-form {
+  background-color: white;
+  border-radius: 12px;
+  padding: 1.5rem;
+  width: 90%;
+  max-width: 400px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+  animation: fadeIn 0.3s ease;
+  position: relative;
+  z-index: 1001; /* Above the overlay */
+}
   
   .form-title {
     font-size: 1.2rem;
@@ -125,3 +128,22 @@
   .emoji-button{
     cursor: pointer
   }
+
+  /* Add these new styles */
+.add-reaction-container {
+  position: relative;
+  z-index: 10; /* Ensure it appears above the modal */
+}
+
+.reaction-popup-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent backdrop */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000; /* Higher than the modal */
+}
