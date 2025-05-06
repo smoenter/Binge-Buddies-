@@ -19,7 +19,7 @@ const ReactionList = () => {
 
   const [reactions, setReactions] = useState<any[]>([]);
   const [activeCommentId, setActiveCommentId] = useState<string | null>(null);
-  const [reactionMessage, setReactionMessage] = useState('');
+  const [reactionMessage] = useState('');
 
   useEffect(() => {
     if (data?.reactions) {
