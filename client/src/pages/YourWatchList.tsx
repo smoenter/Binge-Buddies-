@@ -58,6 +58,7 @@ const YourWatchlist = () => {
               saved={true}
               mediaId={media._id}
               refetch={refetch} 
+              isWatchlistPage={true}
             />
           ))
         ) : (

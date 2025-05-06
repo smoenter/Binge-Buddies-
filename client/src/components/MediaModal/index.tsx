@@ -8,9 +8,10 @@ type Props = {
   imdbID: string;
   onClose: () => void;
   title: string;
+  isWatchlistPage?: boolean
 };
 
-const MediaModal = ({ imdbID, onClose }: Props) => {
+const MediaModal = ({ imdbID, onClose, isWatchlistPage = false }: Props) => {
   console.log(imdbID);
   const { loading, data } = useQuery(QUERY_MEDIA_DETAILS, {
     variables: { imdbID },
@@ -55,7 +56,8 @@ const MediaModal = ({ imdbID, onClose }: Props) => {
               🎬 Watch Trailer
             </a>
           )} 
-          <AddReactionForm mediaId={imdbID} />
+          {/* Only show AddReactionForm if on watchlist page */}
+          {isWatchlistPage && <AddReactionForm mediaId={imdbID} />}
         </motion.div>
       </div>
     </div>
