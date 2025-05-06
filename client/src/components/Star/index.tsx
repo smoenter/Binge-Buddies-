@@ -28,18 +28,91 @@ const Star = ({ saved = false, imdbID, mediaId, refetch }: StarProps) => {
     }
 
     if (active && mediaId) {
-      const confirmed = window.confirm("Remove this from your Watchlist?");
-      if (!confirmed) return;
+      toast(
+        (t) => (
+          <span>
+            Remove this from your Watchlist?
+            <div style={{ marginTop: "10px", display: "flex", gap: "8px" }}>
+              {/* YES BUTTON */}
+              <div
+                style={{
+                  transition: "transform 0.2s ease",
+                  display: "inline-block",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.transform =
+                    "scale(1.1)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.transform =
+                    "scale(1)";
+                }}
+              >
+                <button
+                  onClick={async () => {
+                    try {
+                      await removeMedia({ variables: { mediaId } });
+                      setActive(false);
+                      toast.dismiss(t.id);
+                      toast.success("Removed from Watchlist");
+                      if (refetch) refetch();
+                    } catch (error) {
+                      console.error("Error removing media:", error);
+                      toast.dismiss(t.id);
+                      toast.error("Failed to remove");
+                    }
+                  }}
+                  style={{
+                    backgroundColor: "#4389a2",
+                    color: "#fff",
+                    padding: "6px 12px",
+                    borderRadius: "4px",
+                    border: "none",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Yes
+                </button>
+              </div>
 
-      try {
-        await removeMedia({ variables: { mediaId } });
-        setActive(false);
-        toast.success("Removed from Watchlist");
-        if (refetch) refetch();
-      } catch (error) {
-        console.error("Error removing media:", error);
-        toast.error("Failed to remove");
-      }
+              {/* CANCEL BUTTON */}
+              <div
+                style={{
+                  transition: "transform 0.2s ease",
+                  display: "inline-block",
+                }}
+                onMouseEnter={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.transform =
+                    "scale(1.1)";
+                }}
+                onMouseLeave={(e) => {
+                  (e.currentTarget as HTMLDivElement).style.transform =
+                    "scale(1)";
+                }}
+              >
+                <button
+                  onClick={() => toast.dismiss(t.id)}
+                  style={{
+                    backgroundColor: "#dc2626",
+                    color: "#fff",
+                    padding: "6px 12px",
+                    borderRadius: "4px",
+                    border: "none",
+                    cursor: "pointer",
+                    fontWeight: "bold",
+                  }}
+                >
+                  Cancel
+                </button>
+              </div>
+            </div>
+          </span>
+        ),
+        {
+          duration: 10000,
+        }
+      );
       return;
     }
 
@@ -55,7 +128,7 @@ const Star = ({ saved = false, imdbID, mediaId, refetch }: StarProps) => {
       await saveMedia({ variables: { imdbID } });
       setActive(true);
       toast.success("Saved to Watchlist");
-      if (refetch) refetch(); // Trigger refresh so star updates on re-search
+      if (refetch) refetch();
     } catch (error) {
       console.error("Error saving media:", error);
       toast.error("Failed to save");
@@ -77,4 +150,5 @@ const Star = ({ saved = false, imdbID, mediaId, refetch }: StarProps) => {
 };
 
 export default Star;
+
 
