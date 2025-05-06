@@ -2,6 +2,8 @@ import { useState, type FormEvent, type ChangeEvent } from 'react';
 import { useMutation } from '@apollo/client';
 import { ADD_COMMENT } from '../../utils/mutations';
 
+import './index.css'
+
 
 // Props the CommentForm component receives
 interface CommentFormProps {
@@ -54,36 +56,27 @@ const CommentForm = ({ reactionId, onCommentAdded }: CommentFormProps) => {
   };
 
   return (
-    <div>
-      <h4>What are your thoughts on this reaction?</h4>
+    <div className="comment-form">
+      <div className="comment-form-header">
+        <h4 className="comment-form-title">Add a comment</h4>
+        <span className={`comment-count ${characterCount === 280 || error ? 'error' : ''}`}>
+          {characterCount}/280
+        </span>
+      </div>
 
-      {/* Display character count and error if any */}
-      <p className={`m-0 ${characterCount === 280 || error ? 'text-danger' : ''}`}>
-        Character Count: {characterCount}/280
-        {error && <span className="ml-2">Something went wrong...</span>}
-      </p>
-
-      {/* Comment form */}
-      <form
-        className="flex-row justify-center justify-space-between-md align-center"
-        onSubmit={handleFormSubmit}
-      >
-        {/* Comment text area */}
-        <div className="col-12 col-lg-9">
-          <textarea
-            name="commentText"
-            placeholder="Add your comment..."
-            value={commentText}
-            className="form-input w-100"
-            style={{ lineHeight: '1.5' }}
-            onChange={handleChange}
-            required
-          ></textarea>
-        </div>
+      <form className="comment-form-body" onSubmit={handleFormSubmit}>
+        <textarea
+          name="commentText"
+          placeholder="What are your thoughts?"
+          value={commentText}
+          className="comment-input"
+          onChange={handleChange}
+          required
+        ></textarea>
 
         {/* Submit button */}
         <div className="col-12 col-lg-3">
-          <button className="btn btn-primary btn-block py-3" type="submit">
+          <button className="btn btn-primary " type="submit">
             Send
           </button>
         </div>

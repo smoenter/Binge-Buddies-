@@ -4,6 +4,8 @@ import { useParams } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import { QUERY_ME } from "../utils/queries";
 
+import './css/Reactions.css'
+
 
 const Reactions = () => {
   const { imdbID } = useParams(); // Get imdbID from route

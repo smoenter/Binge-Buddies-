@@ -1,0 +1,139 @@
+/* Comment Form Styles */
+.comment-form {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    padding: 16px;
+    margin-bottom: 24px;
+  }
+  
+  .comment-form-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+  }
+  
+  .comment-form-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  .comment-count {
+    font-size: 12px;
+    color: #65676b;
+  }
+  
+  .comment-count.error {
+    color: #f02849;
+  }
+  
+  .comment-input {
+    width: 100%;
+    min-height: 80px;
+    border: 1px solid #dddfe2;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 15px;
+    resize: none;
+    margin-bottom: 8px;
+    transition: border-color 0.2s;
+  }
+  
+  .comment-input:focus {
+    outline: none;
+    border-color: #1877f2;
+  }
+  
+  .comment-form-footer {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+  }
+  
+  .comment-error {
+    color: #f02849;
+    font-size: 13px;
+  }
+  
+  .comment-submit {
+    background-color: #1877f2;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    padding: 8px 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background-color 0.2s;
+  }
+  
+  .comment-submit:hover {
+    background-color: #166fe5;
+  }
+  
+  /* Comment List Styles */
+  .comment-list {
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+  
+  .comment-list-header {
+    padding: 16px;
+    border-bottom: 1px solid #dddfe2;
+  }
+  
+  .comment-list-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
+  }
+  
+  .comment-items {
+    padding: 8px 0;
+  }
+  
+  .comment-item {
+    padding: 12px 16px;
+    border-bottom: 1px solid #f0f2f5;
+    transition: background-color 0.2s;
+  }
+  
+  .comment-item:hover {
+    background-color: #f5f6f7;
+  }
+  
+  .comment-user {
+    display: flex;
+    align-items: center;
+    margin-bottom: 6px;
+  }
+  
+  .comment-username {
+    font-weight: 600;
+    font-size: 14px;
+    color: #050505;
+    margin-right: 8px;
+  }
+  
+  .comment-time {
+    font-size: 12px;
+    color: #65676b;
+  }
+  
+  .comment-text {
+    font-size: 14px;
+    color: #050505;
+    line-height: 1.4;
+  }
+  
+  .comment-empty {
+    color: #65676b;
+    font-size: 14px;
+    text-align: center;
+    padding: 16px;
+  }
