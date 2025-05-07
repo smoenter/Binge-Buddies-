@@ -5,7 +5,7 @@ import MediaModal from "../MediaModal";
 import { useLazyQuery } from "@apollo/client";
 import { QUERY_MEDIA } from "../../utils/queries";
 
-const categories = ["Action", "Comedy", "Horror", "Family", "Fantasy"];
+const categories = ["Action", "Comedy", "Family"];
 
 
 type Props = {
@@ -21,7 +21,7 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
     const [isModalOpen, setIsModalOpen] = useState(false);
     const [selectedMedia, setSelectedMedia] = useState<any>(null);
     const carouselsRef = useRef<{ [key: string]: HTMLDivElement | null }>({});
-
+// MIMICK EVERYTHING IN LOADMEDIA
     const [loadMedia] = useLazyQuery(QUERY_MEDIA);
 
     useEffect(() => {
@@ -29,12 +29,20 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
             const newMedia: { [key: string]: any[] } = {};
 
             const categoryKeywordsMap: Record<string, string[]> = {
-                Action: ["hero", "battle", "mission", "war", "fight", "fast", "force", "avengers", "spider", "super", "transformers", "marvel", "dc"],
-                Comedy: ["love", "wedding", "family", "date", "party", "funny", "school", "teen", "romantic", "adventure", "holiday", "vacation", "friends"],
-                Horror: ["ghost", "haunted", "zombie", "vampire", "evil", "hell", "nightmare", "blood", "curse", "final", "scream", "fear", "haunting", "exorcist"],
-                Family: ["kids", "pets", "animated", "dog", "holiday", "home", "happy", "friends", "toy", "magic", "diary", "princess", "disney"],
-                Fantasy: ["star", "x-men", "fantasy", "mummy", "magic", "dragon", "kingdom", "sorcerer", "quest", "chronicles", "realm", "world", "sword", "king", "space", "interstellar"],
+                Action: ["hero", "marvel"],
+                Comedy: [ "funny", "romantic"],
+                Family: ["kids", "disney"],
+                
             };
+
+            // const categoryKeywordsMap: Record<string, string[]> = {
+            //     Action: ["hero", "battle", "mission", "war", "fight", "fast", "force", "avengers", "spider", "super", "transformers", "marvel", "dc"],
+            //     Comedy: ["love", "wedding", "family", "date", "party", "funny", "school", "teen", "romantic", "adventure", "holiday", "vacation", "friends"],
+            //     Horror: ["ghost", "haunted", "zombie", "vampire", "evil", "hell", "nightmare", "blood", "curse", "final", "scream", "fear", "haunting", "exorcist"],
+            //     Family: ["kids", "pets", "animated", "dog", "holiday", "home", "happy", "friends", "toy", "magic", "diary", "princess", "disney"],
+            //     Fantasy: ["star", "x-men", "fantasy", "mummy", "magic", "dragon", "kingdom", "sorcerer", "quest", "chronicles", "realm", "world", "sword", "king", "space", "interstellar"],
+            // };
+
 
             const shuffle = <T,>(array: T[]): T[] => {
                 return array.sort(() => Math.random() - 0.5);
@@ -53,15 +61,18 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
                         });
 
                         const searchResults = searchData?.media || [];
-
+                            console.log(searchResults)
                         const detailFetches = searchResults.map(async (item: any) => {
                             try {
+                                const key = "trilogy" 
+                                // const keyOne = "4365" //import.meta.env.VITE_OMDB_API_KEY;
+                                // const keyTwo = "4c5b";
 
-                                const keyOne = "2e6a" //import.meta.env.VITE_OMDB_API_KEY;
-                                const keyTwo = "4c7a";
 
-                                const key = keyOne + keyTwo;
-                                const res = await fetch(`http://www.omdbapi.com/?apikey=${key}&i=${item.imdbID}`);
+                                // const key = keyOne + keyTwo;
+                                const URL = `http://www.omdbapi.com/?apikey=${key}&i=${item.imdbID}`
+                            // console.log(URL)
+                                const res = await fetch(URL);
 
                                 
                                 return await res.json();
