@@ -11,6 +11,8 @@ import './index.css';
 
 const ReactionList = () => {
 
+  const [activeTab, setActiveTab] = useState<'myPosts' | 'friendsPosts'>('myPosts');
+
   // const { loading: reactionLoading, error: reactionError, data, refetch } = useQuery(GET_REACTIONS);
   const { loading: myLoading, error: myError, data: myData, refetch: refetchMy } = useQuery(GET_MY_REACTIONS);
   const { loading: friendsLoading, error: friendsError, data: friendsData, refetch: refetchFriends } = useQuery(GET_FRIENDS_REACTIONS);
@@ -59,86 +61,110 @@ const ReactionList = () => {
 
   return (
     <div className="reaction-list-container">
-      <h3>My Posts</h3>
-      {myData?.reactions?.length === 0 ? (
-        <p>No posts yet.</p>
-      ) : (
-        (myData?.reactions ?? []).map((r: any) => (
-          <div key={r._id} className="reaction-card">
-            <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
-              <button onClick={() => handleDelete(r._id)} title="Delete reaction">
-                <img width="25" height="25" src="https://img.icons8.com/ios/50/delete--v1.png" alt="delete" />
-              </button>
-            </div>
-            <p><strong>User:</strong> {r.user?.username || 'Me'}</p>
-            <p><strong>Title:</strong> {r.media?.title || 'Untitled'}</p>
-            <p>{r.comment}</p>
-            <p>Season {r.season}, Episode {r.episode}</p>
-            <p>Rating: {r.rating}</p>
-            <p className="reaction-date-txt">{new Date(parseInt(r.createdAt)).toLocaleString()}</p>
+      <div className="tab-buttons">
+        <button
+          className={`tab-button ${activeTab === 'myPosts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('myPosts')}
+        >
+          Your Posts
+        </button>
+        <button
+          className={`tab-button ${activeTab === 'friendsPosts' ? 'active' : ''}`}
+          onClick={() => setActiveTab('friendsPosts')}
+        >
+          Your Feed
+        </button>
+      </div>
 
-            <div className="icon-row">
-              <Heart />
-              <button onClick={() => toggleCommentForm(r._id)}>
-                <img
-                  src="https://img.icons8.com/parakeet-line/48/speech-bubble-with-dots.png"
-                  alt="comment icon"
-                  style={{ width: '24px', height: '24px' }}
-                />
-              </button>
-            </div>
+      {activeTab === 'myPosts' && (
+        <>
+          <h3>Your Posts</h3>
+          {myData?.reactions?.length === 0 ? (
+            <p>No posts yet.</p>
+          ) : (
+            (myData?.reactions ?? []).map((r: any) => (
+              <div key={r._id} className="reaction-card">
+                <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
+                  <button onClick={() => handleDelete(r._id)} title="Delete reaction">
+                    <img width="25" height="25" src="https://img.icons8.com/ios/50/delete--v1.png" alt="delete" />
+                  </button>
+                </div>
+                <p><strong>User:</strong> {r.user?.username || 'Me'}</p>
+                <p><strong>Title:</strong> {r.media?.title || 'Untitled'}</p>
+                <p>{r.comment}</p>
+                <p>Season {r.season}, Episode {r.episode}</p>
+                <p>Rating: {r.rating}</p>
+                <p className="reaction-date-txt">{new Date(parseInt(r.createdAt)).toLocaleString()}</p>
 
-            {activeCommentId === r._id && (
-              <>
-                <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
-                <CommentForm
-                  reactionId={r._id}
-                  onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment, 'reactions')}
-                />
-              </>
-            )}
-          </div>
-        ))
+                <div className="icon-row">
+                  <Heart />
+                  <button onClick={() => toggleCommentForm(r._id)}>
+                    <img
+                      src="https://img.icons8.com/parakeet-line/48/speech-bubble-with-dots.png"
+                      alt="comment icon"
+                      style={{ width: '24px', height: '24px' }}
+                    />
+                  </button>
+                </div>
+
+                {activeCommentId === r._id && (
+                  <>
+                    <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
+                    <CommentForm
+                      reactionId={r._id}
+                      onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment, 'reactions')}
+                    />
+                  </>
+                )}
+              </div>
+            ))
+          )}
+        </>
       )}
 
-      <h3>Friends' Posts</h3>
-      {friendsData?.friendsReactions?.length === 0 ? (
-        <p>No friends' posts yet.</p>
-      ) : (
-        (friendsData?.friendsReactions ?? []).map((r: any) => (
-          <div key={r._id} className="reaction-card">
-            <p><strong>User:</strong> {r.user?.username || 'Anonymous'}</p>
-            <p><strong>Title:</strong> {r.media?.title || 'Untitled'}</p>
-            <p>{r.comment}</p>
-            <p>Season {r.season}, Episode {r.episode}</p>
-            <p>Rating: {r.rating}</p>
-            <p className="reaction-date-txt">{new Date(parseInt(r.createdAt)).toLocaleString()}</p>
+      {activeTab === 'friendsPosts' && (
+        <>
+          <h3>Your feed</h3>
+          {friendsData?.friendsReactions?.length === 0 ? (
+            <p>No friends' posts yet.</p>
+          ) : (
+            (friendsData?.friendsReactions ?? []).map((r: any) => (
+              <div key={r._id} className="reaction-card">
+                <p><strong>User:</strong> {r.user?.username || 'Anonymous'}</p>
+                <p><strong>Title:</strong> {r.media?.title || 'Untitled'}</p>
+                <p>{r.comment}</p>
+                <p>Season {r.season}, Episode {r.episode}</p>
+                <p>Rating: {r.rating}</p>
+                <p className="reaction-date-txt">{new Date(parseInt(r.createdAt)).toLocaleString()}</p>
 
-            <div className="icon-row">
-              <Heart />
-              <button onClick={() => toggleCommentForm(r._id)}>
-                <img
-                  src="https://img.icons8.com/parakeet-line/48/speech-bubble-with-dots.png"
-                  alt="comment icon"
-                  style={{ width: '24px', height: '24px' }}
-                />
-              </button>
-            </div>
+                <div className="icon-row">
+                  <Heart />
+                  <button onClick={() => toggleCommentForm(r._id)}>
+                    <img
+                      src="https://img.icons8.com/parakeet-line/48/speech-bubble-with-dots.png"
+                      alt="comment icon"
+                      style={{ width: '24px', height: '24px' }}
+                    />
+                  </button>
+                </div>
 
-            {activeCommentId === r._id && (
-              <>
-                <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
-                <CommentForm
-                  reactionId={r._id}
-                  onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment, 'friendsReactions')}
-                />
-              </>
-            )}
-          </div>
-        ))
+                {activeCommentId === r._id && (
+                  <>
+                    <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
+                    <CommentForm
+                      reactionId={r._id}
+                      onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment, 'friendsReactions')}
+                    />
+                  </>
+                )}
+              </div>
+            ))
+          )}
+        </>
       )}
     </div>
   );
 };
+
 
 export default ReactionList;
