@@ -89,7 +89,7 @@ const Browse = () => {
 
   return (
     <div className="container-browse">
-      <h1>Browse</h1>
+      <h1 className="browse-header-txt">Browse</h1>
       <Toggle handleToggle={handleToggle} type={type} />
       <SearchComponent onSearch={handleSearch} />
 

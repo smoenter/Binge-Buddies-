@@ -1,108 +1,185 @@
+/* index.css */
 .reaction-list-container {
-  max-width: 800px;
-  margin: 2rem auto;
+  max-width: 600px;
+  margin: 0 auto;
   padding: 1rem;
-}
-
-.reaction-card {
-  background: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-  padding: 1.5rem;
-  margin-bottom: 1.5rem;
-  position: relative;
-}
-
-.reaction-card p,
-.reaction-card small {
-  margin: 0.25rem 0;
-}
-
-.reaction-card strong {
-  color: #333;
-}
-
-.reaction-card button {
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-}
-
-.reaction-card button img {
-  transition: transform 0.2s ease;
-}
-
-.reaction-card button:hover img {
-  transform: scale(1.1);
-}
-
-/* Trash can positioned top-right */
-.reaction-card > div:first-of-type {
-  position: absolute;
-  top: 1rem;
-  right: 1rem;
-}
-
-/* Heart and comment icons centered below content */
-.reaction-card > button,
-.reaction-card > .heart-container {
-  display: inline-block;
-  margin: 0 0.5rem;
-}
-
-.reaction-card .icon-row {
-  display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-top: 1rem;
-}
-
-.comment-list-container {
-  margin-top: 1rem;
-  border-top: 1px solid #e0e0e0;
-  padding-top: 1rem;
-}
-
-.icon-row {
-  margin-top: 1rem;
-  gap: 0.5rem; /* optional: adds spacing between heart and comment */
-}
-
-.icon-row > * {
-  display: flex;
-  align-items: flex-start;
-}
-
-.reaction-date-txt {
-  color: #178f8a !important; /* This is your teal color */
-  font-weight: bold;
-  font-size: 0.8rem;
-  margin-top: 0.5rem; /* Optional: adds some spacing */
 }
 
 .tab-buttons {
   display: flex;
   gap: 1rem;
-  margin-bottom: 1rem;
+  margin-bottom: 1.5rem;
+  border-bottom: 1px solid #e0e0e0;
+  padding-bottom: 0.5rem;
 }
 
 .tab-button {
-  padding: 0.5rem 1rem;
+  padding: 0.5rem 0;
   background: none;
   border: none;
-  border-bottom: 2px solid transparent;
   cursor: pointer;
   font-size: 1rem;
   font-weight: 600;
   color: #666;
+  position: relative;
 }
 
 .tab-button.active {
-  color: #000;
-  border-bottom: 2px solid #178f8a;
+  color: #178f8a;
 }
 
-.tab-button:hover {
-  color: #000;
+.tab-button.active::after {
+  content: '';
+  position: absolute;
+  bottom: -6px;
+  left: 0;
+  right: 0;
+  height: 2px;
+  background-color: #178f8a;
+}
+
+.section-title {
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-size: 1.5rem;
+}
+
+.empty-message {
+  color: #666;
+  text-align: center;
+  padding: 2rem;
+}
+
+.posts-grid {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.reaction-card {
+  background: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  overflow: hidden;
+}
+
+.card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid #f0f0f0;
+}
+
+.user-info {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  padding: 10px;
+}
+
+.username {
+  font-weight: 600;
+  color: #178f8a;
+  font-size: 0.95rem;
+}
+
+.post-time {
+  font-size: 0.75rem;
+  color: #888;
+  margin-top: 0.25rem;
+}
+
+.delete-btn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.delete-btn:hover {
+  opacity: 1;
+}
+
+.card-content {
+  padding: 1.25rem;
+}
+
+.media-info {
+  margin-bottom: 1rem;
+}
+
+.media-title {
+  margin: 0;
+  font-size: 1.1rem;
+  color: #333;
+}
+
+.episode-info {
+  display: inline-block;
+  font-size: 0.8rem;
+  color: #666;
+  background: #f5f5f5;
+  padding: 0.2rem 0.5rem;
+  border-radius: 4px;
+  margin-top: 0.5rem;
+}
+
+.user-comment {
+  margin: 1rem 0;
+  padding: 1rem;
+  background: #f9f9f9;
+  border-radius: 8px;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.rating {
+  margin-top: 1rem;
+}
+
+.star {
+  color: #ddd;
+  font-size: 1.1rem;
+}
+
+.star.filled {
+  color: #ffc107;
+}
+
+.card-footer {
+  padding: 0.75rem 1.25rem;
+  border-top: 1px solid #f0f0f0;
+}
+
+.engagement {
+  display: flex;
+  gap: 1.5rem;
+}
+
+.like-btn, .comment-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9rem;
+  color: #666;
+}
+
+.like-btn:hover, .comment-btn:hover {
+  color: #178f8a;
+}
+
+.comment-btn img {
+  width: 20px;
+  height: 20px;
+}
+
+.comments-section {
+  padding: 0 1.25rem 1.25rem;
+  border-top: 1px solid #f0f0f0;
+  margin-top: 0.5rem;
 }
