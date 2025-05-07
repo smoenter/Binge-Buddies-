@@ -11,6 +11,7 @@
     justify-content: flex-start; /* Push modal to the left */
     align-items: center;
     z-index: 1000;
+    
   }
   
   .invite-modal {
@@ -43,7 +44,7 @@
   .invite-button {
     background:  #D9484F;
     color: white;
-    padding: 0.75rem;
+    padding: 4rem;
     border: none;
     border-radius: 0.5rem;
     font-size: 1rem;
