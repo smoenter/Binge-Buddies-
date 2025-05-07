@@ -57,8 +57,8 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
                         const detailFetches = searchResults.map(async (item: any) => {
                             try {
 
-                                const keyOne = "2c82" //import.meta.env.VITE_OMDB_API_KEY;
-                                const keyTwo = "a2c1";
+                                const keyOne = "2e6a" //import.meta.env.VITE_OMDB_API_KEY;
+                                const keyTwo = "4c7a";
                                 const key = keyOne + keyTwo;
                                 const res = await fetch(`http://www.omdbapi.com/?apikey=${key}&i=${item.imdbID}`);
 

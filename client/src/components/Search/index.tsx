@@ -1,13 +1,5 @@
 import React, { useState } from "react";
-// import { ApolloClient, InMemoryCache } from "@apollo/client";
-// import { QUERY_MEDIA } from "../../utils/queries";
 import './index.css'; 
-
-// const client = new ApolloClient({
-//   uri: "http://localhost:3001/graphql", // Your GraphQL endpoint
-//   cache: new InMemoryCache(),
-// });
-
 
 const SearchComponent = ({ onSearch }: { onSearch: (data: any) => void }) => {
   const [query, setQuery] = useState("");
@@ -23,40 +15,32 @@ const SearchComponent = ({ onSearch }: { onSearch: (data: any) => void }) => {
     }
 
     setLoading(true);
-    //reset error state
-    setError(null); 
+    setError(null); // Reset error state
 
     try {
-      await onSearch(query); // ✅ must return a promise
-    } catch (err: any) {
-      setError("Search failed. Try again.");
+      const apiKey = import.meta.env.VITE_OMDB_API_KEY; // Ensure your API key is set in .env
+      const response = await fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(query)}&type=movie&apikey=${apiKey}`);
+      const data = await response.json();
+
+      if (data.Response === "True") {
+        onSearch(data.Search); // Pass results to parent component
+      } else {
+        setError(data.Error || "No results found.");
+      }
+    } catch (err) {
+      console.error("Error fetching data:", err);
+      setError("Failed to fetch results. Please try again.");
     } finally {
       setLoading(false);
     }
-    
-
-  // try {
-  //   const apiKey = import.meta.env.VITE_OMDB_API_KEY;
-  //   const response = await fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(query)}&type=movie&apikey=${apiKey}`);
-  //   const data = await response.json();
-
-  //   if (data.Response === "True") {
-  //     onSearch(data.Search); 
-  //   } else {
-  //     setError(data.Error || "No results found.");
-  //   }
-  // } catch (error) {
-  //   console.error("Error fetching data:", error);
-  //   setError("Failed to fetch results. Please try again.");
-  // } finally {
-  //   setLoading(false);
-  // }
-};
+  };
 
   return (
     <form onSubmit={handleSubmit} className="d-flex my-3">
       <div className="search-wrapper">
+        <label htmlFor="search-input" className="visually-hidden">Search titles:</label>
         <input
+          id="search-input"
           type="text"
           className="search-input"
           placeholder="Search titles..."
