@@ -17,9 +17,11 @@ const MediaModal = ({ imdbID, onClose, isWatchlistPage = false }: Props) => {
     variables: { imdbID },
   });
 
-  const movieData = data?.mediaDetails;
+  console.log('GraphQL query data:', data);
 
-  if (loading || !movieData) {
+  const mediaData = data?.mediaDetails; // Changed from movieData to mediaData
+
+  if (loading || !mediaData) {
     return (
       <div className="custom-modal-overlay" onClick={onClose}>
         <motion.div className="custom-modal-content" initial={{ opacity: 0 }} animate={{ opacity: 1 }}>
@@ -31,7 +33,6 @@ const MediaModal = ({ imdbID, onClose, isWatchlistPage = false }: Props) => {
 
   return (
     <div className="custom-modal-overlay" onClick={onClose}>
-      {/* BACKGROUND */}
       <div className="custom-modal-background">
         <motion.div
           className="custom-modal-content"
@@ -39,27 +40,33 @@ const MediaModal = ({ imdbID, onClose, isWatchlistPage = false }: Props) => {
           animate={{ opacity: 1, y: 0 }}
           exit={{ opacity: 0, y: 50 }}
           transition={{ duration: 0.3, ease: 'easeOut' }}
-          onClick={(e: { stopPropagation: () => any; }) => e.stopPropagation()} // Prevent close on inside click
+          onClick={(e: React.MouseEvent<HTMLDivElement>) => e.stopPropagation()}
         >
-          {/* X BUTTON */}
           <button onClick={onClose} className="close-button">×</button>
-          {/* AddReactionForm ONLY IF on watchlist page */}
-          {isWatchlistPage && <AddReactionForm mediaId={imdbID} />}
-          {/* TITLE AND YEAR */}
-          <h2 className="title-and-year-txt">{movieData.Title} ({movieData.Year})</h2>
-          {/* MOVIE POSTER */}
-          <img src={movieData.Poster} alt={movieData.Title} className="modal-poster" />
-          {/* PLOT */}
+
+          {/* Show reaction form for both movies and series on watchlist page */}
+          {isWatchlistPage && <AddReactionForm mediaId={imdbID}/>}
+          
+          {/* Moved AddReactionForm to bottom and only show for watchlist */}
+          <h2 className="title-and-year-txt">{mediaData.Title} ({mediaData.Year})</h2>
+          <img src={mediaData.Poster} alt={mediaData.Title} className="modal-poster" />
+          
+          {/* Show type-specific information */}
+          {mediaData.Type === 'series' && (
+            <div className="series-info">
+              <p>Total Seasons: {mediaData.totalSeasons || 'N/A'}</p>
+            </div>
+          )}
+          
           <h3 className="modal-plot-title">Plot:</h3>
-          {/* PLOT DESCRIPTION */}
-          <p className="modal-plot-description">{movieData.Plot}</p>
-          {movieData.TrailerLink && (
-            <a href={movieData.TrailerLink} target="_blank" rel="noopener noreferrer" className="trailer-link">
+          <p className="modal-plot-description">{mediaData.Plot}</p>
+          
+          {mediaData.TrailerLink && (
+            <a href={mediaData.TrailerLink} target="_blank" rel="noopener noreferrer" className="trailer-link">
               🎬 Watch Trailer
             </a>
-          )} 
-          {/* Only show AddReactionForm if on watchlist page */}
-          {/* {isWatchlistPage && <AddReactionForm mediaId={imdbID} />} */}
+          )}
+          
         </motion.div>
       </div>
     </div>
