@@ -62,7 +62,7 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
 
                         const searchResults = searchData?.media || [];
                             console.log(searchResults)
-                        const detailFetches = searchResults.map(async (item: any) => {
+                        const detailFetches = searchResults.slice(0, 5).map(async (item: any) => {
                             try {
                                 const key = "trilogy" 
                                 // const keyOne = "4365" //import.meta.env.VITE_OMDB_API_KEY;
