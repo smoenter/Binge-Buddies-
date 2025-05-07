@@ -70,7 +70,7 @@ const CategoryCarousel = ({ savedList, type }: Props) => {
 
 
                                 // const key = keyOne + keyTwo;
-                                const URL = `http://www.omdbapi.com/?apikey=${key}&i=${item.imdbID}`
+                                const URL = `https://www.omdbapi.com/?apikey=${key}&i=${item.imdbID}`
                             // console.log(URL)
                                 const res = await fetch(URL);
 
