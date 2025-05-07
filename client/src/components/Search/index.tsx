@@ -17,23 +17,33 @@ const SearchComponent = ({ onSearch }: { onSearch: (data: any) => void }) => {
     setLoading(true);
     setError(null); // Reset error state
 
-    try {
-      const apiKey = import.meta.env.VITE_OMDB_API_KEY; // Ensure your API key is set in .env
-      const response = await fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(query)}&type=movie&apikey=${apiKey}`);
-      const data = await response.json();
+  //   try {
+  //     // const apiKey = import.meta.env.VITE_OMDB_API_KEY; 
+  //     const apiKey = '43654c5b' // Ensure your API key is set in .env
 
-      if (data.Response === "True") {
-        onSearch(data.Search); // Pass results to parent component
-      } else {
-        setError(data.Error || "No results found.");
-      }
-    } catch (err) {
-      console.error("Error fetching data:", err);
-      setError("Failed to fetch results. Please try again.");
-    } finally {
-      setLoading(false);
-    }
+  //     const response = await fetch(`https://www.omdbapi.com/?s=${encodeURIComponent(query)}&type=movie&apikey=${apiKey}`);
+  //     const data = await response.json();
+
+  //     if (data.Response === "True") {
+  //       onSearch(data.Search); // Pass results to parent component
+  //     } else {
+  //       setError(data.Error || "No results found.");
+  //     }
+  //   } catch (err) {
+  //     console.error("Error fetching data:", err);
+  //     setError("Failed to fetch results. Please try again.");
+  //   } finally {
+  //     setLoading(false);
+  //   }
+  try {
+    await onSearch(query); // :white_check_mark: must return a promise
+  } catch (err: any) {
+    setError("Search failed. Try again.");
+  } finally {
+    setLoading(false);
+  }
   };
+  
 
   return (
     <form onSubmit={handleSubmit} className="d-flex my-3">
