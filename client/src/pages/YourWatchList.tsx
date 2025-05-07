@@ -5,6 +5,7 @@ import Toggle from "../components/Toggle";
 import SearchComponent from "../components/Search";
 import InviteOptions from "../components/Invites/InviteOptions";
 import MediaCard from "../components/MediaCard";
+import "./css/YourWatchList.css"
 
 const YourWatchlist = () => {
   const { loading, data, refetch } = useQuery(QUERY_ME);
@@ -40,7 +41,7 @@ const YourWatchlist = () => {
   return (
     <div>
       <div>
-        <h1>⭐ Your Watchlist</h1>
+        <h1 className="yourwatchlist-header-txt"> Your Watchlist ⭐</h1>
         <InviteOptions />
         <Toggle handleToggle={handleToggle} type={type} />
         <SearchComponent onSearch={handleSearch} />

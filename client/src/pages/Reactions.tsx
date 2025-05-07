@@ -19,7 +19,7 @@ const Reactions = () => {
 
   return (
     <div>
-      <h1>💬 Reactions</h1>
+      <h1 className="reactions-header-txt">💬 Reactions</h1>
       <div className="my-4">
         <ReactionList />
        
