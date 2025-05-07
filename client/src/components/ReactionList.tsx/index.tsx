@@ -220,7 +220,7 @@ const ReactionList = () => {
                   onDelete={() => removeReaction({ variables: { reactionId: r._id } })}
                   activeCommentId={activeCommentId}
                   setActiveCommentId={setActiveCommentId}
-                  onCommentAdded={(newComment) => {
+                  onCommentAdded={(newComment: any) => {
                     if (myData) {
                       myData.reactions = myData.reactions.map((reaction: any) =>
                         reaction._id === r._id
@@ -250,7 +250,7 @@ const ReactionList = () => {
                   isOwnPost={false}
                   activeCommentId={activeCommentId}
                   setActiveCommentId={setActiveCommentId}
-                  onCommentAdded={(newComment) => {
+                  onCommentAdded={(newComment: any) => {
                     if (friendsData) {
                       friendsData.friendsReactions = friendsData.friendsReactions.map((reaction: any) =>
                         reaction._id === r._id
@@ -271,7 +271,7 @@ const ReactionList = () => {
 
 const ReactionCard = ({ reaction, isOwnPost, onDelete, activeCommentId, setActiveCommentId, onCommentAdded }: any) => {
   const toggleCommentForm = (reactionId: string) => {
-    setActiveCommentId((prev) => (prev === reactionId ? null : reactionId));
+    setActiveCommentId((prev: string) => (prev === reactionId ? null : reactionId));
   };
 
   return (
@@ -308,6 +308,11 @@ const ReactionCard = ({ reaction, isOwnPost, onDelete, activeCommentId, setActiv
           ))}
         </div>
       </div>
+
+      {/* <div className="user-info">
+          <span className="username">{reaction.user?.username || (isOwnPost ? 'You' : 'Anonymous')} </span>
+          <span className="post-time">{new Date(parseInt(reaction.createdAt)).toLocaleString()}</span>
+        </div> */}
 
       <div className="card-footer">
         <div className="engagement">
