@@ -11,10 +11,10 @@ const InviteOptions = () => {
   const [showForm, setShowForm] = useState(false);
 
   return (
-    <div className="max-w-md mx-auto mt-10 text-center">
+    <div className="max-w-md mx-auto mt-10 text-center pl-4">
       <button
         onClick={() => setShowForm(!showForm)}
-        className="button-53"
+        className="button-53 "
         role="button"
       >
         Invite a Friend!

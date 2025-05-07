@@ -36,6 +36,26 @@ const resolvers = {
     },
 
     friends: async () => await User.find({}),
+
+    friendsReactions: async (_parent: any, _args: any, context: any) => {
+      if (!context.user) throw new AuthenticationError('Not logged in');
+      
+      // Get the current user with friends populated
+      const user = await User.findById(context.user._id).populate('friends');
+      
+      if (!user) throw new Error('User not found');
+      
+      // Get reactions from all friends
+      const friendIds = user.friends.map(friend => friend._id);
+      
+      return await Reaction.find({ 
+        user: { $in: friendIds } 
+      })
+      .populate('user', 'username')
+      .populate('media')
+      .populate('comments.user')
+      .sort({ createdAt: -1 });
+    },
   },
 
   Mutation: {

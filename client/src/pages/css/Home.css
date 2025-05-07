@@ -101,6 +101,18 @@
   overflow: hidden;
 }
 
+.auth-link2{
+  font-weight: bold;
+  color: #097d77;
+  /* color: #215d83; */
+}
+
+.auth-link2:hover{
+  font-weight: bold;
+  /* color: #097d77; */
+  color: #215d83;
+  /* box-shadow: #1c7f91; */
+}
 /* Responsive adjustments */
 @media (max-width: 768px) {
   .how-it-works-container {
