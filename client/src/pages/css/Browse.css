@@ -5,8 +5,13 @@
   padding: 20px;
 } */
 
+.browse-header-txt{
+  display: flex;
+  justify-content: center;
+}
+
 .container-browse {
-    color: #f9fafb;
+    color: #171717;
     min-height: 100%;
     padding: 20px;
 }
