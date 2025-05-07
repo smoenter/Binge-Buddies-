@@ -6,6 +6,7 @@
     z-index: 999999;
     background-color: rgb(211, 210, 210);
     border-radius: 45px;
+    border: 2px solid rgba(30, 30, 30, 0.952);
     display: flex; /* Use flexbox */
     flex-direction: column; /* Stack items vertically */
 }
@@ -110,7 +111,7 @@
     padding: 10px;
     border: 1px solid #ccc;
     border-radius: 5px;
-    background-color: gray;
+    background-color: rgba(128, 128, 128, 0.824);
     width: 100%;
   }
   

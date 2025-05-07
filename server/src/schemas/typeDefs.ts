@@ -17,6 +17,7 @@ const typeDefs = `
     posterUrl: String
     trailerUrl: String
     savedBy: [User]
+    totalSeasons: String
   }
 
   type MediaCard {
