@@ -146,3 +146,67 @@ query Reactions {
 }
 `;
 
+export const GET_MY_REACTIONS = gql`
+  query Reactions {
+    reactions {
+      _id
+      comment
+      season
+      episode
+      rating
+      createdAt
+      user {
+        _id
+        username
+      }
+      media {
+        _id
+        title
+        type
+        posterUrl
+      }
+      comments {
+        _id
+        commentText
+        createdAt
+        user {
+          _id
+          username
+        }
+      }
+    }
+  }
+`;
+
+export const GET_FRIENDS_REACTIONS = gql`
+  query FriendsReactions {
+    friendsReactions {
+      _id
+      comment
+      season
+      episode
+      rating
+      createdAt
+      user {
+        _id
+        username
+      }
+      media {
+        _id
+        title
+        type
+        posterUrl
+      }
+      comments {
+        _id
+        commentText
+        createdAt
+        user {
+          _id
+          username
+        }
+      }
+    }
+  }
+`;
+

@@ -85,6 +85,7 @@ const typeDefs = `
     searchFriends(username: String!): [User]
     media(title: String!, type: String!): [MediaCard]
     mediaDetails(imdbID: String!): MediaCard
+    friendsReactions: [Reaction]
   }
 
   type Mutation {

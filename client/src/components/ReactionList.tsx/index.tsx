@@ -1,6 +1,7 @@
 import { useQuery, useMutation } from '@apollo/client';
-import { useState, useEffect } from 'react';
-import { GET_REACTIONS } from '../../utils/queries';
+import { useState } from 'react';
+// import { GET_REACTIONS } from '../../utils/queries';
+import { GET_MY_REACTIONS, GET_FRIENDS_REACTIONS } from '../../utils/queries';
 import { REMOVE_REACTION } from '../../utils/mutations';
 import CommentForm from '../CommentForm';
 import CommentList from '../CommentList';
@@ -10,24 +11,25 @@ import './index.css';
 
 const ReactionList = () => {
 
-  const { loading: reactionLoading, error: reactionError, data, refetch } = useQuery(GET_REACTIONS);
+  // const { loading: reactionLoading, error: reactionError, data, refetch } = useQuery(GET_REACTIONS);
+  const { loading: myLoading, error: myError, data: myData, refetch: refetchMy } = useQuery(GET_MY_REACTIONS);
+  const { loading: friendsLoading, error: friendsError, data: friendsData, refetch: refetchFriends } = useQuery(GET_FRIENDS_REACTIONS);
 
+
+  console.log('My data:', myData);
+  console.log('Friends data:', friendsData);
+
+  // Mutation
   const [removeReaction] = useMutation(REMOVE_REACTION, {
-    onCompleted: () => refetch(),
+    onCompleted: () => {
+      refetchMy();
+      refetchFriends();
+    },
     onError: (err) => console.error('Failed to delete reaction:', err),
   });
 
-  const [reactions, setReactions] = useState<any[]>([]);
   const [activeCommentId, setActiveCommentId] = useState<string | null>(null);
-  const [reactionMessage] = useState('');
 
-  useEffect(() => {
-    if (data?.reactions) {
-      console.log('Fetch reactions', data.reactions)
-      setReactions(data.reactions);
-    }
-  }, [data]);
- 
   const toggleCommentForm = (reactionId: string) => {
     setActiveCommentId((prev) => (prev === reactionId ? null : reactionId));
   };
@@ -35,48 +37,76 @@ const ReactionList = () => {
   const handleDelete = async (reactionId: string) => {
     await removeReaction({ variables: { reactionId } });
   };
-  
-  if (reactionLoading) return <p>Loading reactions...</p>;
-  if (reactionError) return <p>Error loading reactions.</p>;
 
-  const handleCommentAdded = (reactionId: string, newComment: any) => {
-    setReactions((prevReactions) =>
-      prevReactions.map((reaction) =>
+  const handleCommentAdded = (reactionId: string, newComment: any, reactionsKey: 'reactions' | 'friendsReactions') => {
+    if (reactionsKey === 'reactions' && myData) {
+      myData.reactions = myData.reactions.map((reaction: any) =>
         reaction._id === reactionId
-          ? {
-              ...reaction,
-              comments: [...(reaction.comments || []), newComment],
-            }
+          ? { ...reaction, comments: [...(reaction.comments || []), newComment] }
           : reaction
-      )
-    );
+      );
+    } else if (reactionsKey === 'friendsReactions' && friendsData) {
+      friendsData.friendsReactions = friendsData.friendsReactions.map((reaction: any) =>
+        reaction._id === reactionId
+          ? { ...reaction, comments: [...(reaction.comments || []), newComment] }
+          : reaction
+      );
+    }
   };
 
-  if (reactionLoading) return <p>Loading reactions...</p>;
-  if (reactionError) return <p>Error loading reactions.</p>;
+  if (myLoading || friendsLoading) return <p>Loading reactions...</p>;
+  if (myError || friendsError) return <p>Error loading reactions.</p>;
 
   return (
     <div className="reaction-list-container">
-      <h3>Reactions</h3>
-
-      {reactionMessage && (
-        <div className="reaction-message" style={{ color: 'teal', fontWeight: 'bold', marginBottom: '1rem' }}>
-          {reactionMessage}
-        </div>
-      )}
-
-      {reactions.length === 0 ? (
-        <p>No reactions yet.</p>
+      <h3>My Posts</h3>
+      {myData?.reactions?.length === 0 ? (
+        <p>No posts yet.</p>
       ) : (
-        reactions.map((r: any) => (
+        (myData?.reactions ?? []).map((r: any) => (
           <div key={r._id} className="reaction-card">
-            {/* DELETE BUTTON */}
             <div style={{ display: 'flex', gap: '0.5rem', marginTop: '0.5rem' }}>
               <button onClick={() => handleDelete(r._id)} title="Delete reaction">
                 <img width="25" height="25" src="https://img.icons8.com/ios/50/delete--v1.png" alt="delete" />
               </button>
             </div>
+            <p><strong>User:</strong> {r.user?.username || 'Me'}</p>
+            <p><strong>Title:</strong> {r.media?.title || 'Untitled'}</p>
+            <p>{r.comment}</p>
+            <p>Season {r.season}, Episode {r.episode}</p>
+            <p>Rating: {r.rating}</p>
+            <p className="reaction-date-txt">{new Date(parseInt(r.createdAt)).toLocaleString()}</p>
 
+            <div className="icon-row">
+              <Heart />
+              <button onClick={() => toggleCommentForm(r._id)}>
+                <img
+                  src="https://img.icons8.com/parakeet-line/48/speech-bubble-with-dots.png"
+                  alt="comment icon"
+                  style={{ width: '24px', height: '24px' }}
+                />
+              </button>
+            </div>
+
+            {activeCommentId === r._id && (
+              <>
+                <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
+                <CommentForm
+                  reactionId={r._id}
+                  onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment, 'reactions')}
+                />
+              </>
+            )}
+          </div>
+        ))
+      )}
+
+      <h3>Friends' Posts</h3>
+      {friendsData?.friendsReactions?.length === 0 ? (
+        <p>No friends' posts yet.</p>
+      ) : (
+        (friendsData?.friendsReactions ?? []).map((r: any) => (
+          <div key={r._id} className="reaction-card">
             <p><strong>User:</strong> {r.user?.username || 'Anonymous'}</p>
             <p><strong>Title:</strong> {r.media?.title || 'Untitled'}</p>
             <p>{r.comment}</p>
@@ -95,13 +125,12 @@ const ReactionList = () => {
               </button>
             </div>
 
-            {/* Comments section */}
             {activeCommentId === r._id && (
               <>
                 <CommentList comments={Array.isArray(r.comments) ? r.comments : []} />
                 <CommentForm
                   reactionId={r._id}
-                  onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment)}
+                  onCommentAdded={(newComment) => handleCommentAdded(r._id, newComment, 'friendsReactions')}
                 />
               </>
             )}
