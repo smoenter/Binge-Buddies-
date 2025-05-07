@@ -25,15 +25,16 @@ const Browse = () => {
     setLastQuery(query);
 
     if (!query.trim()) {
-      // If search is cleared, reset searchResults
       setSearchResults([]);
       return;
     }
 
     try {
       const { data: searchData } = await fetchMedia({
-        variables: { title: query, type },
+        variables: { title: query, type, maxResults: 10 },
       });
+
+      console.log("Search Data:", searchData);
 
       if (searchData?.media) {
         const merged = mergeSearchWithSaved(searchData.media, savedList);
@@ -53,15 +54,17 @@ const Browse = () => {
     const updateAfterRefetch = async () => {
       try {
         const { data: searchData } = await fetchMedia({
-          variables: { title: lastQuery, type },
+          variables: { title: lastQuery, type, maxResults: 10 },
         });
+
+        console.log("Refetch Search Data:", searchData);
 
         if (searchData?.media) {
           const updated = mergeSearchWithSaved(searchData.media, savedList);
           setSearchResults(updated);
         }
       } catch (err) {
-        console.error("Failed to update stars after refetch:", err);
+        console.error("Failed to update search results:", err);
       }
     };
 
@@ -85,27 +88,30 @@ const Browse = () => {
   };
 
   return (
-    <div className="container-browse" >
+    <div className="container-browse">
       <h1>Browse</h1>
       <Toggle handleToggle={handleToggle} type={type} />
       <SearchComponent onSearch={handleSearch} />
 
-      {/* Back to Browse button only shows if there are search results */}
       {searchResults.length > 0 && (
         <button
           className="btn btn-secondary"
           onClick={handleClearSearch}
+          aria-label="Clear search results and return to browse"
         >
-          <img width="25" height="25" src="https://img.icons8.com/flat-round/64/back--v1.png" alt="back--v1"/>
+          <img
+            width="25"
+            height="25"
+            src="https://img.icons8.com/flat-round/64/back--v1.png"
+            alt="Back to Browse"
+          />
           Back to Browse
         </button>
       )}
 
       {searchResults.length === 0 ? (
-        // Show carousel when no search results
         <CategoryCarousel savedList={savedList} type={type} />
       ) : (
-        // Show search results when active
         <div className="results-container">
           <MediaSearch results={searchResults} refetch={refetchUser} />
         </div>
@@ -116,9 +122,5 @@ const Browse = () => {
     </div>
   );
 };
+
 export default Browse;
-
-
-
-
-

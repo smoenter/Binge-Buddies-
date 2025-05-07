@@ -2,7 +2,7 @@ import fetch from 'node-fetch';
 
 export type mediaTypeType = "movie" | "series" | "all";
 
-export async function fetchMedia(title: string, mediaType: mediaTypeType) {
+export async function fetchMedia(title: string, mediaType: mediaTypeType, maxResults: number = 10) {
   let baseURL = process.env.OMDB_BASE_URL || "https://www.omdbapi.com/";
   const apiKey = process.env.OMDB_API_KEY;
 
@@ -39,7 +39,9 @@ export async function fetchMedia(title: string, mediaType: mediaTypeType) {
       throw new Error(errorMessage);
     }
 
-    return data;
+    // Limit the results to the specified maxResults
+    const limitedResults = data.Search.slice(0, maxResults);
+    return { ...data, Search: limitedResults };
 
   } catch (error) {
     console.error("Error occurred while fetching media:", error);
@@ -90,3 +92,5 @@ export async function fetchMediaByImdb(imdbID: string) {
     throw new Error("An error occurred while fetching media. Please try again later.");
   }
 }
+
+

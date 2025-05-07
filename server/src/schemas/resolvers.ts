@@ -3,7 +3,6 @@ import { signToken, AuthenticationError } from '../utils/auth.js';
 import { fetchMedia, mediaTypeType, fetchMediaByImdb } from '../utils/apiFetchers.js';
 import { sendInviteEmail } from '../utils/inviteSender.js';
 
-
 const resolvers = {
   Query: {
     me: async (_parent: any, _args: any, context: any) => {
@@ -13,8 +12,8 @@ const resolvers = {
         .populate('friends');
     },
 
-    media: async (_parent: any, { title, type }: { title: string; type: mediaTypeType }) => {
-      const data = await fetchMedia(title, type);
+    media: async (_parent: any, { title, type, maxResults }: { title: string; type: mediaTypeType; maxResults: number }) => {
+      const data = await fetchMedia(title, type, maxResults); // Pass maxResults here
       return data.Search;
     },
 
@@ -107,8 +106,7 @@ const resolvers = {
 
     addReaction: async (_parent: any, { mediaId, comment, season, episode, rating }: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
-    
-        
+
       let media = await Media.findOne({ mediaId });
 
       if (!media) {
@@ -129,7 +127,7 @@ const resolvers = {
           genre: Genre ? Genre.split(', ') : [],
         });
       }
-    
+
       return await Reaction.create({
         user: context.user._id,
         media: media._id,
@@ -167,7 +165,7 @@ const resolvers = {
         {
           $push: {
             comments: {
-            user: context.user._id,
+              user: context.user._id,
               commentText,
               createdAt: new Date(), // optional, can be handled by schema
             },
@@ -185,7 +183,7 @@ const resolvers = {
 
       return updatedReaction;
     },
-    
+
     addFriend: async (_parent: any, { friendId }: any, context: any) => {
       if (!context.user) throw new AuthenticationError('Not logged in');
 
@@ -220,6 +218,3 @@ const resolvers = {
 };
 
 export default resolvers;
-
-
-
