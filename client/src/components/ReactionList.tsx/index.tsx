@@ -9,10 +9,11 @@ import Heart from '../Heart'
 
 import './index.css';
 
+
 const ReactionList = () => {
 
   const [activeTab, setActiveTab] = useState<'myPosts' | 'friendsPosts'>('myPosts');
-
+  const [likes, setLikes] = useState(JSON.parse(localStorage.getItem('likes') || '[]'));
   // const { loading: reactionLoading, error: reactionError, data, refetch } = useQuery(GET_REACTIONS);
   const { loading: myLoading, error: myError, data: myData, refetch: refetchMy } = useQuery(GET_MY_REACTIONS);
   const { loading: friendsLoading, error: friendsError, data: friendsData, refetch: refetchFriends } = useQuery(GET_FRIENDS_REACTIONS);
@@ -20,6 +21,16 @@ const ReactionList = () => {
 
   console.log('My data:', myData);
   console.log('Friends data:', friendsData);
+
+  const handleLike = (reactionId: string) => {
+    // Handle like functionality here
+    console.log('Liked reaction with ID:', reactionId);
+
+  }
+
+  const likeCheck = (reactionId: string) => {
+    return likes.includes(reactionId);
+  };
 
   // Mutation
   const [removeReaction] = useMutation(REMOVE_REACTION, {
@@ -97,7 +108,7 @@ const ReactionList = () => {
                 <p className="reaction-date-txt">{new Date(parseInt(r.createdAt)).toLocaleString()}</p>
 
                 <div className="icon-row">
-                  <Heart />
+                  <Heart handleLike={handleLike} id={r._id} likeCheck={likeCheck} />
                   <button onClick={() => toggleCommentForm(r._id)}>
                     <img
                       src="https://img.icons8.com/parakeet-line/48/speech-bubble-with-dots.png"
@@ -138,7 +149,7 @@ const ReactionList = () => {
                 <p className="reaction-date-txt">{new Date(parseInt(r.createdAt)).toLocaleString()}</p>
 
                 <div className="icon-row">
-                  <Heart />
+                  <Heart handleLike={handleLike} id={r._id} likeCheck={likeCheck} />
                   <button onClick={() => toggleCommentForm(r._id)}>
                     <img
                       src="https://img.icons8.com/parakeet-line/48/speech-bubble-with-dots.png"
