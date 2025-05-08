@@ -40,14 +40,26 @@ Manage friends and watch together
 
 Here are some previews of the website:
 
-### 🖥️ Home Page
-<img src="assets/nameOfImage.jpg" width="300">
+### 🏠 Home Page
+<img src="./client/public/home.jpg" width="300">
+
+### 🖥️ login Page
+<img src="./client/public/login.jpg" width="300">
+
+### 🔍 Browse Page
+<img src="./client/public/browse.jpg" width="300">
 
 ### 🎬 YourWatchlist Page
-<img src="assets/nameOfImage.jpg" width="300">
+<img src="./client/public/watchlist.jpg" width="300">
+
+### ✉️ Email Invite 
+<img src="./client/public/email.jpg" width="300">
 
 ### ❤️ Reaction Dashboard Page
-<img src="assets/nameOfImage.jpg" width="300">
+<img src="./client/public/reactions.jpg" width="300">
+
+### 👥 Friends List 
+<img src="./client/public/friendslist.jpg" width="300">
 
 
 
@@ -155,6 +167,9 @@ You can test the following functionality to ensure everything is working correct
 
 -Invite friend button: https://getcssscan.com/css-buttons-examples
 
+-Instructors- Aaron and Diem: helped with browse page loading and modals.
+
+-Tutor Justin: helped with heart like count.
 
 ## 🔗 Project Links
 
@@ -178,4 +193,5 @@ Email: staceymoenter@gmail.com </p>
 
 
 
-🎥🍿 Happy binge-watching with your buddies! 🍿🎥
+
+<p align="center"> 🎥🍿 Happy binge-watching with your buddies! 🍿🎥 </center> <br> </p>
